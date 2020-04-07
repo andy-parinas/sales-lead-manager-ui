@@ -1,13 +1,20 @@
 <template>
   <v-app>
-      <h1>This is suppose to be navbar</h1>
-      <router-view></router-view>
+      <Navbar />
+      <v-content>
+          <router-view></router-view>
+      </v-content>
   </v-app>
 </template>
 
 <script>
+
+import Navbar from '../components/core/Navbar';
+
+
 export default {
-    name: 'MainPage'
+    name: 'MainPage',
+    components: { Navbar}
 }
 </script>
 
