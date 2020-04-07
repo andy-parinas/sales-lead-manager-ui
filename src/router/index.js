@@ -1,6 +1,8 @@
 import Vue from 'vue';
 import VueRouter from 'vue-router';
 
+import MainPage from '../views/MainPage';
+import Login from '../views/Login';
 import Dashboard from '../views/Dashboard';
 import Franchise from '../views/Franchise';
 import Lead from '../views/Lead';
@@ -10,28 +12,39 @@ Vue.use(VueRouter);
 
 const routes = [
     {
+        path: '/login',
+        name: 'login',
+        component: Login
+    },
+    {
         path: '/',
-        name: 'dashboard',
-        component: Dashboard
-
-    },
-    {
-        path: '/franchise',
-        name: 'franchise',
-        component: Franchise
-
-    },
-    {
-        path: '/lead',
-        name: 'lead',
-        component: Lead
-
-    },
-    {
-        path: '/sales-contact',
-        name: 'sales-contact',
-        component: SalesContact
-
+        component: MainPage,
+        children: [
+            {
+                path: '',
+                name: 'dashboard',
+                component: Dashboard
+        
+            },
+            {
+                path: 'franchise',
+                name: 'franchise',
+                component: Franchise
+        
+            },
+            {
+                path: 'lead',
+                name: 'lead',
+                component: Lead
+        
+            },
+            {
+                path: 'sales-contact',
+                name: 'sales-contact',
+                component: SalesContact
+        
+            }
+        ]
     }
 ];
 
