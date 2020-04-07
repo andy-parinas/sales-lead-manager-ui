@@ -1,6 +1,7 @@
 <template>
   <div>
-      <h1>Franchise</h1>
+      <h1 class="subheading grey--text">Franchise</h1>
+      <v-divider></v-divider>
   </div>
 </template>
 

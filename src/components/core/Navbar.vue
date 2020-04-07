@@ -35,7 +35,7 @@ export default {
         drawer: true,
          links: [
             {icon: 'dashboard', text: 'Dashboard', route: '/'},
-            {icon: 'business', text: 'Franchise', route: '/franchise'},
+            {icon: 'store', text: 'Franchise', route: '/franchise'},
             {icon: 'perm_contact_calendar', text: 'SalesContact', route: '/sales-contact'},
             {icon: 'person_pin', text: 'Lead', route: '/Lead'},
 
