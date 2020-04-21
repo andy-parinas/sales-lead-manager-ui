@@ -3,18 +3,24 @@ import VueRouter from 'vue-router';
 
 import MainPage from '../views/MainPage';
 import Login from '../views/Login';
-import Dashboard from '../views/Dashboard';
-import Franchise from '../views/Franchise';
-import Lead from '../views/Lead';
-import SalesContact from '../views/SalesContact';
 
 Vue.use(VueRouter);
+
+const authenticated = false;
+
 
 const routes = [
     {
         path: '/login',
         name: 'login',
-        component: Login
+        component: Login,
+        beforeEnter: (to, from, next) => {
+            if(authenticated){
+                next({name: 'dashboard'})
+            }else {
+                next();
+            }
+        }
     },
     {
         path: '/',
@@ -23,28 +29,33 @@ const routes = [
             {
                 path: '',
                 name: 'dashboard',
-                component: Dashboard
+                component: () => import(/* webpackChunkName: "dashboard" */ "@/views/Dashboard.vue"),
+                meta: {requiresAuth: true}
         
             },
             {
                 path: 'franchise',
                 name: 'franchise',
-                component: Franchise
-        
+                component: () => import(/* webpackChunkName: "dashboard" */ "@/views/Franchise.vue"),
+                meta: {requiresAuth: true}
+
             },
             {
                 path: 'lead',
                 name: 'lead',
-                component: Lead
+                component: () => import(/* webpackChunkName: "dashboard" */ "@/views/Lead.vue"),
+                meta: {requiresAuth: true}
         
             },
             {
                 path: 'sales-contact',
                 name: 'sales-contact',
-                component: SalesContact
+                component: () => import(/* webpackChunkName: "dashboard" */ "@/views/SalesContact.vue"),
+                meta: {requiresAuth: true}
         
             }
-        ]
+        ],
+
     }
 ];
 
@@ -54,5 +65,13 @@ const router = new VueRouter({
     base: process.env.BASE_URL,
     routes
 });
+
+router.beforeEach((to, from, next) => {
+    if (to.meta.requiresAuth && !authenticated){
+        next({name: 'login'})
+    }else {
+        next();
+    }
+})
 
 export default router;
