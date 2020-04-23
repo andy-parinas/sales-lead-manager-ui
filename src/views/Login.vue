@@ -36,20 +36,38 @@
 </template>
 
 <script>
-export default {
-    name: 'Login',
-    data(){
-        return {
-            username: '',
-            password: ''
-        }
-    },
-    methods: {
-        login(){
-            console.log(this.username, this.password);
+
+    import api from '../api/api';
+
+    export default {
+        name: 'Login',
+        data(){
+            return {
+                username: '',
+                password: ''
+            }
+        },
+        methods: {
+            login(){
+                console.log(this.username, this.password);
+
+                const loginData = {
+                    username: this.username,
+                    password: this.password
+                }
+
+                api.get('/sanctum/csrf-cookie').then(() => {
+                    api.post('/api/login', loginData).then(response => {
+                        console.log(response.data);
+                    }).catch(error => {
+                        console.log('Error', error.message)
+                    })
+                }).catch(err => {
+                    console.log('CSRF Error', err.message);
+                })
+            }
         }
     }
-}
 </script>
 
 <style>
