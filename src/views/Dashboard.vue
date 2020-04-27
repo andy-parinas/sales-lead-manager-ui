@@ -1,7 +1,6 @@
 <template>
   <div>
-      <h1 class="subheading grey--text">Dashboard</h1>
-      <v-divider></v-divider>
+      <PageHeader title="Dashboard" />
       <v-container class="my-5">
 
         <!-- Start of Statistics Information -->
@@ -99,22 +98,24 @@
 </template>
 
 <script>
-export default {
-    name: 'Dashboard',
-    data: () => ({
-      items: [
-        { icon: 'folder', iconClass: 'grey lighten-1 white--text', title: '12321312', subtitle: 'Gold Coast Franchise' },
-        { icon: 'folder', iconClass: 'grey lighten-1 white--text', title: '54353534', subtitle: 'South Brisbane Franchise' },
-        { icon: 'folder', iconClass: 'grey lighten-1 white--text', title: '65432432', subtitle: 'Sydney Franchise' },
-      ]
-    }),
+    import PageHeader from "../components/core/PageHeader";
+    export default {
+        name: 'Dashboard',
+        components: {PageHeader},
+        data: () => ({
+          items: [
+            { icon: 'folder', iconClass: 'grey lighten-1 white--text', title: '12321312', subtitle: 'Gold Coast Franchise' },
+            { icon: 'folder', iconClass: 'grey lighten-1 white--text', title: '54353534', subtitle: 'South Brisbane Franchise' },
+            { icon: 'folder', iconClass: 'grey lighten-1 white--text', title: '65432432', subtitle: 'Sydney Franchise' },
+          ]
+        }),
 
-    methods: {
-      itemClicked: () => {
-        console.log('Item Clicked');
-      }
+        methods: {
+          itemClicked: () => {
+            console.log('Item Clicked');
+          }
+        }
     }
-}
 </script>
 
 <style>

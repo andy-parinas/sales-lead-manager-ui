@@ -40,12 +40,14 @@
         }),
         methods: {
             ...mapActions('auth', ['logout']),
-            logoutFromApp(){
-                this.logout().then(() => {
+            async logoutFromApp(){
+                try {
+                    await this.logout();
                     this.$router.push('/login');
-                }).catch(error => {
-                    console.log('Error logging out', error);
-                })
+
+                }catch (e) {
+                    console.log('Error logging out', e);
+                }
             }
         },
         computed: {
