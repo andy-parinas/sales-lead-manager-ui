@@ -4,10 +4,14 @@
             <v-container class="fill-height" fluid>
                 <v-row align="center" justify="center" >
                     <v-col cols="12" sm="8" md="4">
+                        <v-alert dense dismissible type="error" v-if="error">
+                            {{ error }}
+                        </v-alert>
                         <v-card class="elevation-12" >
                             <v-toolbar color="primary" dark flat>
                                 <v-toolbar-title>Login to EzCRM</v-toolbar-title>
                             </v-toolbar>
+                            <v-progress-linear indeterminate color="green" v-if="loading"></v-progress-linear>
                             <v-card-text>
                                 <v-form>
                                     <v-text-field
@@ -44,7 +48,9 @@
         data(){
             return {
                 username: '',
-                password: ''
+                password: '',
+                loading: false,
+                error: '',
             }
         },
         methods: {
@@ -56,8 +62,9 @@
                     password: this.password
                 }
 
+                this.loading = true;
                 api().get('/sanctum/csrf-cookie').then(() => {
-                    api().post('/api/login', loginData).then(response => {
+                    api().post('/login', loginData).then(response => {
                         const user = response.data;
                         localStorage.setItem('app-auth', {
                             id: user.id,
@@ -66,9 +73,17 @@
                             email: user.email,
                             username: user.username
                         })
+                        this.loading = false;
                         this.$router.push({name: 'dashboard'})
                     }).catch(error => {
-                        console.log('Error', error.message)
+                        console.log('Error', error.response.status)
+                        this.loading = false;
+                        if(error.response && error.response.status && (error.response.status === 401 || error.response.status === 422)){
+                            this.error = 'Invalid Username or Password'
+                            this.password = ''
+                        }else {
+                            this.error = 'Unexpected Error. Please try again'
+                        }
                     })
                 }).catch(err => {
                     console.log('CSRF Error', err.message);

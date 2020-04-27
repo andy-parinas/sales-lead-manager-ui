@@ -12,6 +12,6 @@ export default {
     async logout(){
         await Csrf.getCSRFCookie();
 
-        return api().post('/api/logout');
+        return api().post('/logout');
     }
 }
