@@ -29,7 +29,7 @@
                             </v-card-text>
                             <v-card-actions>
                                 <v-spacer />
-                                <v-btn color="primary" @click="login">Login</v-btn>
+                                <v-btn color="primary" @click="loginToApp">Login</v-btn>
                             </v-card-actions>
                         </v-card>
                     </v-col>
@@ -41,7 +41,8 @@
 
 <script>
 
-    import api from '../api/api';
+    // import api from '../api/api';
+    import {mapActions} from 'vuex';
 
     export default {
         name: 'Login',
@@ -54,39 +55,23 @@
             }
         },
         methods: {
-            login(){
-                console.log(this.username, this.password);
-
-                const loginData = {
-                    username: this.username,
-                    password: this.password
-                }
+            ...mapActions('auth', ['login']),
+            loginToApp(){
 
                 this.loading = true;
-                api().get('/sanctum/csrf-cookie').then(() => {
-                    api().post('/login', loginData).then(response => {
-                        const user = response.data;
-                        localStorage.setItem('app-auth', {
-                            id: user.id,
-                            name: user.name,
-                            userType: user.user_type,
-                            email: user.email,
-                            username: user.username
-                        })
-                        this.loading = false;
-                        this.$router.push({name: 'dashboard'})
-                    }).catch(error => {
-                        console.log('Error', error.response.status)
-                        this.loading = false;
-                        if(error.response && error.response.status && (error.response.status === 401 || error.response.status === 422)){
-                            this.error = 'Invalid Username or Password'
-                            this.password = ''
-                        }else {
-                            this.error = 'Unexpected Error. Please try again'
-                        }
-                    })
-                }).catch(err => {
-                    console.log('CSRF Error', err.message);
+
+                const loginData = {username: this.username, password: this.password }
+                this.login(loginData).then(() => {
+                    this.loading = false;
+                    this.$router.push({name: 'dashboard'})
+                }).catch(error => {
+                    this.loading = false;
+                    if(error.response && error.response.status && (error.response.status === 401 || error.response.status === 422)){
+                        this.error = 'Invalid Username or Password'
+                        this.password = ''
+                    }else {
+                        this.error = 'Unexpected Error. Please try again'
+                    }
                 })
             }
         }

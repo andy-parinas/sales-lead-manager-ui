@@ -9,7 +9,7 @@ Vue.use(VueRouter);
 // const authenticated = false;
 
 function isLoggedIn() {
-    return localStorage.getItem("app-auth");
+    return localStorage.getItem("auth-user");
 }
 
 const routes = [

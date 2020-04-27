@@ -8,7 +8,7 @@
                 <span>CRM</span>
             </v-toolbar-title>
             <v-spacer />
-            <v-btn text @click="logout" >
+            <v-btn text @click="logoutFromApp" >
               <span>Logout</span>
               <v-icon right>exit_to_app</v-icon>
             </v-btn>
@@ -30,7 +30,7 @@
 
 <script>
 
-    import Auth from '../../api/Auth';
+    import {mapActions} from 'vuex';
 
     export default {
         name: 'Navbar',
@@ -45,14 +45,23 @@
             ]
         }),
         methods: {
-            logout(){
-                Auth.logout().then(() =>{
-                    localStorage.removeItem('app-auth')
+            ...mapActions('auth', ['logout']),
+            logoutFromApp(){
+                this.logout().then(() => {
                     this.$router.push('/login');
-                }).catch(err => {
-                    console.log('Error logging out', err);
+                }).catch(error => {
+                    console.log('Error logging out', error);
                 })
             }
+            // logout(){
+            //     Auth.logout().then((response) =>{
+            //         console.log(response)
+            //         localStorage.removeItem('auth-user')
+            //         this.$router.push('/login');
+            //     }).catch(err => {
+            //         console.log('Error logging out', err);
+            //     })
+            // }
         }
     }
 </script>
