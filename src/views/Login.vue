@@ -56,9 +56,17 @@
                     password: this.password
                 }
 
-                api.get('/sanctum/csrf-cookie').then(() => {
-                    api.post('/api/login', loginData).then(response => {
-                        console.log(response.data);
+                api().get('/sanctum/csrf-cookie').then(() => {
+                    api().post('/api/login', loginData).then(response => {
+                        const user = response.data;
+                        localStorage.setItem('app-auth', {
+                            id: user.id,
+                            name: user.name,
+                            userType: user.user_type,
+                            email: user.email,
+                            username: user.username
+                        })
+                        this.$router.push({name: 'dashboard'})
                     }).catch(error => {
                         console.log('Error', error.message)
                     })

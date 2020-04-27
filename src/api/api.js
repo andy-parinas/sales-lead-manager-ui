@@ -1,9 +1,9 @@
 import axios from 'axios';
 
-const api = axios.create({
-    baseURL: "http://homestead.test",
-    withCredentials: true
-})
+const api = () => axios.create({
+        baseURL: "http://homestead.test",
+        withCredentials: true
+    })
 
 // api.defaults.withCredentials = true
 

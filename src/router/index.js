@@ -6,8 +6,11 @@ import Login from '../views/Login';
 
 Vue.use(VueRouter);
 
-const authenticated = false;
+// const authenticated = false;
 
+function isLoggedIn() {
+    return localStorage.getItem("app-auth");
+}
 
 const routes = [
     {
@@ -15,7 +18,7 @@ const routes = [
         name: 'login',
         component: Login,
         beforeEnter: (to, from, next) => {
-            if(authenticated){
+            if(isLoggedIn()){
                 next({name: 'dashboard'})
             }else {
                 next();
@@ -66,8 +69,10 @@ const router = new VueRouter({
     routes
 });
 
+
+
 router.beforeEach((to, from, next) => {
-    if (to.meta.requiresAuth && !authenticated){
+    if (to.meta.requiresAuth && !isLoggedIn()){
         next({name: 'login'})
     }else {
         next();

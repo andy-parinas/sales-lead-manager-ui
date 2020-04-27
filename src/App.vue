@@ -13,5 +13,9 @@ export default {
   data: () => ({
     //
   }),
+  methods: {
+  },
+  mounted() {
+  }
 };
 </script>

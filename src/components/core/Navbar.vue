@@ -8,7 +8,7 @@
                 <span>CRM</span>
             </v-toolbar-title>
             <v-spacer />
-            <v-btn text>
+            <v-btn text @click="logout" >
               <span>Logout</span>
               <v-icon right>exit_to_app</v-icon>
             </v-btn>
@@ -29,19 +29,32 @@
 </template>
 
 <script>
-export default {
-    name: 'Navbar',
-    data: () => ({
-        drawer: true,
-         links: [
-            {icon: 'dashboard', text: 'Dashboard', route: '/'},
-            {icon: 'store', text: 'Franchise', route: '/franchise'},
-            {icon: 'perm_contact_calendar', text: 'SalesContact', route: '/sales-contact'},
-            {icon: 'person_pin', text: 'Lead', route: '/Lead'},
 
-        ]
-    })
-}
+    import Auth from '../../api/Auth';
+
+    export default {
+        name: 'Navbar',
+        data: () => ({
+            drawer: true,
+             links: [
+                {icon: 'dashboard', text: 'Dashboard', route: '/'},
+                {icon: 'store', text: 'Franchise', route: '/franchise'},
+                {icon: 'perm_contact_calendar', text: 'SalesContact', route: '/sales-contact'},
+                {icon: 'person_pin', text: 'Lead', route: '/Lead'},
+
+            ]
+        }),
+        methods: {
+            logout(){
+                Auth.logout().then(() =>{
+                    localStorage.removeItem('app-auth')
+                    this.$router.push('/login');
+                }).catch(err => {
+                    console.log('Error logging out', err);
+                })
+            }
+        }
+    }
 </script>
 
 <style>
