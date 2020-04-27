@@ -26,7 +26,7 @@ export default {
             }
 
 
-            localStorage.setItem('auth-user', user.username);
+            localStorage.setItem('auth-user', JSON.stringify(user));
             commit('setCurrentUser', user);
         },
 
@@ -36,6 +36,13 @@ export default {
             if(response){
                 localStorage.removeItem('auth-user');
                 commit('setCurrentUser', {});
+            }
+        },
+
+        getUserFromStorage({commit}){
+            const user = localStorage.getItem('auth-user');
+            if(user){
+                commit('setCurrentUser', JSON.parse(localStorage.getItem('auth-user')))
             }
         }
     }

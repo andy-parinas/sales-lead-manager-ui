@@ -34,15 +34,9 @@
 
     export default {
         name: 'Navbar',
+        components: {},
         data: () => ({
             drawer: true,
-             links: [
-                {icon: 'dashboard', text: 'Dashboard', route: '/'},
-                {icon: 'store', text: 'Franchise', route: '/franchise'},
-                {icon: 'perm_contact_calendar', text: 'SalesContact', route: '/sales-contact'},
-                {icon: 'person_pin', text: 'Lead', route: '/Lead'},
-
-            ]
         }),
         methods: {
             ...mapActions('auth', ['logout']),
@@ -53,15 +47,41 @@
                     console.log('Error logging out', error);
                 })
             }
-            // logout(){
-            //     Auth.logout().then((response) =>{
-            //         console.log(response)
-            //         localStorage.removeItem('auth-user')
-            //         this.$router.push('/login');
-            //     }).catch(err => {
-            //         console.log('Error logging out', err);
-            //     })
-            // }
+        },
+        computed: {
+            links(){
+                const user = this.$store.state.auth.currentUser;
+                let links = [];
+
+                if(user && user.userType === 'staff_user'){
+                    links = [
+                        {icon: 'dashboard', text: 'Dashboard', route: '/'},
+                        {icon: 'perm_contact_calendar', text: 'SalesContact', route: '/sales-contact'},
+                        {icon: 'person_pin', text: 'Lead', route: '/Lead'},
+                    ]
+                }
+
+                if(user && user.userType === 'franchise_admin'){
+                    links = [
+                        {icon: 'dashboard', text: 'Dashboard', route: '/'},
+                        {icon: 'store', text: 'Franchise', route: '/franchise'},
+                        {icon: 'perm_contact_calendar', text: 'SalesContact', route: '/sales-contact'},
+                        {icon: 'person_pin', text: 'Lead', route: '/Lead'},
+                    ]
+                }
+
+                if(user && user.userType === 'head_office'){
+                    links = [
+                        {icon: 'dashboard', text: 'Dashboard', route: '/'},
+                        {icon: 'store', text: 'Franchise', route: '/franchise'},
+                        {icon: 'perm_contact_calendar', text: 'SalesContact', route: '/sales-contact'},
+                        {icon: 'person_pin', text: 'Lead', route: '/Lead'},
+                    ]
+                }
+
+                return links;
+
+            }
         }
     }
 </script>

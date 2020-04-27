@@ -4,18 +4,22 @@
 
 <script>
 
-export default {
-  name: 'App',
+  import {mapActions} from 'vuex';
 
-  components: {
-  },
+  export default {
+    name: 'App',
 
-  data: () => ({
-    //
-  }),
-  methods: {
-  },
-  mounted() {
-  }
+    components: {
+    },
+
+    data: () => ({
+      //
+    }),
+    methods: {
+      ...mapActions('auth', ['getUserFromStorage'])
+    },
+    mounted() {
+      this.getUserFromStorage();
+    }
 };
 </script>
