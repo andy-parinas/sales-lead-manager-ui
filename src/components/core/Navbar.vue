@@ -58,8 +58,8 @@
                 if(user && user.userType === 'staff_user'){
                     links = [
                         {icon: 'dashboard', text: 'Dashboard', route: '/'},
-                        {icon: 'perm_contact_calendar', text: 'SalesContact', route: '/sales-contact'},
-                        {icon: 'person_pin', text: 'Lead', route: '/Lead'},
+                        {icon: 'perm_contact_calendar', text: 'Contacts', route: '/sales-contact'},
+                        {icon: 'person_pin', text: 'Leads', route: '/lead'},
                     ]
                 }
 
@@ -67,8 +67,8 @@
                     links = [
                         {icon: 'dashboard', text: 'Dashboard', route: '/'},
                         {icon: 'store', text: 'Franchise', route: '/franchise'},
-                        {icon: 'perm_contact_calendar', text: 'SalesContact', route: '/sales-contact'},
-                        {icon: 'person_pin', text: 'Lead', route: '/Lead'},
+                        {icon: 'perm_contact_calendar', text: 'Contacts', route: '/sales-contact'},
+                        {icon: 'person_pin', text: 'Leads', route: '/lead'},
                     ]
                 }
 
@@ -76,8 +76,8 @@
                     links = [
                         {icon: 'dashboard', text: 'Dashboard', route: '/'},
                         {icon: 'store', text: 'Franchise', route: '/franchise'},
-                        {icon: 'perm_contact_calendar', text: 'SalesContact', route: '/sales-contact'},
-                        {icon: 'person_pin', text: 'Lead', route: '/Lead'},
+                        {icon: 'perm_contact_calendar', text: 'Contacts', route: '/sales-contact'},
+                        {icon: 'person_pin', text: 'Leads', route: '/lead'},
                     ]
                 }
 
