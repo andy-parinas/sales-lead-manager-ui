@@ -41,7 +41,6 @@
 
 <script>
 
-    // import api from '../api/api';
     import {mapActions} from 'vuex';
 
     export default {
@@ -71,9 +70,10 @@
                         this.password = ''
                     }else {
                         this.error = 'Unexpected Error. Please try again'
+                        console.log(error.response);
                     }
                 })
-            }
+            },
         }
     }
 </script>

@@ -46,7 +46,7 @@
                     this.$router.push('/login');
 
                 }catch (e) {
-                    console.log('Error logging out', e);
+                    console.log('Error logging out', e.response);
                 }
             }
         },

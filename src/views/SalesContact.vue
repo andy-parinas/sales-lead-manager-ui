@@ -1,14 +1,29 @@
 <template>
   <div>
-      <h1 class="subheading grey--text">Sales Contacts</h1>
-      <v-divider></v-divider>
+      <PageHeader title="Sales Contact" />
+      <button @click="getData">Get Data</button>
   </div>
 </template>
 
 <script>
-export default {
-    name: 'SalesContact'
-}
+    import PageHeader from "../components/core/PageHeader";
+    import SalesContact from "../api/SalesContact";
+
+    export default {
+
+        name: 'SalesContact',
+        components: {PageHeader},
+        methods: {
+            async getData(){
+                const  contacts = await SalesContact.getAll();
+
+                console.log(contacts);
+            }
+        }
+
+
+
+    }
 </script>
 
 <style>
