@@ -13,8 +13,8 @@ export default {
         }
     },
     actions: {
-        async fetchSalesContacts({commit}){
-            const contacts = await SalesContact.getAll();
+        async fetchSalesContacts({commit}, options){
+            const contacts = await SalesContact.getAll(options);
 
             commit('setSalesContacts', contacts);
         }
