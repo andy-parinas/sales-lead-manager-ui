@@ -7,6 +7,8 @@ const SalesContact = {
 
         const response = await api().get('/api/contacts');
 
+        console.log(response);
+
         return response.data.data;
     }
 

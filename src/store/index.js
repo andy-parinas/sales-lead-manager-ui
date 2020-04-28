@@ -3,7 +3,8 @@ import Vuex from 'vuex';
 
 Vue.use(Vuex);
 
-import auth from "./modules/auth";
+import auth from "./modules/Auth";
+import salesContacts from './modules/SalesContacts';
 
 export default new Vuex.Store({
     state: {
@@ -21,5 +22,6 @@ export default new Vuex.Store({
     },
     modules: {
         auth,
+        salesContacts
     }
 })

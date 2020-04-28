@@ -53,7 +53,7 @@ const routes = [
             {
                 path: 'sales-contact',
                 name: 'sales-contact',
-                component: () => import(/* webpackChunkName: "dashboard" */ "@/views/SalesContact.vue"),
+                component: () => import(/* webpackChunkName: "dashboard" */ "@/views/PageSalesContact.vue"),
                 meta: {requiresAuth: true}
         
             }
