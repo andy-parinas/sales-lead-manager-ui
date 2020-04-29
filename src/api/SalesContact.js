@@ -1,4 +1,6 @@
 import api from "./api";
+import Csrf from './csrf';
+
 import Utils from "../helpers/Utils";
 
 const SalesContact = {
@@ -28,6 +30,30 @@ const SalesContact = {
         console.log(response);
 
         return response.data.data;
+    },
+    async update(data){
+        // Normalize the data for submission to backend
+        const formData = {
+            first_name: data.firstName,
+            last_name: data.lastName,
+            email: data.email,
+            email2: data.email2,
+            contact_number: data.contactNumber,
+            // street1: data.street1,
+            // street2: data.street2,
+            // suburb: data.suburb,
+            // state: data.state,
+            // postcode: data.postcode,
+        }
+
+        console.log('From the API', data);
+
+        await Csrf.getCSRFCookie();
+
+        const response = await api().put(`/api/contacts/${data.id}`, formData);
+
+        return response.data.data;
+
     }
 
 

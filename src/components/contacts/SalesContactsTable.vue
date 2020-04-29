@@ -28,7 +28,7 @@
                     class="elevation-0">
 
                 <template v-slot:item.actions="{ item }">
-                    <v-icon small class="mr-5" @click="editItem(item)" > mdi-pencil</v-icon>
+                    <v-icon small class="mr-5" @click="editContact(item)" > mdi-pencil</v-icon>
                     <v-icon small @click="deleteItem(item)" v-if="isHeadOffice" > mdi-delete </v-icon>
                 </template>
                 <template v-slot:expanded-item="{ headers, item }">
@@ -41,6 +41,8 @@
                                 @save="save"
                                 :item.sync="editedItem"
                                 :formTitle="formTitle"
+                                :loading="formLoading"
+                                ref="salesContactForm"
                         />
                     </v-dialog>
                 </template>
@@ -48,6 +50,17 @@
 
         </v-card>
 
+        <v-snackbar v-model="snackbar.show"
+                :color="snackbar.color"
+                :timeout="snackbar.timeout"
+                :bottom="true" >
+            {{ snackbar.message }}
+            <v-btn dark text @click="snackbar.show = false" > Close </v-btn>
+        </v-snackbar>
+
+        <v-btn bottom color="pink" dark fab fixed right @click="newContact" >
+            <v-icon  >add</v-icon>
+        </v-btn>
 
     </div>
 </template>
@@ -63,8 +76,16 @@
         props: {},
         data(){
             return {
+                dialog: false,
                 isInitialLoad: true,
                 loading: false,
+                formLoading: false,
+                snackbar: {
+                    show: false,
+                    message: 'Test Message',
+                    color: 'success',
+                    timeout: 6000,
+                },
                 headers: [
                     { text: 'First Name',value: 'firstName'},
                     { text: 'Last Name', value: 'lastName' },
@@ -89,9 +110,9 @@
                 footerProps: {
                     "items-per-page-options": [5,10,15,20]
                 },
-                dialog: false,
                 editedItemIndex: -1,
                 editedItem: {
+                    id: '',
                     firstName: '',
                     lastName: '',
                     email: '',
@@ -104,6 +125,7 @@
                     postcode: '',
                 },
                 defaultItem: {
+                    id: '',
                     firstName: '',
                     lastName: '',
                     email: '',
@@ -123,19 +145,23 @@
             }),
             isHeadOffice(){
               const userType = this.$store.state.auth.currentUser.userType;
-              if(userType === 'head_office'){
-                  return true;
-              }
-
-              return  false;
+              return  userType === 'head_office';
             },
             formTitle(){
                 return this.editedItemIndex === -1 ? 'Create New Contact' : 'Edit Contact'
             }
         },
         methods: {
-            ...mapActions('salesContacts', ['fetchSalesContacts']),
-            editItem(item){
+            ...mapActions('salesContacts', ['fetchSalesContacts', 'updateSalesContact']),
+            newContact(){
+                // this.$refs.contactForm.resetForm()
+                if(this.$refs.salesContactForm){
+                    this.$refs.salesContactForm.resetForm();
+                }
+                this.resetSelectedItem();
+                this.dialog = true;
+            },
+            editContact(item){
                 this.editedItemIndex = this.salesContacts.indexOf(item)
                 this.editedItem = Object.assign({}, item);
                 this.dialog = true;
@@ -144,40 +170,55 @@
             deleteItem(item){
                 console.log(item)
             },
-            showItem(item){
-                console.log(item)
-            },
             save(){
-                console.log(this.editedItem);
+                this.formLoading = true;
+                if(this.editedItemIndex > -1){
+
+                    this.updateSalesContact(this.editedItem).then(() => {
+                        this.formLoading = false;
+                        this.snackbar.message = "Contact Successfully Save"
+                        this.snackbar.show = true;
+                        this.dialog = false;
+                        this.resetSelectedItem();
+                    }).catch(error => {
+                        this.formLoading = false;
+                        console.log(error.response);
+                    })
+
+                }else {
+                    console.log('Saving the Form')
+                }
             },
             close(){
                 this.dialog=false
-                this.editedItem = Object.assign({}, this.defaultItem);
-                console.log('Form Closed');
-                console.log(this.editedItem);
+                setTimeout(() => {
+                    this.resetSelectedItem()
+                }, 300)
             },
             resetSelectedItem(){
-                setTimeout(() => {
-                    this.editedItem = Object.assign({}, this.defaultItem)
-                }, 300)
+                // setTimeout(() => {
+                //     this.editedItem = Object.assign({}, this.defaultItem)
+                //     this.editedItemIndex = -1
+                // }, 100)
+                this.editedItem = Object.assign({}, this.defaultItem)
+                this.editedItemIndex = -1
             }
         },
         watch: {
             options: {
                 handler(){
                     if(!this.isInitialLoad){
-                        console.log('Watch Trigered')
                         this.loading = true;
                         this.fetchSalesContacts(this.options).then(() => {
                             this.loading = false;
                         }).catch(error => {
-                            console.log('PageSalesContacts', error)
                             this.$store.dispatch('setAppLoadingState', false)
+                            console.log(error)
                         })
                     }
                 },
                 deep: true
-            }
+            },
         },
         mounted() {
             console.log('Mounted Options', this.options);
