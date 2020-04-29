@@ -33,21 +33,33 @@
                 </template>
                 <template v-slot:expanded-item="{ headers, item }">
                     <SalesContactDetails :length="headers.length" :item="item" />
+                </template>]
+                <template v-slot:top>
+                    <v-dialog v-model="dialog" width="800px">
+                        <SalesContactForm
+                                @closeForm="close"
+                                @save="save"
+                                :item.sync="editedItem"
+                                :formTitle="formTitle"
+                        />
+                    </v-dialog>
                 </template>
-
             </v-data-table>
-            <pre>{{options}}</pre>
+
         </v-card>
+
+
     </div>
 </template>
 
 <script>
     import SalesContactDetails from "./SalesContactDetails";
     import {mapActions, mapState} from "vuex";
+    import SalesContactForm from "./SalesContactForm";
 
     export default {
         name: "SalesContactsTable",
-        components: {SalesContactDetails},
+        components: {SalesContactDetails, SalesContactForm},
         props: {},
         data(){
             return {
@@ -64,7 +76,6 @@
                 ],
                 searchItems: ['First Name', 'Last Name', 'Suburb', 'State', 'Postcode'],
                 selectedSearch: '',
-                // options: {},
                 options: {
                     page: 1,
                     itemsPerPage: 10,
@@ -77,7 +88,33 @@
                 },
                 footerProps: {
                     "items-per-page-options": [5,10,15,20]
-                }
+                },
+                dialog: false,
+                editedItemIndex: -1,
+                editedItem: {
+                    firstName: '',
+                    lastName: '',
+                    email: '',
+                    email2: '',
+                    contactNumber: '',
+                    street1: '',
+                    street2: '',
+                    suburb: '',
+                    state: '',
+                    postcode: '',
+                },
+                defaultItem: {
+                    firstName: '',
+                    lastName: '',
+                    email: '',
+                    email2: '',
+                    contactNumber: '',
+                    street1: '',
+                    street2: '',
+                    suburb: '',
+                    state: '',
+                    postcode: '',
+                },
             }
         },
         computed: {
@@ -91,18 +128,38 @@
               }
 
               return  false;
+            },
+            formTitle(){
+                return this.editedItemIndex === -1 ? 'Create New Contact' : 'Edit Contact'
             }
         },
         methods: {
             ...mapActions('salesContacts', ['fetchSalesContacts']),
             editItem(item){
-                console.log(item)
+                this.editedItemIndex = this.salesContacts.indexOf(item)
+                this.editedItem = Object.assign({}, item);
+                this.dialog = true;
+                console.log(this.editedItemIndex);
             },
             deleteItem(item){
                 console.log(item)
             },
             showItem(item){
                 console.log(item)
+            },
+            save(){
+                console.log(this.editedItem);
+            },
+            close(){
+                this.dialog=false
+                this.editedItem = Object.assign({}, this.defaultItem);
+                console.log('Form Closed');
+                console.log(this.editedItem);
+            },
+            resetSelectedItem(){
+                setTimeout(() => {
+                    this.editedItem = Object.assign({}, this.defaultItem)
+                }, 300)
             }
         },
         watch: {
