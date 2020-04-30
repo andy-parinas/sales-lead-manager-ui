@@ -19,7 +19,7 @@
                     :items="salesContacts"
                     :options.sync="options"
                     :headers="headers"
-                    :server-items-length="60"
+                    :server-items-length="meta.total"
                     :single-expand="true"
                     :loading="loading"
                     :footer-props="footerProps"
@@ -142,7 +142,8 @@
         },
         computed: {
             ...mapState('salesContacts', {
-                salesContacts: state => state.salesContacts
+                salesContacts: state => state.salesContacts,
+                meta: state => state.meta
             }),
             isHeadOffice(){
               const userType = this.$store.state.auth.currentUser.userType;
@@ -247,7 +248,6 @@
             },
         },
         mounted() {
-            console.log('Mounted Options', this.options);
             this.$store.dispatch('setAppLoadingState', true)
             this.fetchSalesContacts(this.options).then(() => {
                 this.isInitialLoad = false;

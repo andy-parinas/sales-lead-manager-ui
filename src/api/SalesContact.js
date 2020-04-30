@@ -41,7 +41,7 @@ const SalesContact = {
 
         const response = await api().get(uri);
 
-        return response.data.data;
+        return response.data;
     },
     async update(data){
         // Normalize the data for submission to backend

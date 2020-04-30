@@ -29,11 +29,12 @@
             </v-col>
         </v-row>
         <v-row>
-            <v-col cols="12" sm="6">
+            <v-col cols="12" sm="4">
                 <v-icon small>mdi-home</v-icon>
                 <span class="ml-2">{{ item.street1 }}</span>
             </v-col>
-            <v-col cols="12" sm="6">
+            <v-col cols="12" sm="4">
+                <v-icon small>mdi-sign-direction</v-icon>
                 <span class="ml-2">{{ item.street2 }}</span>
             </v-col>
         </v-row>
