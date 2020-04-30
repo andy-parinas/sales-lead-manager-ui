@@ -13,14 +13,14 @@
                         <v-text-field v-model="item.firstName"
                                 prepend-icon="mdi-account"
                                 label="First Name"
-                                      :rules="requireLessThan50"
+                                      :rules="rules.requireLessThan50"
                         />
                     </v-col>
                     <v-col cols="12" sm="6">
                         <v-text-field v-model="item.lastName"
                                 prepend-icon="mdi-account-plus"
                                 label="Last Name"
-                                      :rules="requireLessThan50"
+                                      :rules="rules.requireLessThan50"
                         />
                     </v-col>
         <!--  Email Sections-->
@@ -28,13 +28,14 @@
                         <v-text-field v-model="item.email"
                                 prepend-icon="mdi-email"
                                 label="E-Mail"
-                                      :rules="emailRules"
+                                      :rules="rules.emailRules"
                         />
                     </v-col>
                     <v-col cols="12" sm="6">
                         <v-text-field v-model="item.email2"
                                 prepend-icon="mdi-email-outline"
-                                label="Additonal Email (If Any)"
+                                label="Additonal Email (Optional)"
+                                :rules="rules.optionalEmailRules"
                         />
                     </v-col>
         <!--  End of Email Sections-->
@@ -44,14 +45,14 @@
                                       type="tel"
                                       prepend-icon="mdi-phone"
                                       label="Contact Number"
-                                      :rules="requiredField"
+                                      :rules="rules.requiredField"
                         />
                     </v-col>
                     <v-col cols="12" sm="6">
                         <v-text-field v-model="item.street1"
                                 prepend-icon="mdi-home"
                                 label="Address"
-                                :rules="requiredField"
+                                :rules="rules.requiredField"
                         />
                     </v-col>
         <!--  End of Address Sections-->
@@ -59,14 +60,14 @@
                     <v-col cols="12" sm="6">
                         <v-text-field v-model="item.street2"
                                 prepend-icon="mdi-sign-direction"
-                                label="Street"
+                                label="Street Address (optional)"
                         />
                     </v-col>
                     <v-col cols="12" sm="6">
                         <v-text-field v-model="item.suburb"
                                 prepend-icon="mdi-home-modern"
                                 label="Suburb"
-                                :rules="requiredField"
+                                :rules="rules.requiredField"
                         />
                     </v-col>
         <!--  End of Street Sections-->
@@ -75,17 +76,39 @@
                         <v-text-field v-model="item.state"
                                 prepend-icon="mdi-map"
                                 label="State"
-                                :rules="requiredField"
+                                :rules="rules.requiredField"
                         />
                     </v-col>
                     <v-col cols="12" sm="6">
                         <v-text-field v-model="item.postcode"
                                 prepend-icon="mdi-mailbox"
                                 label="Postcode"
-                                :rules="requiredField"
+                                :rules="rules.requiredField"
                         />
                     </v-col>
         <!--  End of State Sections-->
+        <!--  Start of Contact status Sections-->
+                    <v-col cols="12" sm="6">
+                        <v-select
+                                v-model="item.customerType"
+                                :items="customerType"
+                                :rules="[v => !!v || 'Field is required']"
+                                label="Contact Type"
+                                prepend-icon="mdi-briefcase"
+                                required
+                        ></v-select>
+                    </v-col>
+                    <v-col cols="12" sm="6">
+                        <v-select
+                                v-model="item.status"
+                                :items="status"
+                                :rules="[v => !!v || 'Field is required']"
+                                label="Contact Status"
+                                prepend-icon="mdi-clipboard-text"
+                                required
+                        ></v-select>
+                    </v-col>
+        <!--  Start of Contact status Sections-->
                 </v-row>
             </v-container>
             <v-card-actions>
@@ -117,17 +140,33 @@
             return {
                 valid: false,
                 lazy: false,
-                requireLessThan50: [
-                    v => !!v || 'This field is required',
-                    v => (v && v.length <= 50) || 'First Name must be less than 50 characters',
-                ],
-                emailRules: [
-                    v => !!v || 'Email is required',
-                    v => /^\w+[+.\w-]*@([\w-]+\.)*\w+[\w-]*\.([a-z]{2,4})$/i.test(v) || 'E-mail must be valid',
-                ],
-                requiredField: [
-                    v => !!v || 'This field is required',
-                ],
+                rules: {
+                    requireLessThan50: [
+                        v => !!v || 'This field is required',
+                        v => (v && v.length <= 50) || 'First Name must be less than 50 characters',
+                    ],
+                    emailRules: [
+                        v => !!v || 'Email is required',
+                        v => /^\w+[+.\w-]*@([\w-]+\.)*\w+[\w-]*\.([a-z]{2,4})$/i.test(v) || 'E-mail must be valid',
+                    ],
+                    optionalEmailRules: [
+                        // v => /^\w+[+.\w-]*@([\w-]+\.)*\w+[\w-]*\.([a-z]{2,4})$/i.test(v) || 'E-mail must be valid',
+                        v => {
+                            if(v === ''){
+                                return true
+                            }else if(/^\w+[+.\w-]*@([\w-]+\.)*\w+[\w-]*\.([a-z]{2,4})$/i.test(v)) {
+                                return true
+                            }else {
+                                return 'E-mail must be valid'
+                            }
+                        }
+                    ],
+                    requiredField: [
+                        v => !!v || 'This field is required',
+                    ],
+                },
+                customerType: [{value:'residential', text: 'Residential'}, {value:'commercial', text: 'Commercial'}],
+                status: [{value:'active', text: 'Active'}, {value:'archived', text: 'Archived'}]
 
             }
         },

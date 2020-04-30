@@ -152,7 +152,7 @@
             }
         },
         methods: {
-            ...mapActions('salesContacts', ['fetchSalesContacts', 'updateSalesContact']),
+            ...mapActions('salesContacts', ['fetchSalesContacts', 'updateSalesContact', 'createSalesContact']),
             newContact(){
                 // this.$refs.contactForm.resetForm()
                 if(this.$refs.salesContactForm){
@@ -173,7 +173,7 @@
             save(){
                 this.formLoading = true;
                 if(this.editedItemIndex > -1){
-
+                    console.log('Updating the Form')
                     this.updateSalesContact(this.editedItem).then(() => {
                         this.formLoading = false;
                         this.snackbar.message = "Contact Successfully Save"
@@ -187,6 +187,15 @@
 
                 }else {
                     console.log('Saving the Form')
+                    this.createSalesContact(this.editedItem).then(() => {
+                        this.formLoading = false;
+                        this.snackbar.message = "Contact Successfully Save"
+                        this.snackbar.show = true;
+                        this.dialog = false;
+                        this.resetSelectedItem();
+                    }).catch(error => {
+                        console.log(error.response);
+                    })
                 }
             },
             close(){
@@ -196,10 +205,6 @@
                 }, 300)
             },
             resetSelectedItem(){
-                // setTimeout(() => {
-                //     this.editedItem = Object.assign({}, this.defaultItem)
-                //     this.editedItemIndex = -1
-                // }, 100)
                 this.editedItem = Object.assign({}, this.defaultItem)
                 this.editedItemIndex = -1
             }

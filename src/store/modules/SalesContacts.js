@@ -19,6 +19,9 @@ export default {
         setSalesContacts(state, contacts ){
             state.salesContacts = contacts;
         },
+        addSalesContact(state, contact){
+            state.salesContacts.push(contact);
+        }
     },
     actions: {
         async fetchSalesContacts({commit}, options){
@@ -41,6 +44,12 @@ export default {
 
             commit('setSalesContacts', updatedContacts);
 
+        },
+        async createSalesContact({commit}, newContact){
+
+            const createdContact = await SalesContact.create(newContact);
+
+            commit('addSalesContact', createdContact)
         }
     }
 }

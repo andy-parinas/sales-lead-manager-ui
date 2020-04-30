@@ -3,10 +3,26 @@ import Csrf from './csrf';
 
 import Utils from "../helpers/Utils";
 
+const nomalizeData = (data) => {
+    return {
+        first_name: data.firstName,
+        last_name: data.lastName,
+        email: data.email,
+        email2: data.email2,
+        contact_number: data.contactNumber,
+        street1: data.street1,
+        street2: data.street2,
+        suburb: data.suburb,
+        state: data.state,
+        postcode: data.postcode,
+        customer_type: data.customerType,
+        status: data.status
+    }
+}
+
 const SalesContact = {
 
     async getAll(options){
-        console.log(options);
 
         const size = options.itemsPerPage ? options.itemsPerPage : 10;
 
@@ -23,11 +39,7 @@ const SalesContact = {
             uri = uri + `&page=${options.page}`
         }
 
-        console.log(uri)
-
         const response = await api().get(uri);
-
-        console.log(response);
 
         return response.data.data;
     },
@@ -39,6 +51,8 @@ const SalesContact = {
             email: data.email,
             email2: data.email2,
             contact_number: data.contactNumber,
+            customer_type: data.customerType,
+            status: data.status
             // street1: data.street1,
             // street2: data.street2,
             // suburb: data.suburb,
@@ -46,7 +60,6 @@ const SalesContact = {
             // postcode: data.postcode,
         }
 
-        console.log('From the API', data);
 
         await Csrf.getCSRFCookie();
 
@@ -54,6 +67,18 @@ const SalesContact = {
 
         return response.data.data;
 
+    },
+    async create(data){
+
+        const formData = nomalizeData(data);
+
+        console.log('from api save', formData);
+
+        await Csrf.getCSRFCookie();
+
+        const response = await api().post('/api/contacts', formData);
+
+        return response.data.data;
     }
 
 
