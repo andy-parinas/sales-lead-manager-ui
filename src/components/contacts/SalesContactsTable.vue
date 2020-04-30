@@ -69,6 +69,7 @@
     import SalesContactDetails from "./SalesContactDetails";
     import {mapActions, mapState} from "vuex";
     import SalesContactForm from "./SalesContactForm";
+    import ErrorHandler from "../../helpers/ErrorHandler";
 
     export default {
         name: "SalesContactsTable",
@@ -183,7 +184,15 @@
                         this.dialog = false;
                         this.resetSelectedItem();
                     }).catch(error => {
-                        console.log(error.response);
+                        if(error.response && error.response.status){
+                            ErrorHandler.handlerError(error.response.status, (message) => {
+                                this.$refs.salesContactForm.showErrorMessage(message);
+                            })
+                        }else {
+                            ErrorHandler.handlerError(503, (message) => {
+                                this.$refs.salesContactForm.showErrorMessage(message);
+                            })
+                        }
                     }).finally(() => {
                         this.formLoading = false;
                     })
@@ -191,13 +200,22 @@
                 }else {
                     console.log('Saving the Form')
                     this.createSalesContact(this.editedItem).then(() => {
-                        this.formLoading = false;
                         this.snackbar.message = "Contact Successfully Save"
                         this.snackbar.show = true;
                         this.dialog = false;
                         this.resetSelectedItem();
                     }).catch(error => {
-                        console.log(error.response);
+                        if(error.response && error.response.status){
+                            ErrorHandler.handlerError(error.response.status, (message) => {
+                                this.$refs.salesContactForm.showErrorMessage(message);
+                            })
+                        }else {
+                            ErrorHandler.handlerError(503, (message) => {
+                                this.$refs.salesContactForm.showErrorMessage(message);
+                            })
+                        }
+                    }).finally(() => {
+                        this.formLoading = false;
                     })
                 }
             },

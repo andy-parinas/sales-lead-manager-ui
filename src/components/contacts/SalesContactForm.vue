@@ -6,6 +6,9 @@
         <div class="progress-bar-wrapper">
             <v-progress-linear indeterminate color="green" v-if="loading"></v-progress-linear>
         </div>
+        <v-alert type="error" class="mx-3 my-2" dismissible v-model="error">
+            {{ errorMessage }}
+        </v-alert>
         <v-form v-model="valid" :lazy-validation="lazy" ref="contactForm">
             <v-container>
                 <v-row class="mx-2">
@@ -80,18 +83,12 @@
                         />
                     </v-col>
                     <v-col cols="12" sm="6">
-<!--                        <v-text-field v-model="item.postcode"-->
-<!--                                prepend-icon="mdi-mailbox"-->
-<!--                                label="Postcode"-->
-<!--                                :rules="rules.requiredField"-->
-<!--                        />-->
-<!--                        item-text="Description"-->
-<!--                        item-value="API"-->
                         <v-autocomplete
                                 v-model="item.postcode"
                                 :items="postcodes"
                                 :search-input.sync="search"
                                 :loading="postcodeLoading"
+                                :rules="rules.requiredField"
                                 color="black"
                                 label="Postcode"
                                 prepend-icon="mdi-mailbox"
@@ -141,7 +138,6 @@
 
 <script>
     import {mapActions, mapState} from 'vuex';
-
     export default {
         name: "SalesContactForm",
         props: {
@@ -185,7 +181,9 @@
                     items: []
                 },
                 search: '',
-                postcodeLoading: false
+                postcodeLoading: false,
+                error: false,
+                errorMessage: ''
 
             }
         },
@@ -198,22 +196,23 @@
             ...mapActions('postcodes', ['pushPostCode', 'findPostcodes']),
             submit(){
                 this.$refs.contactForm.validate();
-                console.log('Submiting the form', this.$refs.contactForm.value);
                 this.$emit('save')
             },
             resetForm(){
                 this.$refs.contactForm.resetValidation();
             },
             assignPostcode(postcode){
-                console.log('Assign postcode', this.item);
                 if(postcode.trim() !== ''){
                     this.pushPostCode(postcode);
                 }
+            },
+            showErrorMessage(message){
+                this.errorMessage = message;
+                this.error = true;
             }
         },
         watch: {
             search(val){
-                console.log('Search Value', val);
                 // if(this.postcodes.length > 0) return;
 
                 if(this.postcodeLoading) return;
@@ -221,19 +220,16 @@
                 if(val && val.trim() !== ''){
                     this.postcodeLoading = true
                     this.findPostcodes(val).then(() => {
-                        console.log('postcode search complete');
                         this.postcodeLoading = false;
                     }).catch(error => {
-                        console.log(error.response);
                         this.postcodeLoading = false;
+                        console.error(error.response);
                     })
                 }
             },
         },
         mounted() {
-            console.log('SalesContactForm Mounted', this.item)
             if(this.item.postcode.trim() !== ''){
-                console.log('postcode has value', this.item.postcode);
                 this.pushPostCode(this.item.postcode);
             }
         }
