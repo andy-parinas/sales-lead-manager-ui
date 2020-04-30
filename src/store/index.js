@@ -5,6 +5,7 @@ Vue.use(Vuex);
 
 import auth from "./modules/Auth";
 import salesContacts from './modules/SalesContacts';
+import postcodes from './modules/Postcodes';
 
 export default new Vuex.Store({
     state: {
@@ -22,6 +23,7 @@ export default new Vuex.Store({
     },
     modules: {
         auth,
-        salesContacts
+        salesContacts,
+        postcodes
     }
 })

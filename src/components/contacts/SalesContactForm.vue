@@ -80,11 +80,22 @@
                         />
                     </v-col>
                     <v-col cols="12" sm="6">
-                        <v-text-field v-model="item.postcode"
-                                prepend-icon="mdi-mailbox"
+<!--                        <v-text-field v-model="item.postcode"-->
+<!--                                prepend-icon="mdi-mailbox"-->
+<!--                                label="Postcode"-->
+<!--                                :rules="rules.requiredField"-->
+<!--                        />-->
+<!--                        item-text="Description"-->
+<!--                        item-value="API"-->
+                        <v-autocomplete
+                                v-model="item.postcode"
+                                :items="postcodes"
+                                :search-input.sync="search"
+                                :loading="postcodeLoading"
+                                color="black"
                                 label="Postcode"
-                                :rules="rules.requiredField"
-                        />
+                                prepend-icon="mdi-mailbox"
+                        ></v-autocomplete>
                     </v-col>
         <!--  End of State Sections-->
         <!--  Start of Contact status Sections-->
@@ -129,6 +140,8 @@
 </template>
 
 <script>
+    import {mapActions, mapState} from 'vuex';
+
     export default {
         name: "SalesContactForm",
         props: {
@@ -152,7 +165,7 @@
                     optionalEmailRules: [
                         // v => /^\w+[+.\w-]*@([\w-]+\.)*\w+[\w-]*\.([a-z]{2,4})$/i.test(v) || 'E-mail must be valid',
                         v => {
-                            if(v === ''){
+                            if(v == null || v === ''){
                                 return true
                             }else if(/^\w+[+.\w-]*@([\w-]+\.)*\w+[\w-]*\.([a-z]{2,4})$/i.test(v)) {
                                 return true
@@ -166,11 +179,23 @@
                     ],
                 },
                 customerType: [{value:'residential', text: 'Residential'}, {value:'commercial', text: 'Commercial'}],
-                status: [{value:'active', text: 'Active'}, {value:'archived', text: 'Archived'}]
+                status: [{value:'active', text: 'Active'}, {value:'archived', text: 'Archived'}],
+                postcodeAutocomplete: {
+                    loading: false,
+                    items: []
+                },
+                search: '',
+                postcodeLoading: false
 
             }
         },
+        computed: {
+          ...mapState('postcodes', {
+              postcodes: state => state.postcodes
+          })
+        },
         methods: {
+            ...mapActions('postcodes', ['pushPostCode', 'findPostcodes']),
             submit(){
                 this.$refs.contactForm.validate();
                 console.log('Submiting the form', this.$refs.contactForm.value);
@@ -178,10 +203,39 @@
             },
             resetForm(){
                 this.$refs.contactForm.resetValidation();
+            },
+            assignPostcode(postcode){
+                console.log('Assign postcode', this.item);
+                if(postcode.trim() !== ''){
+                    this.pushPostCode(postcode);
+                }
             }
         },
+        watch: {
+            search(val){
+                console.log('Search Value', val);
+                // if(this.postcodes.length > 0) return;
+
+                if(this.postcodeLoading) return;
+
+                if(val && val.trim() !== ''){
+                    this.postcodeLoading = true
+                    this.findPostcodes(val).then(() => {
+                        console.log('postcode search complete');
+                        this.postcodeLoading = false;
+                    }).catch(error => {
+                        console.log(error.response);
+                        this.postcodeLoading = false;
+                    })
+                }
+            },
+        },
         mounted() {
-            console.log('SalesContactForm Mounted')
+            console.log('SalesContactForm Mounted', this.item)
+            if(this.item.postcode.trim() !== ''){
+                console.log('postcode has value', this.item.postcode);
+                this.pushPostCode(this.item.postcode);
+            }
         }
     }
 </script>

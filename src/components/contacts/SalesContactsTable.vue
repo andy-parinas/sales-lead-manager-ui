@@ -165,7 +165,10 @@
                 this.editedItemIndex = this.salesContacts.indexOf(item)
                 this.editedItem = Object.assign({}, item);
                 this.dialog = true;
-                console.log(this.editedItemIndex);
+                console.log('contactform status',this.$refs.salesContactForm )
+                if(this.$refs.salesContactForm){
+                    this.$refs.salesContactForm.assignPostcode(this.editedItem.postcode);
+                }
             },
             deleteItem(item){
                 console.log(item)
@@ -175,14 +178,14 @@
                 if(this.editedItemIndex > -1){
                     console.log('Updating the Form')
                     this.updateSalesContact(this.editedItem).then(() => {
-                        this.formLoading = false;
                         this.snackbar.message = "Contact Successfully Save"
                         this.snackbar.show = true;
                         this.dialog = false;
                         this.resetSelectedItem();
                     }).catch(error => {
-                        this.formLoading = false;
                         console.log(error.response);
+                    }).finally(() => {
+                        this.formLoading = false;
                     })
 
                 }else {
