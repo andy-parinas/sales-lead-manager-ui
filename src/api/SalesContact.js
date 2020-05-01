@@ -22,7 +22,7 @@ const nomalizeData = (data) => {
 
 const SalesContact = {
 
-    async getAll(options){
+    async getContacts(options, searchOptions){
 
         const size = options.itemsPerPage ? options.itemsPerPage : 10;
 
@@ -37,6 +37,12 @@ const SalesContact = {
 
         if (options.page){
             uri = uri + `&page=${options.page}`
+        }
+
+        if (searchOptions && searchOptions.searchFor && searchOptions.searchIn){
+            if(searchOptions.searchFor.trim() !== '' && searchOptions.searchIn.trim() !== ''){
+                uri = uri + `&search=${encodeURIComponent(searchOptions.searchFor)}&on=${searchOptions.searchIn}`;
+            }
         }
 
         const response = await api().get(uri);

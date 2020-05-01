@@ -28,8 +28,8 @@ export default {
         }
     },
     actions: {
-        async fetchSalesContacts({commit}, options){
-            const data = await SalesContact.getAll(options);
+        async fetchSalesContacts({commit}, {options, searchOptions}){
+            const data = await SalesContact.getContacts(options, searchOptions);
             const contacts = data.data;
 
             const meta = {

@@ -1,9 +1,12 @@
 <template>
   <div>
       <PageHeader title="Sales Contact" class="mb-1" />
+      <v-alert text outlined color="deep-orange" icon="mdi-alert" dismissible v-if="error" >
+          {{ message }}
+      </v-alert>
       <v-row class="mt-6" justify="center">
           <v-col cols="12" sm="12" md="10">
-              <SalesContactsTable  />
+              <SalesContactsTable @throwError="setErrorState"  />
           </v-col>
       </v-row>
   </div>
@@ -19,12 +22,17 @@
         components: {PageHeader, SalesContactsTable},
         data(){
             return {
-
+                error: false,
+                message: ''
             }
         },
         computed: {
         },
         methods: {
+            setErrorState(status, message){
+                this.error = status;
+                this.message = message;
+            }
         },
         mounted() {
         }

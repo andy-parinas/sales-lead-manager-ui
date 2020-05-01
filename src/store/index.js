@@ -9,16 +9,25 @@ import postcodes from './modules/Postcodes';
 
 export default new Vuex.Store({
     state: {
-      appLoading: false
+        appLoading: false,
+        appError: false,
+        appMessage: ''
     },
     mutations: {
         setAppLoading(state, status){
             state.appLoading = status;
+        },
+        setAppError(state, {status, message}){
+            state.appError = status;
+            state.appMessage = message;
         }
     },
     actions: {
         setAppLoadingState({commit}, status){
             commit('setAppLoading', status);
+        },
+        setAppErrorState({commit}, {status, message}){
+            commit('setAppError', {status, message})
         }
     },
     modules: {

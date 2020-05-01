@@ -3,12 +3,13 @@
         <h1 class="subheading grey--text">{{ title }}</h1>
         <v-divider></v-divider>
         <div class="progress-bar-wrapper">
-            <v-progress-linear indeterminate color="green" v-if="loading"></v-progress-linear>
+            <v-progress-linear indeterminate color="green" v-if="appLoading"></v-progress-linear>
         </div>
     </div>
 </template>
 
 <script>
+    import {mapState} from 'vuex';
 
     export default {
         name: "PageHeader",
@@ -16,9 +17,7 @@
           title: {required: true, type: String}
         },
         computed: {
-            loading(){
-                return this.$store.state.appLoading;
-            }
+            ...mapState(['appLoading', 'appError', 'appMessage']),
         }
     }
 </script>

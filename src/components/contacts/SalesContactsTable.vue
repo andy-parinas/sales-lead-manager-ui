@@ -1,19 +1,10 @@
 <template>
     <div>
-        <v-card v-if="salesContacts.length > 0">
+        <v-card>
             <v-card-title id="table-header" >
-                <v-row align-content="end" justify="start">
-                    <v-col cols="12" md="7"  sm="12"><v-text-field  label="Search" single-line hide-details></v-text-field></v-col>
-                    <v-col cols="12" md="3"  sm="12">
-                        <v-select v-model="selectedSearch" :items="searchItems" label="Search In" single-line ></v-select>
-                    </v-col>
-                    <v-col cols="12" md="2" sm="12">
-                        <v-btn large elevation="1" block class="mt-1">
-                            <v-icon>search</v-icon>
-                            Search
-                        </v-btn>
-                    </v-col>
-                </v-row>
+                <SalesContactSearchForm
+                        @search="searchContacts"
+                        @reset="resetSearch" />
             </v-card-title>
             <v-data-table
                     :items="salesContacts"
@@ -61,7 +52,8 @@
         <v-btn bottom color="pink" dark fab fixed right @click="newContact" >
             <v-icon  >add</v-icon>
         </v-btn>
-
+<!--        <pre>{{this.options}}</pre>-->
+<!--        <pre>{{this.searchFor}} {{this.searchIn}} </pre>-->
     </div>
 </template>
 
@@ -70,20 +62,23 @@
     import {mapActions, mapState} from "vuex";
     import SalesContactForm from "./SalesContactForm";
     import ErrorHandler from "../../helpers/ErrorHandler";
+    import SalesContactSearchForm from "./SalesContactSearchForm";
 
     export default {
         name: "SalesContactsTable",
-        components: {SalesContactDetails, SalesContactForm},
+        components: {SalesContactSearchForm, SalesContactDetails, SalesContactForm},
         props: {},
         data(){
             return {
+                falseData: [],
                 dialog: false,
                 isInitialLoad: true,
+                initialSearch: false,
                 loading: false,
                 formLoading: false,
                 snackbar: {
                     show: false,
-                    message: 'Test Message',
+                    message: '',
                     color: 'success',
                     timeout: 6000,
                 },
@@ -96,9 +91,19 @@
                     { text: 'Actions', value: 'actions', sortable: false },
                     { text: '', value: 'data-table-expand' },
                 ],
-                searchItems: ['First Name', 'Last Name', 'Suburb', 'State', 'Postcode'],
-                selectedSearch: '',
+                searchFor: '',
+                searchIn: '',
                 options: {
+                    page: 1,
+                    itemsPerPage: 10,
+                    sortBy: ['firstName'],
+                    sortDesc: [false],
+                    groupBy: [],
+                    groupDesc: [],
+                    mustSort: false,
+                    multiSort: false
+                },
+                defaultOptions: {
                     page: 1,
                     itemsPerPage: 10,
                     sortBy: ['firstName'],
@@ -154,7 +159,9 @@
             }
         },
         methods: {
-            ...mapActions('salesContacts', ['fetchSalesContacts', 'updateSalesContact', 'createSalesContact']),
+            ...mapActions('salesContacts',
+                ['fetchSalesContacts', 'updateSalesContact', 'createSalesContact']),
+            ...mapActions(['setAppLoadingState']),
             newContact(){
                 // this.$refs.contactForm.resetForm()
                 if(this.$refs.salesContactForm){
@@ -173,7 +180,7 @@
                 }
             },
             deleteItem(item){
-                console.log(item)
+                console.log('delete', item)
             },
             save(){
                 this.formLoading = true;
@@ -229,19 +236,58 @@
             resetSelectedItem(){
                 this.editedItem = Object.assign({}, this.defaultItem)
                 this.editedItemIndex = -1
+            },
+            searchContacts({searchIn, searchFor}){
+
+                this.searchFor = searchFor;
+                this.searchIn = searchIn;
+
+                console.log('Search', this.searchIn, this.searchFor)
+
+                // This will trigger the watcher in the options.
+                // With the SearchFor and SearchIn having a value, this will trigger the search in api
+                this.options = Object.assign({}, this.defaultOptions);
+            },
+            resetSearch(){
+                this.searchFor = '';
+                this.searchIn = '';
+                this.options = Object.assign({}, this.defaultOptions);
+            },
+            getContacts(options, searchOptions){
+                console.log(searchOptions);
+                this.loading = true;
+                this.fetchSalesContacts({options, searchOptions}).then(() => {
+                    this.loading = false;
+                }).catch(error => {
+                    console.error(error.response)
+                    if(error.response && error.response.status){
+                        ErrorHandler.handlerError(error.response.status, (message) => {
+                            this.$emit('throwError', true, message);
+                        })
+                    }else {
+                        console.error(error);
+                        ErrorHandler.handlerError(503, (message) => {
+                            this.$emit('throwError', true, message);
+                        })
+                    }
+                }).finally(() => {
+                    this.loading = false;
+                })
             }
         },
         watch: {
             options: {
                 handler(){
                     if(!this.isInitialLoad){
-                        this.loading = true;
-                        this.fetchSalesContacts(this.options).then(() => {
-                            this.loading = false;
-                        }).catch(error => {
-                            this.$store.dispatch('setAppLoadingState', false)
-                            console.log(error)
-                        })
+                        if(this.searchIn.trim() !== '' && this.searchFor.trim() !== '')
+                        {
+                            this.getContacts(this.options, {
+                                searchFor: this.searchFor,
+                                searchIn: this.searchIn
+                            });
+                        }else {
+                            this.getContacts(this.options);
+                        }
                     }
                 },
                 deep: true
@@ -249,11 +295,21 @@
         },
         mounted() {
             this.$store.dispatch('setAppLoadingState', true)
-            this.fetchSalesContacts(this.options).then(() => {
+            this.fetchSalesContacts({options:this.options}).then(() => {
                 this.isInitialLoad = false;
-                this.$store.dispatch('setAppLoadingState', false)
             }).catch(error => {
-                console.log('PageSalesContacts', error.response)
+                if(error.response && error.response.status){
+                    console.error(error.response);
+                    ErrorHandler.handlerError(error.response.status, (message) => {
+                        this.$emit('throwError', true, message);
+                    })
+                }else {
+                    console.error(error);
+                    ErrorHandler.handlerError(503, (message) => {
+                        this.$emit('throwError', true, message);
+                    })
+                }
+            }).finally(() => {
                 this.$store.dispatch('setAppLoadingState', false)
             })
         }

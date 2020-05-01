@@ -6,7 +6,7 @@
         <div class="progress-bar-wrapper">
             <v-progress-linear indeterminate color="green" v-if="loading"></v-progress-linear>
         </div>
-        <v-alert type="error" class="mx-3 my-2" dismissible v-model="error">
+        <v-alert text outlined color="deep-orange" icon="mdi-alert" dismissible class="mx-3 my-2" v-model="error">
             {{ errorMessage }}
         </v-alert>
         <v-form v-model="valid" :lazy-validation="lazy" ref="contactForm">
