@@ -15,9 +15,9 @@
                    @click="searchContacts">
                 <v-icon>search</v-icon>
             </v-btn>
-            <v-btn color="warning" fab small elevation="3" class="mr-2 white--text"
+            <v-btn color="success" fab small elevation="3" class="mr-2 white--text"
                    @click="resetSearch">
-                <v-icon>mdi-close-circle-outline</v-icon>
+                <v-icon>mdi-refresh</v-icon>
             </v-btn>
         </v-col>
     </v-row>

@@ -26,7 +26,7 @@
                     <SalesContactDetails :length="headers.length" :item="item" />
                 </template>]
                 <template v-slot:top>
-                    <v-dialog v-model="dialog" width="800px">
+                    <v-dialog v-model="editDialog" width="800px">
                         <SalesContactForm
                                 @closeForm="close"
                                 @save="save"
@@ -35,6 +35,27 @@
                                 :loading="formLoading"
                                 ref="salesContactForm"
                         />
+                    </v-dialog>
+                    <v-dialog v-model="deleteDialog" persistent max-width="350" class="px-2">
+                        <v-card>
+                            <v-card-title class="headline">Delete Sales Contact?</v-card-title>
+                            <v-card-text>
+                                <p class="body-1 font-weight-medium red--text">{{ deletedItem.name }}</p>
+                                <p>You won't be able to recover this Sales Contact once deleted.</p>
+                            </v-card-text>
+                            <v-card-actions>
+                                <v-spacer></v-spacer>
+                                <v-btn color="grey darken-1" text :disabled="deleting" @click="cancelDelete">Cancel</v-btn>
+                                <v-btn color="red darken-1" class="mr-3" text @click="confirmDelete" :loading="deleting" >
+                                    Delete
+                                    <template v-slot:loader>
+                                       <v-row>
+                                           <span class="mr-1">Deleting...</span>
+                                       </v-row>
+                                    </template>
+                                </v-btn>
+                            </v-card-actions>
+                        </v-card>
                     </v-dialog>
                 </template>
             </v-data-table>
@@ -71,7 +92,9 @@
         data(){
             return {
                 falseData: [],
-                dialog: false,
+                editDialog: false,
+                deleteDialog: false,
+                deleting: false,
                 isInitialLoad: true,
                 initialSearch: false,
                 loading: false,
@@ -117,6 +140,10 @@
                     "items-per-page-options": [5,10,15,20]
                 },
                 editedItemIndex: -1,
+                deletedItem: {
+                    name: '',
+                    id: ''
+                },
                 editedItem: {
                     id: '',
                     firstName: '',
@@ -160,7 +187,7 @@
         },
         methods: {
             ...mapActions('salesContacts',
-                ['fetchSalesContacts', 'updateSalesContact', 'createSalesContact']),
+                ['fetchSalesContacts', 'updateSalesContact', 'createSalesContact', 'deleteSalesContact']),
             ...mapActions(['setAppLoadingState']),
             newContact(){
                 // this.$refs.contactForm.resetForm()
@@ -168,28 +195,56 @@
                     this.$refs.salesContactForm.resetForm();
                 }
                 this.resetSelectedItem();
-                this.dialog = true;
+                this.editDialog = true;
             },
             editContact(item){
                 this.editedItemIndex = this.salesContacts.indexOf(item)
                 this.editedItem = Object.assign({}, item);
-                this.dialog = true;
+                this.editDialog = true;
                 console.log('contactform status',this.$refs.salesContactForm )
                 if(this.$refs.salesContactForm){
                     this.$refs.salesContactForm.assignPostcode(this.editedItem.postcode);
                 }
             },
             deleteItem(item){
-                console.log('delete', item)
+                this.deletedItem.name = `${item.firstName} ${item.lastName}`
+                this.deletedItem.id = item.id
+                this.deleteDialog = true;
+            },
+            confirmDelete(){
+                this.deleting = true;
+                this.deleteSalesContact(this.deletedItem).then(() => {
+                    console.log('successfully deleted')
+                    this.snackbar.message = "Contact Successfully Deleted"
+                    this.snackbar.show = true;
+                }).catch(error => {
+                    console.error(error.response);
+                    this.snackbar.show = true;
+                    this.snackbar.color = 'error';
+                    if(error.response && error.response.status && error.response.status === 409){
+                        this.snackbar.message = "Can't delete Sales Contact converted to Lead";
+                    }else {
+                        this.snackbar.message = "Error deleting Sales Contact. Please check with you Administrator";
+                    }
+                }).finally(() => {
+                    console.log('Finally')
+                    this.cancelDelete();
+                })
+            },
+            cancelDelete(){
+                this.deletedItem.name = '';
+                this.deletedItem.id = '';
+                this.deleteDialog = false;
+                this.deleting = false;
             },
             save(){
                 this.formLoading = true;
                 if(this.editedItemIndex > -1){
                     console.log('Updating the Form')
                     this.updateSalesContact(this.editedItem).then(() => {
-                        this.snackbar.message = "Contact Successfully Save"
+                        this.snackbar.message = "Contact Successfully Saved"
                         this.snackbar.show = true;
-                        this.dialog = false;
+                        this.editDialog = false;
                         this.resetSelectedItem();
                     }).catch(error => {
                         if(error.response && error.response.status){
@@ -208,9 +263,9 @@
                 }else {
                     console.log('Saving the Form')
                     this.createSalesContact(this.editedItem).then(() => {
-                        this.snackbar.message = "Contact Successfully Save"
+                        this.snackbar.message = "Contact Successfully Created"
                         this.snackbar.show = true;
-                        this.dialog = false;
+                        this.editDialog = false;
                         this.resetSelectedItem();
                     }).catch(error => {
                         if(error.response && error.response.status){
@@ -228,7 +283,7 @@
                 }
             },
             close(){
-                this.dialog=false
+                this.editDialog=false
                 setTimeout(() => {
                     this.resetSelectedItem()
                 }, 300)

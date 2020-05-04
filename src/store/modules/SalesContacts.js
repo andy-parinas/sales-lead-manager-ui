@@ -58,13 +58,30 @@ export default {
             commit('setSalesContacts', updatedContacts);
 
         },
-        async createSalesContact({commit}, newContact){
+        async createSalesContact({commit, state}, newContact){
 
             const createdContact = await SalesContact.create(newContact);
+            const newMeta = {
+                ...state.meta,
+                total: state.meta.total + 1,
+            }
 
-            console.log('CreatedActions', createdContact);
+            commit('addSalesContact', createdContact);
+            commit('setSalesContactMeta', newMeta);
 
-            commit('addSalesContact', createdContact)
+        },
+        async deleteSalesContact({state, commit}, contact){
+            const deletedContact = await SalesContact.delete(contact.id);
+
+            const contacts = state.salesContacts.filter(contact => contact.id !== deletedContact.id);
+            const newMeta = {
+                ...state.meta,
+                total: state.meta.total - 1,
+            }
+
+            commit('setSalesContacts', contacts);
+            commit('setSalesContactMeta', newMeta);
+
         }
     }
 }

@@ -78,11 +78,18 @@ const SalesContact = {
 
         const formData = nomalizeData(data);
 
-        console.log('from api save', formData);
-
         await Csrf.getCSRFCookie();
 
         const response = await api().post('/api/contacts', formData);
+
+        return response.data.data;
+    },
+
+    async delete(id){
+
+        await Csrf.getCSRFCookie();
+
+        const response = await api().delete(`/api/contacts/${id}`);
 
         return response.data.data;
     }
