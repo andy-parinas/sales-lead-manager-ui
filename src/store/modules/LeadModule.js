@@ -12,10 +12,10 @@ export default {
         }
     },
     actions: {
-        async fetchLeads({commit}){
+        async fetchLeads({commit}, {options, searchOptions}){
 
             console.log('Fetch Leads Actions');
-            const leads = await LeadAPI.getLeads();
+            const leads = await LeadAPI.getLeads(options, searchOptions);
 
             commit('setLeads', leads);
 

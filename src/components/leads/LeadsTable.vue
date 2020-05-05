@@ -1,8 +1,8 @@
 <template>
-    <div>
+    <div class="mb-12">
         <v-card>
             <v-card-title id="table-header" >
-                Sales Leads
+                <LeadSearchForm />
             </v-card-title>
             <v-data-table
                     :items="leads"
@@ -16,7 +16,9 @@
                     class="elevation-0">
             </v-data-table>
         </v-card>
-
+        <v-btn bottom color="pink" dark fab fixed right >
+            <v-icon  >add</v-icon>
+        </v-btn>
     </div>
 </template>
 
@@ -24,14 +26,16 @@
 
     import {mapState, mapActions} from 'vuex';
     import ErrorHandler from "../../helpers/ErrorHandler";
+    import LeadSearchForm from "./LeadSearchForm";
 
     export default {
         name: "LeadsTable",
+        components: {LeadSearchForm},
         data(){
             return {
                 loading:false,
                 headers: [
-                    { text: 'Lead Name',value: 'number'},
+                    { text: 'Lead Number',value: 'number'},
                     { text: 'Lead Date',value: 'leadDate'},
                     { text: 'First Name',value: 'firstName'},
                     { text: 'Last Name', value: 'lastName' },
@@ -65,6 +69,9 @@
                     mustSort: false,
                     multiSort: false
                 },
+                searchIn: '',
+                searchFor: '',
+                isInitialLoad: true
             }
         },
         computed: {
@@ -73,12 +80,43 @@
         methods: {
             ...mapActions('leads', ['fetchLeads']),
 
-            getLeads(){
-                this.fetchLeads().then(() => {
-                    console.log('Fetch LEads Complete')
+            getLeads(options, searchOptions){
+                this.loading = true;
+                this.fetchLeads({options, searchOptions}).then(() => {
+                    this.loading = false;
                 }).catch(error => {
-                    console.log(error.response)
+                    console.error(error.response)
+                    if(error.response && error.response.status){
+                        ErrorHandler.handlerError(error.response.status, (message) => {
+                            this.$emit('throwError', true, message);
+                        })
+                    }else {
+                        console.error(error);
+                        ErrorHandler.handlerError(503, (message) => {
+                            this.$emit('throwError', true, message);
+                        })
+                    }
+                }).finally(() => {
+                    this.loading = false;
                 })
+            }
+        },
+        watch: {
+            options: {
+                handler(){
+                    if(!this.isInitialLoad){
+                        if(this.searchIn.trim() !== '' && this.searchFor.trim() !== '')
+                        {
+                            this.getLeads(this.options, {
+                                searchFor: this.searchFor,
+                                searchIn: this.searchIn
+                            });
+                        }else {
+                            this.getLeads(this.options);
+                        }
+                    }
+                },
+                deep: true
             }
         },
         mounted() {

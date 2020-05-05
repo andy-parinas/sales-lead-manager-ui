@@ -1,14 +1,14 @@
 import api from "./api";
+import {URIBuilder} from "./helpers";
 // import Csrf from './csrf';
 
 
 const LeadAPI = {
 
-    async getLeads(){
+    async getLeads(options, searhOption){
 
-        console.log('Fetching Leads')
-
-        const uri = '/api/leads'
+        const requestUri = '/api/leads'
+        const uri = URIBuilder.build(requestUri, options, searhOption)
 
         const response = await api().get(uri);
 
