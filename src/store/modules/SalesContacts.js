@@ -1,5 +1,5 @@
 
-import SalesContact from "../../api/SalesContact";
+import SalesContactAPI from "../../api/SalesContactAPI";
 
 export default {
     namespaced: true,
@@ -29,7 +29,7 @@ export default {
     },
     actions: {
         async fetchSalesContacts({commit}, {options, searchOptions}){
-            const data = await SalesContact.getContacts(options, searchOptions);
+            const data = await SalesContactAPI.getContacts(options, searchOptions);
             const contacts = data.data;
 
             const meta = {
@@ -43,7 +43,7 @@ export default {
             commit('setSalesContactMeta', meta);
         },
         async updateSalesContact({commit, state}, updates){
-            const newContact = await SalesContact.update(updates);
+            const newContact = await SalesContactAPI.update(updates);
 
             const updatedContacts = state.salesContacts.map(contact => {
                     if(contact.id === newContact.id){
@@ -60,7 +60,7 @@ export default {
         },
         async createSalesContact({commit, state}, newContact){
 
-            const createdContact = await SalesContact.create(newContact);
+            const createdContact = await SalesContactAPI.create(newContact);
             const newMeta = {
                 ...state.meta,
                 total: state.meta.total + 1,
@@ -71,7 +71,7 @@ export default {
 
         },
         async deleteSalesContact({state, commit}, contact){
-            const deletedContact = await SalesContact.delete(contact.id);
+            const deletedContact = await SalesContactAPI.delete(contact.id);
 
             const contacts = state.salesContacts.filter(contact => contact.id !== deletedContact.id);
             const newMeta = {

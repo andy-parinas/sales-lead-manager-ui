@@ -4,18 +4,26 @@ import Auth from "@/api/Auth";
 export default {
     namespaced: true,
     state: {
-        currentUser: {}
+        currentUser: {},
+        franchises: []
     },
 
     mutations: {
         setCurrentUser(state, user){
             state.currentUser = user;
+        },
+        setFranchises(state, franchises){
+            state.franchises = franchises;
         }
     },
 
     actions: {
         async login({commit}, loginData){
             const response = await Auth.login(loginData)
+
+            console.log('login actions', response.data);
+            const franchises = response.data.franchises;
+
             const data = response.data.data;
             const user = {
                 id: data.id,
@@ -27,7 +35,9 @@ export default {
 
 
             localStorage.setItem('auth-user', JSON.stringify(user));
+            localStorage.setItem('user-franchises', JSON.stringify(franchises));
             commit('setCurrentUser', user);
+            commit('setFranchises', franchises);
         },
 
         async logout({commit, dispatch}){
@@ -37,7 +47,9 @@ export default {
 
             if(response){
                 localStorage.removeItem('auth-user');
+                localStorage.removeItem('user-franchiser');
                 commit('setCurrentUser', {});
+                commit('setFranchises', []);
             }
             dispatch('setAppLoadingState', false, {root: true})
 
@@ -45,8 +57,13 @@ export default {
 
         getUserFromStorage({commit}){
             const user = localStorage.getItem('auth-user');
+            const franchises = localStorage.getItem('user-franchises')
             if(user){
-                commit('setCurrentUser', JSON.parse(localStorage.getItem('auth-user')))
+                commit('setCurrentUser',  JSON.parse(user))
+            }
+
+            if (franchises){
+                commit('setFranchises', JSON.parse(franchises));
             }
         }
     }

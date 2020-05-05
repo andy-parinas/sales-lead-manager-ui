@@ -46,7 +46,7 @@ const routes = [
             {
                 path: 'lead',
                 name: 'lead',
-                component: () => import(/* webpackChunkName: "dashboard" */ "@/views/Lead.vue"),
+                component: () => import(/* webpackChunkName: "dashboard" */ "@/views/PageLead.vue"),
                 meta: {requiresAuth: true}
         
             },

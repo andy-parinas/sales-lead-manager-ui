@@ -20,7 +20,7 @@ const nomalizeData = (data) => {
     }
 }
 
-const SalesContact = {
+const SalesContactAPI = {
 
     async getContacts(options, searchOptions){
 
@@ -97,4 +97,4 @@ const SalesContact = {
 
 }
 
-export default SalesContact;
+export default SalesContactAPI;
