@@ -29,14 +29,14 @@ export default {
     },
     actions: {
         async fetchSalesContacts({commit}, {options, searchOptions}){
-            const data = await SalesContactAPI.getContacts(options, searchOptions);
-            const contacts = data.data;
+            const response = await SalesContactAPI.getContacts(options, searchOptions);
+            const contacts = response.data;
 
             const meta = {
-                total: data.total,
-                currentPage: data.current_page,
-                lastPage: data.last_page,
-                perPage: data.per_page
+                total: response.total,
+                currentPage: response.current_page,
+                lastPage: response.last_page,
+                perPage: response.per_page
             }
 
             commit('setSalesContacts', contacts);

@@ -29,6 +29,12 @@ export default new Vuex.Store({
         },
         setAppErrorState({commit}, {status, message}){
             commit('setAppError', {status, message})
+        },
+        clearAllState({commit}){
+            commit('leads/setLeads', [])
+            commit('leads/setMeta', {})
+            commit('salesContacts/setSalesContacts', [])
+            commit('salesContacts/setSalesContactMeta', {})
         }
     },
     modules: {

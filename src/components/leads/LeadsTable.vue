@@ -2,13 +2,14 @@
     <div class="mb-12">
         <v-card>
             <v-card-title id="table-header" >
-                <LeadSearchForm />
+                <LeadSearchForm  @search="searchLeads"
+                                 @reset="resetSearch" />
             </v-card-title>
             <v-data-table
                     :items="leads"
                     :options.sync="options"
                     :headers="headers"
-                    :server-items-length="30"
+                    :server-items-length="meta.total"
                     :single-expand="true"
                     :loading="loading"
                     :footer-props="footerProps"
@@ -75,7 +76,7 @@
             }
         },
         computed: {
-            ...mapState('leads', ['leads'])
+            ...mapState('leads', ['leads', 'meta'])
         },
         methods: {
             ...mapActions('leads', ['fetchLeads']),
@@ -99,6 +100,21 @@
                 }).finally(() => {
                     this.loading = false;
                 })
+            },
+            searchLeads({searchIn, searchFor}){
+                this.searchFor = searchFor;
+                this.searchIn = searchIn;
+
+                console.log('Search', this.searchIn, this.searchFor)
+
+                // This will trigger the watcher in the options.
+                // With the SearchFor and SearchIn having a value, this will trigger the search in api
+                this.options = Object.assign({}, this.defaultOptions);
+            },
+            resetSearch(){
+                this.searchFor = '';
+                this.searchIn = '';
+                this.options = Object.assign({}, this.defaultOptions);
             }
         },
         watch: {

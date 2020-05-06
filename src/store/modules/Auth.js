@@ -50,6 +50,8 @@ export default {
                 localStorage.removeItem('user-franchiser');
                 commit('setCurrentUser', {});
                 commit('setFranchises', []);
+                dispatch('clearAllState', null, {root: true})
+
             }
             dispatch('setAppLoadingState', false, {root: true})
 

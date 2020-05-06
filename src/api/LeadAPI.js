@@ -12,7 +12,7 @@ const LeadAPI = {
 
         const response = await api().get(uri);
 
-        return response.data.data
+        return response.data;
     }
 
 }
