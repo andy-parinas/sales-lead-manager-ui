@@ -13,8 +13,8 @@
 </template>
 
 <script>
-    import LeadsTable from "../components/leads/LeadsTable";
-    import PageHeader from "../components/core/PageHeader";
+    import LeadsTable from "../../components/leads/LeadsTable";
+    import PageHeader from "../../components/core/PageHeader";
 
     export default {
         name: 'Lead',
