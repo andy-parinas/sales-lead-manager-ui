@@ -36,7 +36,7 @@
             return {
                 loading:false,
                 headers: [
-                    { text: 'Lead Number',value: 'number'},
+                    { text: 'Lead Number',value: 'leadNumber'},
                     { text: 'Lead Date',value: 'leadDate'},
                     { text: 'First Name',value: 'firstName'},
                     { text: 'Last Name', value: 'lastName' },
@@ -53,7 +53,7 @@
                 options: {
                     page: 1,
                     itemsPerPage: 10,
-                    sortBy: ['number'],
+                    sortBy: ['leadNumber'],
                     sortDesc: [false],
                     groupBy: [],
                     groupDesc: [],
@@ -63,7 +63,7 @@
                 defaultOptions: {
                     page: 1,
                     itemsPerPage: 10,
-                    sortBy: ['number'],
+                    sortBy: ['leadNumber'],
                     sortDesc: [false],
                     groupBy: [],
                     groupDesc: [],

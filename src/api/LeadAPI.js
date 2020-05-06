@@ -9,7 +9,6 @@ const LeadAPI = {
 
         const requestUri = '/api/leads'
         const uri = URIBuilder.build(requestUri, options, searhOption)
-
         const response = await api().get(uri);
 
         return response.data;

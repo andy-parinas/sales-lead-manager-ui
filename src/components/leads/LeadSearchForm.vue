@@ -31,14 +31,14 @@
                 searchFor: '',
                 searchIn: '',
                 searchItems: [
-                    {text: 'Lead Number', value: 'number'},
-                    {text: 'First Name', value: 'firstName'},
-                    {text: 'Last Name', value: 'lastName'},
+                    {text: 'Lead Number', value: 'lead_number'},
+                    {text: 'First Name', value: 'first_name'},
+                    {text: 'Last Name', value: 'last_name'},
                     {text: 'Suburb', value: 'suburb'},
                     {text: 'State', value: 'state'},
                     {text: 'Postcode', value: 'postcode'},
                     {text: 'Outcome', value: 'outcome'},
-                    {text: 'Franchise', value: 'franchise'}
+                    {text: 'Franchise', value: 'franchise_number'}
                 ]
             }
         },
