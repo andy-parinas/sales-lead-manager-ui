@@ -16,6 +16,10 @@
                     item-key="id"
                     class="elevation-0">
 
+                <template v-slot:item.outcome="{item}">
+                    <ChipOutcome :outcome="item.outcome" :small="true" />
+                </template>
+
                 <template v-slot:item.actions="{item}">
                     <v-icon small class="mr-5" @click="showLead(item)"> mdi-forward </v-icon>
                 </template>
@@ -30,10 +34,11 @@
     import {mapState, mapActions} from 'vuex';
     import ErrorHandler from "../../helpers/ErrorHandler";
     import LeadSearchForm from "./LeadSearchForm";
+    import ChipOutcome from "./ChipOutcome";
 
     export default {
         name: "LeadsTable",
-        components: {LeadSearchForm},
+        components: {LeadSearchForm, ChipOutcome},
         data(){
             return {
                 loading:false,

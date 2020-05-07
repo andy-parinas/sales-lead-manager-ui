@@ -27,7 +27,7 @@
                 </v-col>
                 <v-col cols="12" sm="6">
                     <v-icon small>mdi-clipboard-check</v-icon>
-                    <span class="ml-2 caption font-weight-bold"> Outcome: </span> <span> {{ data.outcome | capitalize }} </span>
+                    <span class="ml-2 mr-2 caption font-weight-bold"> Outcome: </span> <ChipOutcome :outcome="data.outcome" :small="true" />
                 </v-col>
             </v-row>
             <v-row>
@@ -42,8 +42,10 @@
 </template>
 
 <script>
+    import ChipOutcome from "../../../components/leads/ChipOutcome";
     export default {
         name: "AppointmentPartial",
+        components: {ChipOutcome},
         props: {
             data: { required: true, type: Object}
         }
