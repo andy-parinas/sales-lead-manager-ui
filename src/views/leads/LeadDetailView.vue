@@ -50,7 +50,7 @@
     import LeadContactPartial from "./partials/LeadContactPartial";
     import JobTypePartial from "./partials/JobTypePartial";
     import AppointmentPartial from "./partials/AppointmentPartial";
-    import {mapActions, mapState} from 'vuex';
+    import {mapState} from 'vuex';
 
     export default {
         name: "LeadDetailTabView",
@@ -63,23 +63,10 @@
             }
         },
         methods: {
-            ...mapActions('leads', ['fetchSingleLead', 'clearLeadObject']),
             goBack(){
-                this.$router.back();
+                this.$emit('goBack')
             }
         },
-        mounted() {
-            this.$store.dispatch('setAppLoadingState', true)
-            this.fetchSingleLead(this.id).then(() => {
-                this.$store.dispatch('setAppLoadingState', false)
-            }).catch(error => {
-                console.log(error)
-                this.$store.dispatch('setAppLoadingState', false)
-            })
-        },
-        beforeDestroy() {
-            this.clearLeadObject();
-        }
     }
 </script>
 

@@ -17,15 +17,11 @@
                     class="elevation-0">
 
                 <template v-slot:item.actions="{item}">
-                    <v-icon small class="mr-5"> mdi-pencil</v-icon>
                     <v-icon small class="mr-5" @click="showLead(item)"> mdi-forward </v-icon>
                 </template>
 
             </v-data-table>
         </v-card>
-        <v-btn bottom color="pink" dark fab fixed right >
-            <v-icon  >add</v-icon>
-        </v-btn>
     </div>
 </template>
 
@@ -123,8 +119,7 @@
                 this.options = Object.assign({}, this.defaultOptions);
             },
             showLead(item){
-                console.log(item)
-                this.$router.push({name: 'LeadDetails', params: {id: item.leadId}})
+               this.$emit('showDetail', item.leadId);
             }
         },
         watch: {
