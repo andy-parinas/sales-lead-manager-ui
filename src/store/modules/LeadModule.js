@@ -5,7 +5,8 @@ export default {
     namespaced: true,
     state: {
         leads: [],
-        meta: {}
+        meta: {},
+        lead: {}
     },
     mutations: {
         setLeads(state, leads){
@@ -13,12 +14,14 @@ export default {
         },
         setMeta(state, meta){
             state.meta = meta;
+        },
+
+        setLead(state, lead){
+            state.lead = lead;
         }
     },
     actions: {
         async fetchLeads({commit}, {options, searchOptions}){
-
-            console.log('Fetch Leads Actions');
             const response = await LeadAPI.getLeads(options, searchOptions);
 
             const leads = response.data;
@@ -32,6 +35,17 @@ export default {
             commit('setLeads', leads);
             commit('setMeta', meta);
 
+        },
+
+        async fetchSingleLead({commit}, leadId)
+        {
+            const lead = await LeadAPI.getSingleLead(leadId);
+
+            commit('setLead', lead);
+
+        },
+        clearLeadObject({commit}){
+            commit('setLead', {});
         }
 
     }

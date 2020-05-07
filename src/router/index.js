@@ -58,7 +58,7 @@ const routes = [
                     {
                         path: ":id",
                         name: "LeadDetails",
-                        component: () => import(/* webpackChunkName: "leadDetail" */ "@/views/leads/LeadDetailTabView.vue"),
+                        component: () => import(/* webpackChunkName: "leadDetail" */ "@/views/leads/LeadDetailView.vue"),
                         meta: {requiresAuth: true},
                         props: true
                     }

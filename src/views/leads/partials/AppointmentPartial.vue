@@ -17,30 +17,24 @@
                 <v-col cols="12" sm="12">
                     <v-icon small>mdi-clipboard-text</v-icon>
                     <span class="ml-2 caption font-weight-bold"> Notes: </span>
-                    <span>
-                                                Lorem ipsum dolor sit amet, consectetur adipisicing elit. Aut consequatur deserunt,
-                                                excepturi iusto minima nobis numquam, possimus quaerat quo, reiciendis totam veniam.
-                                                Eos et ex fugit inventore laboriosam quis rerum.
-                                            </span>
+                    <span> {{data.notes }} </span>
                 </v-col>
             </v-row>
             <v-row>
                 <v-col cols="12" sm="6">
                     <v-icon small>mdi-tag</v-icon>
-                    <span class="ml-2 caption font-weight-bold"> Quoted Price: </span> <span> 100,000.00</span>
+                    <span class="ml-2 caption font-weight-bold"> Quoted Price: </span> <span> {{ data.quotedPrice }}</span>
                 </v-col>
                 <v-col cols="12" sm="6">
                     <v-icon small>mdi-clipboard-check</v-icon>
-                    <span class="ml-2 caption font-weight-bold"> Outcome: </span> <span> Pending </span>
+                    <span class="ml-2 caption font-weight-bold"> Outcome: </span> <span> {{ data.outcome | capitalize }} </span>
                 </v-col>
             </v-row>
             <v-row>
                 <v-col cols="12" sm="12">
                     <v-icon small>mdi-comment-text</v-icon>
                     <span class="ml-2 caption font-weight-bold"> Comments: </span>
-                    <span>
-                                                Lorem ipsum dolor sit amet, consectetur adipisicing elit. .
-                                            </span>
+                    <span>{{ data.comments }}</span>
                 </v-col>
             </v-row>
         </v-card-text>
@@ -49,7 +43,10 @@
 
 <script>
     export default {
-        name: "AppointmentPartial"
+        name: "AppointmentPartial",
+        props: {
+            data: { required: true, type: Object}
+        }
     }
 </script>
 

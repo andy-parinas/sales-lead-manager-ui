@@ -12,8 +12,16 @@ const LeadAPI = {
         const response = await api().get(uri);
 
         return response.data;
-    }
+    },
 
+    async getSingleLead(leadId){
+
+        const requestUri = `/api/leads/${leadId}`
+
+        const response = await api().get(requestUri);
+
+        return response.data.data;
+    }
 }
 
 

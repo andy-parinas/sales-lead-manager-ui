@@ -14,6 +14,11 @@
     export default {
         name: 'Lead',
         components: {PageHeader},
+        data(){
+            return {
+                error: false
+            }
+        }
     }
 </script>
 

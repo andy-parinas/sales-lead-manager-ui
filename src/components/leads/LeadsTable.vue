@@ -15,6 +15,12 @@
                     :footer-props="footerProps"
                     item-key="id"
                     class="elevation-0">
+
+                <template v-slot:item.actions="{item}">
+                    <v-icon small class="mr-5"> mdi-pencil</v-icon>
+                    <v-icon small class="mr-5" @click="showLead(item)"> mdi-forward </v-icon>
+                </template>
+
             </v-data-table>
         </v-card>
         <v-btn bottom color="pink" dark fab fixed right >
@@ -115,6 +121,10 @@
                 this.searchFor = '';
                 this.searchIn = '';
                 this.options = Object.assign({}, this.defaultOptions);
+            },
+            showLead(item){
+                console.log(item)
+                this.$router.push({name: 'LeadDetails', params: {id: item.leadId}})
             }
         },
         watch: {
@@ -136,7 +146,6 @@
             }
         },
         mounted() {
-
             this.$store.dispatch('setAppLoadingState', true)
             this.fetchLeads({options:this.options}).then(() => {
                 this.isInitialLoad = false;
