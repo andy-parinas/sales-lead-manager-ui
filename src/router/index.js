@@ -46,8 +46,23 @@ const routes = [
             {
                 path: 'lead',
                 name: 'lead',
-                component: () => import(/* webpackChunkName: "dashboard" */ "@/views/leads/LeadMainView.vue"),
-                meta: {requiresAuth: true}
+                component: () => import(/* webpackChunkName: "leadMain" */ "@/views/leads/LeadMainView.vue"),
+                meta: {requiresAuth: true},
+                children: [
+                    {
+                        path: "",
+                        name: "LeadTable",
+                        component: () => import(/* webpackChunkName: "leadTable" */ "@/views/leads/LeadTableView.vue"),
+                        meta: {requiresAuth: true},
+                    },
+                    {
+                        path: ":id",
+                        name: "LeadDetails",
+                        component: () => import(/* webpackChunkName: "leadDetail" */ "@/views/leads/LeadDetailTabView.vue"),
+                        meta: {requiresAuth: true},
+                        props: true
+                    }
+                ]
         
             },
             {
