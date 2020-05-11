@@ -90,7 +90,7 @@
                                 :loading="postcodeLoading"
                                 :rules="rules.requiredField"
                                 color="black"
-                                label="Postcode"
+                                label="PostcodeAPI"
                                 prepend-icon="mdi-mailbox"
                         ></v-autocomplete>
                     </v-col>

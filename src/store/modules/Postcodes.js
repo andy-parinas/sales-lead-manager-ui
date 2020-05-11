@@ -1,5 +1,5 @@
 
-import Postcode from "../../api/Postcode";
+import PostcodeAPI from "../../api/PostcodeAPI";
 
 export default {
     namespaced: true,
@@ -16,11 +16,11 @@ export default {
     },
     actions: {
         async findPostcodes({commit}, searchValue){
-            const postcodes = await Postcode.search(searchValue);
+            const postcodes = await PostcodeAPI.search(searchValue);
             commit('setPostcodes', postcodes);
         },
         async pushPostCode({commit, state}, postcode){
-            //Check if Postcode is already in the array.
+            //Check if PostcodeAPI is already in the array.
             if(state.postcodes.indexOf(postcode) === -1){
                 commit('insertPostcode', postcode)
             }

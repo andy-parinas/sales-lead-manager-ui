@@ -1,120 +1,145 @@
 <template>
-    <v-form v-model="valid">
-        <v-container>
-            <v-row class="mx-2">
-                <v-col cols="12" sm="6">
-                    <v-text-field v-model="form.leadNumber"
-                                  prepend-icon="mdi-numeric-0-box-multiple-outline"
-                                  label="Lead Number"
-                                  :rules="rules.required"
-                    />
-                </v-col>
-                <v-col cols="12" sm="6">
-                    <v-select
-                            v-model="form.franchiseId"
-                            :items="franchiseItems"
-                            :rules="[v => !!v || 'Field is required']"
-                            label="Franchise Number"
-                            prepend-icon="mdi-store"
-                            required
-                    ></v-select>
-                </v-col>
+    <div>
+        <v-form v-model="valid">
+            <v-container>
+                <v-row class="mx-2">
+                    <v-col cols="12" sm="6">
+                        <v-text-field v-model="form.leadNumber"
+                                      prepend-icon="mdi-numeric-0-box-multiple-outline"
+                                      label="Lead Number"
+                                      :rules="rules.required"
+                        />
+                    </v-col>
+                    <v-col cols="12" sm="6">
+                        <v-select
+                                v-model="franchiseId"
+                                :items="franchiseItems"
+                                :rules="[v => !!v || 'Field is required']"
+                                :loading="franchiseChecking"
+                                label="Franchise Number"
+                                prepend-icon="mdi-store"
+                                required
+                        ></v-select>
+                    </v-col>
 
-                <v-col cols="12" sm="6">
-                    <v-menu
-                            v-model="menu"
-                            ref="menu"
-                            :close-on-content-click="false"
-                            transition="scale-transition"
-                            offset-y
-                            max-width="290px"
-                            min-width="290px"
-                    >
-                        <template v-slot:activator="{ on }">
-                            <v-text-field
-                                    prepend-icon="event"
-                                    :value="computedDateFormattedDatefns"
-                                    label="Lead Date"
-                                    readonly
-                                    v-on="on"
-                            ></v-text-field>
-                        </template>
-                        <v-date-picker
-                                v-model="date"
-                                @input="menu = false"
-                        ></v-date-picker>
-                    </v-menu>
-                </v-col>
-                <v-col cols="12" sm="6">
-                    <v-text-field
-                                  prepend-icon="mdi-briefcase"
-                                  label="Lead Type"
-                                  :value="contact.customerType | capitalize "
-                                  readonly
-                    />
-                </v-col>
+                    <v-col cols="12" sm="6">
+                        <v-menu
+                                v-model="menu"
+                                ref="menu"
+                                :close-on-content-click="false"
+                                transition="scale-transition"
+                                offset-y
+                                max-width="290px"
+                                min-width="290px"
+                        >
+                            <template v-slot:activator="{ on }">
+                                <v-text-field
+                                        prepend-icon="event"
+                                        :value="computedDateFormattedDatefns"
+                                        label="Lead Date"
+                                        readonly
+                                        v-on="on"
+                                ></v-text-field>
+                            </template>
+                            <v-date-picker
+                                    v-model="date"
+                                    @input="menu = false"
+                            ></v-date-picker>
+                        </v-menu>
+                    </v-col>
+                    <v-col cols="12" sm="6">
+                        <v-text-field
+                                      prepend-icon="mdi-briefcase"
+                                      label="Lead Type"
+                                      :value="contact.customerType | capitalize "
+                                      readonly
+                        />
+                    </v-col>
 
-                <v-col cols="12" sm="6">
-                    <v-autocomplete
-                            v-model="form.leadSourceId"
-                            :items="leadSources"
-                            :rules="[v => !!v || 'Field is required']"
-                            label="Lead Source"
-                            prepend-icon="mdi-web"
-                            required
-                    ></v-autocomplete>
-                </v-col>
-            </v-row>
-            <v-divider class="my-5"></v-divider>
+                    <v-col cols="12" sm="6">
+                        <v-autocomplete
+                                v-model="form.leadSourceId"
+                                :items="leadSources"
+                                :rules="[v => !!v || 'Field is required']"
+                                label="Lead Source"
+                                prepend-icon="mdi-web"
+                                required
+                        ></v-autocomplete>
+                    </v-col>
+                    <v-col cols="12" sm="6">
+                            <v-alert v-if="isOutsideFranchise"
+                                    outlined text
+                                     color="deep-orange"
+                                     dense
+                                     class="body-2">
+                                <p>
+                                    The <strong>Sales Contact postcode {{ contact.postcode}} </strong> is  <u>OUTSIDE</u> the selected
+                                    <strong>Franchise assigned postcodes: </strong>
+                                    <span v-for="(pcode, index) in franchisePostcodes" :key="index">
+                                        {{ pcode }}
+                                    </span>
+                                </p>
+                                <div>
+                                    <v-spacer></v-spacer>
+                                    <v-btn text x-small color="deep-orange" @click="dialog = true">More Info</v-btn>
+                                </div>
+                            </v-alert>
+                    </v-col>
+                </v-row>
+                <v-divider class="my-5"></v-divider>
 
-            <v-row>
-                <v-col cols="12" sm="6">
-                    <v-icon small>mdi-account</v-icon>
-                    <span class="ml-2"> {{ contact.firstName}} {{ contact.lastName }} </span>
-                </v-col>
-                <v-col cols="12" sm="6">
-                    <v-icon small>mdi-phone</v-icon>
-                    <span class="ml-2">{{ contact.contactNumber }}</span>
-                </v-col>
-            </v-row>
-            <v-row>
-                <v-col cols="12" sm="6">
-                    <v-icon small>mdi-email</v-icon>
-                    <span class="ml-2"> {{ contact.email }}</span>
-                </v-col>
-                <v-col cols="12" sm="6">
-                    <v-icon small>mdi-email</v-icon>
-                    <span class="ml-2">{{ contact.email2 }}</span>
-                </v-col>
-            </v-row>
-            <v-row>
-                <v-col cols="12" sm="6">
-                    <v-icon small>mdi-home</v-icon>
-                    <span class="ml-2">{{ contact.street1 }}</span>
-                </v-col>
-                <v-col cols="12" sm="6">
-                    <v-icon small>mdi-sign-direction</v-icon>
-                    <span class="ml-2"> {{ contact.street2 }}</span>
-                </v-col>
-            </v-row>
-            <v-row>
-                <v-col cols="12" sm="12">
-                    <v-icon small>mdi-map</v-icon>
-                    <span class="ml-2">{{contact.suburb}}, {{contact.state}}, {{contact.postcode}}</span>
-                </v-col>
-            </v-row>
-            <v-divider class="my-5"></v-divider>
-            <v-row>
-                <v-btn color="primary" class="mr-2" @click="$emit('cancel')">Cancel</v-btn>
-                <v-btn color="primary" class="mr-2" @click="$emit('moveBack')">Back</v-btn>
-                <v-btn color="primary"
-                       @click="moveNext"
-                       :disabled="!valid">Continue</v-btn>
-            </v-row>
-        </v-container>
-<!--        <pre>{{ parseISO(new Date().toISOString().substring(0,10)) }}</pre>-->
-        <pre>{{ franchiseItems }}</pre>
-    </v-form>
+                <v-row>
+                    <v-col cols="12" sm="6">
+                        <v-icon small>mdi-account</v-icon>
+                        <span class="ml-2"> {{ contact.firstName}} {{ contact.lastName }} </span>
+                    </v-col>
+                    <v-col cols="12" sm="6">
+                        <v-icon small>mdi-phone</v-icon>
+                        <span class="ml-2">{{ contact.contactNumber }}</span>
+                    </v-col>
+                </v-row>
+                <v-row>
+                    <v-col cols="12" sm="6">
+                        <v-icon small>mdi-email</v-icon>
+                        <span class="ml-2"> {{ contact.email }}</span>
+                    </v-col>
+                    <v-col cols="12" sm="6">
+                        <v-icon small>mdi-email</v-icon>
+                        <span class="ml-2">{{ contact.email2 }}</span>
+                    </v-col>
+                </v-row>
+                <v-row>
+                    <v-col cols="12" sm="6">
+                        <v-icon small>mdi-home</v-icon>
+                        <span class="ml-2">{{ contact.street1 }}</span>
+                    </v-col>
+                    <v-col cols="12" sm="6">
+                        <v-icon small>mdi-sign-direction</v-icon>
+                        <span class="ml-2"> {{ contact.street2 }}</span>
+                    </v-col>
+                </v-row>
+                <v-row>
+                    <v-col cols="12" sm="12">
+                        <v-icon small>mdi-map</v-icon>
+                        <span class="ml-2">{{contact.suburb}}, {{contact.state}}, {{contact.postcode}}</span>
+                    </v-col>
+                </v-row>
+                <v-divider class="my-5"></v-divider>
+                <v-row>
+                    <v-btn color="primary" class="mr-2" @click="$emit('cancel')">Cancel</v-btn>
+                    <v-btn color="primary" class="mr-2" @click="$emit('moveBack')">Back</v-btn>
+                    <v-btn color="primary"
+                           @click="moveNext"
+                           :disabled="!valid">Continue</v-btn>
+                </v-row>
+            </v-container>
+<!--            <pre>{{ franchiseItems }}</pre>-->
+<!--            <pre>{{ contact }}</pre>-->
+        </v-form>
+        <FormPostcodeAlert
+                :show="dialog"
+                @close="dialog = false"/>
+    </div>
 </template>
 
 <script>
@@ -123,22 +148,30 @@
     import {mapState} from 'vuex';
 
     import LeadSoruceAPI from "../../../api/LeadSourceAPI";
+    import PostcodeAPI from "../../../api/PostcodeAPI";
+    import FormPostcodeAlert from "./FormPostcodeAlert";
 
     export default {
         name: "FormLeadInformation",
         props: {
           contact: {required: true, type: Object}
         },
+        components: {FormPostcodeAlert},
         data(){
             return {
                 menu: false,
                 valid: false,
+                franchiseId: '',
+                franchisePostcodes: [],
+                franchiseChecking: false,
+                postcodeStatus: '',
+                dialog: false,
                 date: new Date().toISOString().substr(0, 10),
                 form: {
                     leadNumber: '',
                     franchiseId: '',
                     leadSourceId: '',
-                    leadDate: new Date().toISOString().substr(0, 10)
+                    leadDate: new Date().toISOString().substr(0, 10),
 
                 },
                 rules: {
@@ -163,15 +196,52 @@
                 })
 
                 return items;
+            },
+            isOutsideFranchise(){
+                return this.postcodeStatus === 'OUTSIDE_FRANCHISE';
             }
         },
         methods: {
             moveNext(){
                 this.$emit('moveNext', this.form)
+            },
+            checkFranchisePostcode(){
+
+                this.franchisePostcodes = [];
+                this.postcodeStatus = '';
+                this.franchiseChecking = true;
+
+                PostcodeAPI.getFranchisePostcodes(this.franchiseId).then(response => {
+
+                    this.franchiseChecking = false;
+
+                    const postcodes = response.data;
+
+                    const filtered = postcodes.filter(postcode => {
+                        this.franchisePostcodes.push(postcode.postcode);
+
+                        return postcode.postcode === this.contact.postcode
+                    })
+
+                    console.log('Filtered Length', filtered, this.contact.postcode);
+
+                    if(filtered.length === 0){
+                        this.dialog = true;
+                        this.postcodeStatus = 'OUTSIDE_FRANCHISE';
+
+                    }else{
+                        this.postcodeStatus = 'INSIDE_FRANCHISE';
+                    }
+
+                }).catch(error => {
+                    this.franchiseChecking = false
+                    console.log(error.response)
+                })
             }
         },
         created() {
             LeadSoruceAPI.getleadSoruces().then(response => {
+
 
                 const sources = response.data.map(s => {
                     return {
@@ -186,9 +256,27 @@
                 console.log(error);
             })
         },
-        mounted() {
+        watch: {
+            franchiseId(){
 
-        }
+                if(this.franchiseChecking) return;
+
+                this.checkFranchisePostcode();
+
+            },
+            contact: {
+                handler(){
+
+                    if(this.franchiseId !== ''){
+                        if(this.franchiseChecking) return;
+
+                        this.checkFranchisePostcode();
+                    }
+                },
+                deep: true
+            }
+        },
+
     }
 </script>
 

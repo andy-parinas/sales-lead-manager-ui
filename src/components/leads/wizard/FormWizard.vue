@@ -77,7 +77,8 @@
             },
             cancel(){
                 this.$router.back();
-            }
+            },
+
         }
     }
 </script>
