@@ -6,7 +6,11 @@ export default {
     async login(loginData) {
         await Csrf.getCSRFCookie();
 
-        return api().post('/api/login', loginData);
+        const response =  await api().post('/api/login', loginData);
+
+        console.log('AuthAPI', response);
+
+        return response;
     },
 
     async logout(){

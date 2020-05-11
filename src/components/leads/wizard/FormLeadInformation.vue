@@ -10,11 +10,14 @@
                     />
                 </v-col>
                 <v-col cols="12" sm="6">
-                    <v-text-field v-model="form.franchiseNumber"
-                                  prepend-icon="mdi-store"
-                                  label="Franchise Number"
-                                  :rules="rules.required"
-                    />
+                    <v-select
+                            v-model="form.franchiseId"
+                            :items="franchiseItems"
+                            :rules="[v => !!v || 'Field is required']"
+                            label="Franchise Number"
+                            prepend-icon="mdi-store"
+                            required
+                    ></v-select>
                 </v-col>
 
                 <v-col cols="12" sm="6">
@@ -49,6 +52,17 @@
                                   :value="contact.customerType | capitalize "
                                   readonly
                     />
+                </v-col>
+
+                <v-col cols="12" sm="6">
+                    <v-autocomplete
+                            v-model="form.leadSourceId"
+                            :items="leadSources"
+                            :rules="[v => !!v || 'Field is required']"
+                            label="Lead Source"
+                            prepend-icon="mdi-web"
+                            required
+                    ></v-autocomplete>
                 </v-col>
             </v-row>
             <v-divider class="my-5"></v-divider>
@@ -91,18 +105,24 @@
             </v-row>
             <v-divider class="my-5"></v-divider>
             <v-row>
-                <v-btn color="primary" class="mr-2" @click="$emit('moveBack')">Cancel</v-btn>
-                <v-btn color="primary" @click="$emit('moveNext')">Continue</v-btn>
+                <v-btn color="primary" class="mr-2" @click="$emit('cancel')">Cancel</v-btn>
+                <v-btn color="primary" class="mr-2" @click="$emit('moveBack')">Back</v-btn>
+                <v-btn color="primary"
+                       @click="moveNext"
+                       :disabled="!valid">Continue</v-btn>
             </v-row>
         </v-container>
 <!--        <pre>{{ parseISO(new Date().toISOString().substring(0,10)) }}</pre>-->
-<!--        <pre>{{ typeof }}</pre>-->
+        <pre>{{ franchiseItems }}</pre>
     </v-form>
 </template>
 
 <script>
 
     import {format, parseISO} from 'date-fns';
+    import {mapState} from 'vuex';
+
+    import LeadSoruceAPI from "../../../api/LeadSourceAPI";
 
     export default {
         name: "FormLeadInformation",
@@ -116,7 +136,8 @@
                 date: new Date().toISOString().substr(0, 10),
                 form: {
                     leadNumber: '',
-                    franchiseNumber: '',
+                    franchiseId: '',
+                    leadSourceId: '',
                     leadDate: new Date().toISOString().substr(0, 10)
 
                 },
@@ -124,32 +145,49 @@
                     required: [
                         v => !!v || 'This field is required',
                     ]
-                }
+                },
+                leadSources: []
             }
         },
         computed: {
+            ...mapState('auth', ['franchises']),
             computedDateFormattedDatefns () {
                 return this.date ? format(parseISO(this.date), 'dd/MM/yyyy') : ''
             },
-        },
-        // methods: {
-        //     formatDate (date) {
-        //         if (!date) return null
-        //
-        //         const [year, month, day] = date.split('-')
-        //         return `${day}/${month}/${year}`
-        //     },
-        //     parseDate (date) {
-        //         if (!date) return null
-        //
-        //         const [month, day, year] = date.split('/')
-        //         return `${year}-${month.padStart(2, '0')}-${day.padStart(2, '0')}`
-        //     },
-        // },
-        watch: {
-            date(){
-                console.log(this.date)
+            franchiseItems(){
+                const items = this.franchises.map(franchise => {
+                    return {
+                        value: franchise.id,
+                        text: franchise.franchiseNumber
+                    }
+                })
+
+                return items;
             }
+        },
+        methods: {
+            moveNext(){
+                this.$emit('moveNext', this.form)
+            }
+        },
+        created() {
+            LeadSoruceAPI.getleadSoruces().then(response => {
+
+                const sources = response.data.map(s => {
+                    return {
+                        value: s.id,
+                        text: s.name
+                    }
+                })
+
+                this.leadSources = sources;
+
+            }).catch(error => {
+                console.log(error);
+            })
+        },
+        mounted() {
+
         }
     }
 </script>

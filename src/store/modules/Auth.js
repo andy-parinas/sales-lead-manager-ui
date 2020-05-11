@@ -47,7 +47,7 @@ export default {
 
             if(response){
                 localStorage.removeItem('auth-user');
-                localStorage.removeItem('user-franchiser');
+                localStorage.removeItem('user-franchises');
                 commit('setCurrentUser', {});
                 commit('setFranchises', []);
                 dispatch('clearAllState', null, {root: true})

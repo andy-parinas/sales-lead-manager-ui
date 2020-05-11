@@ -23,7 +23,7 @@
             </v-row>
             <v-row>
                 <v-col cols="12" sm="6">
-                    <v-icon small>mdi-calendar</v-icon>
+                    <v-icon small>mdi-web</v-icon>
                     <span class="ml-2 caption font-weight-bold">Lead Source: </span> <span class="ml-1"> {{ data.leadSource | capitalize }} </span>
                 </v-col>
             </v-row>

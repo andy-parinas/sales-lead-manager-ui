@@ -11,9 +11,9 @@
                         <v-divider></v-divider>
                         <v-stepper-step :complete="stage > 3" step="3">Add Job Type</v-stepper-step>
                         <v-divider></v-divider>
-                        <v-stepper-step step="3">Add Appointment</v-stepper-step>
+                        <v-stepper-step :complete="stage > 4" step="4">Add Appointment</v-stepper-step>
                         <v-divider></v-divider>
-                        <v-stepper-step step="3">Finished</v-stepper-step>
+                        <v-stepper-step step="5">Finished</v-stepper-step>
                     </v-stepper-header>
                     <v-stepper-items>
                         <v-stepper-content step="1">
@@ -29,27 +29,33 @@
                                     @moveBack="moveBack"
                                     @cancel="cancel"/>
                         </v-stepper-content>
+                        <v-stepper-content step="3">
+                            <FormJobType
+                                    @moveNext="moveNext"
+                                    @moveBack="moveBack"
+                                    @cancel="cancel"/>
+                        </v-stepper-content>
                     </v-stepper-items>
                 </v-stepper>
             </v-col>
         </v-row>
-        <pre>{{ salesContact }}</pre>
-        <pre>{{ leadForm }}</pre>
+        <pre>{{ form }}</pre>
     </div>
 </template>
 
 <script>
     import FormSalesContactSelect from "./FormSalesContactSelect";
     import FormLeadInformation from "./FormLeadInformation";
+    import FormJobType from "./FormJobType";
 
     export default {
         name: "FormWizard",
-        components: { FormSalesContactSelect, FormLeadInformation },
+        components: { FormSalesContactSelect, FormLeadInformation, FormJobType },
         data(){
             return {
                 stage: 1,
                 salesContact: {},
-                leadForm: {
+                form: {
                     sales_contact_id: -1
                 }
             }
@@ -57,10 +63,11 @@
         methods: {
             setSalesContact(contact){
                 this.salesContact= Object.assign({}, contact)
-                this.leadForm.sales_contact_id = this.salesContact.id
+                this.form.sales_contact_id = this.salesContact.id
                 console.log('setSalesContact', this.salesContact)
             },
-            moveNext(){
+            moveNext(formData){
+                Object.assign(this.form, formData)
                 this.stage = this.stage + 1;
             },
             moveBack(){
