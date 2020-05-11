@@ -19,13 +19,15 @@
                         <v-stepper-content step="1">
                             <FormSalesContactSelect
                                     @setSalesContactId="setSalesContact"
-                                    @moveNext="moveNext"/>
+                                    @moveNext="moveNext"
+                                    @cancel="cancel"/>
                         </v-stepper-content>
                         <v-stepper-content step="2">
                             <FormLeadInformation
                                     :contact="salesContact"
                                     @moveNext="moveNext"
-                                    @moveBack="moveBack"/>
+                                    @moveBack="moveBack"
+                                    @cancel="cancel"/>
                         </v-stepper-content>
                     </v-stepper-items>
                 </v-stepper>
@@ -65,6 +67,9 @@
                 if(this.stage > 0){
                     this.stage = this.stage - 1;
                 }
+            },
+            cancel(){
+                this.$router.back();
             }
         }
     }

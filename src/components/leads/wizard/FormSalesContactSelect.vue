@@ -34,7 +34,7 @@
                </v-radio-group>
            </v-col>
        </v-row>
-       <v-btn color="primary" class="mr-2">Cancel</v-btn>
+       <v-btn color="primary" class="mr-2" @click="$emit('cancel')">Cancel</v-btn>
        <v-btn color="primary" :disabled="selected === null" @click="$emit('moveNext')">Continue</v-btn>
    </div>
 </template>
