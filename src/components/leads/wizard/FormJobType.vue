@@ -46,14 +46,27 @@
                        ></v-autocomplete>
                    </v-col>
                    <v-col cols="12" sm="6">
-                       <v-text-field v-model="form.takenBy"
-                                     prepend-icon="mdi-card-account-details"
-                                     label="Design Advisor"
-                                     :rules="rules.required"
-                       />
+<!--                       <v-text-field v-model="form.takenBy"-->
+<!--                                     prepend-icon="mdi-card-account-details"-->
+<!--                                     label="Design Advisor"-->
+<!--                                     :rules="rules.required"-->
+<!--                       />-->
+                       <v-autocomplete
+                               v-model="form.designAssessorId"
+                               :items="designAssessors"
+                               :rules="rules.required"
+                               :loading="searchAssessorLoading"
+                               :search-input.sync="search"
+                               no-filter
+                               cache-items
+                               label="Design Advisor"
+                               prepend-icon="mdi-card-account-details"
+                               required
+                       ></v-autocomplete>
                    </v-col>
                    <v-col cols="12" sm="6">
                        <v-textarea
+                               v-model="form.description"
                                label="Description"
                                auto-grow
                                outlined
@@ -67,6 +80,7 @@
                    <v-btn color="primary" class="mr-2" @click="$emit('moveBack')">Cancel</v-btn>
                    <v-btn color="primary" class="mr-2" @click="$emit('moveBack')">Back</v-btn>
                    <v-btn color="primary"
+                          :disabled="!valid"
                           @click="moveNext">Continue</v-btn>
                </v-row>
            </v-container>
@@ -79,6 +93,7 @@
     import {format, parseISO} from 'date-fns';
 
     import ProductAPI from "../../../api/ProductAPI";
+    import DesignAssessorAPI from "../../../api/DesignAssessorAPI";
 
     export default {
         name: "FormJobType",
@@ -91,13 +106,18 @@
                     takenBy: '',
                     dateAllocated: new Date().toISOString().substr(0, 10),
                     productId: '',
+                    designAssessorId: '',
+                    description: ''
                 },
                 rules: {
                     required: [
                         v => !!v || 'This field is required',
                     ]
                 },
-                products: []
+                products: [],
+                designAssessors: [],
+                searchAssessorLoading: false,
+                search: ''
             }
         },
         computed: {
@@ -106,6 +126,9 @@
             },
         },
         methods: {
+            test(val){
+              console.log('Activating', val)
+            },
             getAllProducts(){
                 this.productLoading = true;
                 ProductAPI.getProducts().then(response => {
@@ -124,6 +147,40 @@
             },
             moveNext(){
                 this.$emit('moveNext', this.form)
+            },
+            searchAssessor(val){
+
+                console.log('searching')
+
+                if(this.searchAssessorLoading) return;
+
+                this.searchAssessorLoading = true;
+                DesignAssessorAPI.search(val).then(response => {
+
+                    this.designAssessors = response.data.map(assessor => {
+                        return {
+                            value: assessor.id,
+                            text: assessor.firstName + ' ' + assessor.lastName
+                        }
+                    })
+
+                }).catch(error => {
+                    console.log(error);
+
+                }).finally(() => {
+                    this.searchAssessorLoading = false;
+                })
+
+
+            }
+        },
+        watch: {
+            search(newValue, oldValue){
+                if(newValue && newValue.length >= 3){
+                    if(newValue !== oldValue){
+                        this.searchAssessor(newValue);
+                    }
+                }
             }
         },
         created() {
