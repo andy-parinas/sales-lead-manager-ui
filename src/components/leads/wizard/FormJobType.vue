@@ -36,11 +36,14 @@
                        </v-menu>
                    </v-col>
                    <v-col cols="12" sm="6">
-                       <v-text-field v-model="form.takenBy"
-                                     prepend-icon="mdi-cart"
-                                     label="Product"
-                                     :rules="rules.required"
-                       />
+                       <v-autocomplete
+                               v-model="form.productId"
+                               :items="products"
+                               :rules="rules.required"
+                               label="Product"
+                               prepend-icon="mdi-cart"
+                               required
+                       ></v-autocomplete>
                    </v-col>
                    <v-col cols="12" sm="6">
                        <v-text-field v-model="form.takenBy"
@@ -64,7 +67,7 @@
                    <v-btn color="primary" class="mr-2" @click="$emit('moveBack')">Cancel</v-btn>
                    <v-btn color="primary" class="mr-2" @click="$emit('moveBack')">Back</v-btn>
                    <v-btn color="primary"
-                          @click="$emit('moveNext')">Continue</v-btn>
+                          @click="moveNext">Continue</v-btn>
                </v-row>
            </v-container>
        </v-form>
@@ -75,21 +78,26 @@
 <script>
     import {format, parseISO} from 'date-fns';
 
+    import ProductAPI from "../../../api/ProductAPI";
+
     export default {
         name: "FormJobType",
         data(){
             return {
                 menu: false,
                 valid: false,
+                productLoading: false,
                 form: {
                     takenBy: '',
                     dateAllocated: new Date().toISOString().substr(0, 10),
+                    productId: '',
                 },
                 rules: {
                     required: [
                         v => !!v || 'This field is required',
                     ]
-                }
+                },
+                products: []
             }
         },
         computed: {
@@ -98,7 +106,28 @@
             },
         },
         methods: {
+            getAllProducts(){
+                this.productLoading = true;
+                ProductAPI.getProducts().then(response => {
 
+                    this.products = response.data.map(product => {
+                        return {
+                            value: product.id,
+                            text: product.name
+                        }
+                    })
+                }).catch(error => {
+                    console.log(error)
+                }).finally(() => {
+                    this.productLoading = false;
+                })
+            },
+            moveNext(){
+                this.$emit('moveNext', this.form)
+            }
+        },
+        created() {
+            this.getAllProducts();
         }
     }
 </script>

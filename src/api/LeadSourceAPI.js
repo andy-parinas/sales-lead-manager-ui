@@ -1,7 +1,7 @@
 
 import api from "./api";
 
-const LeadSoruceAPI = {
+const LeadSourceAPI = {
 
     async getleadSoruces(){
 
@@ -16,4 +16,4 @@ const LeadSoruceAPI = {
 
 }
 
-export default LeadSoruceAPI;
+export default LeadSourceAPI;

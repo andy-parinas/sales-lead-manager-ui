@@ -128,7 +128,7 @@
     import {format, parseISO} from 'date-fns';
     import {mapState} from 'vuex';
 
-    import LeadSoruceAPI from "../../../api/LeadSourceAPI";
+    import LeadSourceAPI from "../../../api/LeadSourceAPI";
     import PostcodeAPI from "../../../api/PostcodeAPI";
     import FormPostcodeAlert from "./FormPostcodeAlert";
 
@@ -220,7 +220,7 @@
             }
         },
         created() {
-            LeadSoruceAPI.getleadSoruces().then(response => {
+            LeadSourceAPI.getleadSoruces().then(response => {
 
 
                 const sources = response.data.map(s => {
