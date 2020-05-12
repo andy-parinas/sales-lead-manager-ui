@@ -66,24 +66,8 @@
                                 required
                         ></v-autocomplete>
                     </v-col>
-                    <v-col cols="12" sm="6">
-                            <v-alert v-if="isOutsideFranchise"
-                                    outlined text
-                                     color="deep-orange"
-                                     dense
-                                     class="body-2">
-                                <p>
-                                    The <strong>Sales Contact postcode {{ contact.postcode}} </strong> is  <u>OUTSIDE</u> the selected
-                                    <strong>Franchise assigned postcodes: </strong>
-                                    <span v-for="(pcode, index) in franchisePostcodes" :key="index">
-                                        {{ pcode }}
-                                    </span>
-                                </p>
-                                <div>
-                                    <v-spacer></v-spacer>
-                                    <v-btn text x-small color="deep-orange" @click="dialog = true">More Info</v-btn>
-                                </div>
-                            </v-alert>
+                    <v-col cols="12" sm="12" >
+                        <FormPostcodeAlert  v-if="isOutsideFranchise" />
                     </v-col>
                 </v-row>
                 <v-divider class="my-5"></v-divider>
@@ -136,9 +120,6 @@
 <!--            <pre>{{ franchiseItems }}</pre>-->
 <!--            <pre>{{ contact }}</pre>-->
         </v-form>
-        <FormPostcodeAlert
-                :show="dialog"
-                @close="dialog = false"/>
     </div>
 </template>
 
@@ -165,7 +146,6 @@
                 franchisePostcodes: [],
                 franchiseChecking: false,
                 postcodeStatus: '',
-                dialog: false,
                 date: new Date().toISOString().substr(0, 10),
                 form: {
                     leadNumber: '',
@@ -258,6 +238,7 @@
         },
         watch: {
             franchiseId(){
+                this.form.franchiseId = this.franchiseId;
 
                 if(this.franchiseChecking) return;
 

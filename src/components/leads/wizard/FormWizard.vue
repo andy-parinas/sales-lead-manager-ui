@@ -1,5 +1,6 @@
 <template>
     <div>
+
         <v-row justify="center">
             <v-col cols="12" sm="11">
                 <div>Create New Lead</div>
