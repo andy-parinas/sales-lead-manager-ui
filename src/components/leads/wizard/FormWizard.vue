@@ -14,7 +14,7 @@
                         <v-divider></v-divider>
                         <v-stepper-step :complete="stage > 4" step="4">Add Appointment</v-stepper-step>
                         <v-divider></v-divider>
-                        <v-stepper-step step="5">Finished</v-stepper-step>
+                        <v-stepper-step step="5">Confirm</v-stepper-step>
                     </v-stepper-header>
                     <v-stepper-items>
                         <v-stepper-content step="1">
@@ -36,6 +36,18 @@
                                     @moveBack="moveBack"
                                     @cancel="cancel"/>
                         </v-stepper-content>
+                        <v-stepper-content step="4">
+                            <FormAppointment
+                                    @moveNext="moveNext"
+                                    @moveBack="moveBack"
+                                    @cancel="cancel"/>
+                        </v-stepper-content>
+                        <v-stepper-content step="5">
+                            <FormAppointment
+                                    @moveNext="moveNext"
+                                    @moveBack="moveBack"
+                                    @cancel="cancel"/>
+                        </v-stepper-content>
                     </v-stepper-items>
                 </v-stepper>
             </v-col>
@@ -48,10 +60,11 @@
     import FormSalesContactSelect from "./FormSalesContactSelect";
     import FormLeadInformation from "./FormLeadInformation";
     import FormJobType from "./FormJobType";
+    import FormAppointment from "./FormAppointment";
 
     export default {
         name: "FormWizard",
-        components: { FormSalesContactSelect, FormLeadInformation, FormJobType },
+        components: { FormSalesContactSelect, FormLeadInformation, FormJobType, FormAppointment },
         data(){
             return {
                 stage: 1,
