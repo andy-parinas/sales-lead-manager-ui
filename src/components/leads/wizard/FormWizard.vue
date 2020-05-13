@@ -25,7 +25,6 @@
                         </v-stepper-content>
                         <v-stepper-content step="2">
                             <FormLeadInformation
-                                    :contact="salesContact"
                                     @moveNext="moveNext"
                                     @moveBack="moveBack"
                                     @cancel="cancel"/>
@@ -62,23 +61,26 @@
     import FormJobType from "./FormJobType";
     import FormAppointment from "./FormAppointment";
 
+    import {mapState, mapActions} from 'vuex';
+
     export default {
         name: "FormWizard",
         components: { FormSalesContactSelect, FormLeadInformation, FormJobType, FormAppointment },
         data(){
             return {
                 stage: 1,
-                salesContact: {},
                 form: {
                     sales_contact_id: -1
                 }
             }
         },
+        computed: {
+          ...mapState('salesContacts', ['selectedContact'])
+        },
         methods: {
-            setSalesContact(contact){
-                this.salesContact= Object.assign({}, contact)
-                this.form.sales_contact_id = this.salesContact.id
-                console.log('setSalesContact', this.salesContact)
+            ...mapActions('salesContacts', ['selectContact']),
+            setSalesContact(contactId){
+                this.form.sales_contact_id = contactId
             },
             moveNext(formData){
                 Object.assign(this.form, formData)
@@ -91,6 +93,7 @@
             },
             cancel(){
                 this.$router.back();
+                this.selectContact(null)
             },
 
         }

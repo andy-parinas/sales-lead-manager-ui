@@ -24,9 +24,25 @@ const SalesContactAPI = {
 
     async getContacts(options, searchOptions){
 
+
         const size = options.itemsPerPage ? options.itemsPerPage : 10;
 
         let uri = '/api/contacts?size=' + size;
+
+        if (searchOptions && searchOptions.searchFor && searchOptions.searchIn){
+            if(searchOptions.searchFor.trim() !== '' && searchOptions.searchIn.trim() !== ''){
+                uri = uri + `&search=${encodeURIComponent(searchOptions.searchFor)}&on=${searchOptions.searchIn}`;
+            }
+        }else if(searchOptions && searchOptions.searchFor){
+            if(searchOptions.searchFor.trim() !== ''){
+
+                uri = '/api/contacts/search?size=' + size;
+
+                uri = uri + `&search=${encodeURIComponent(searchOptions.searchFor)}`;
+
+            }
+        }
+
 
         if (options.sortBy.length > 0){
             const field = Utils.camelToSnake(options.sortBy[0])
@@ -39,16 +55,14 @@ const SalesContactAPI = {
             uri = uri + `&page=${options.page}`
         }
 
-        if (searchOptions && searchOptions.searchFor && searchOptions.searchIn){
-            if(searchOptions.searchFor.trim() !== '' && searchOptions.searchIn.trim() !== ''){
-                uri = uri + `&search=${encodeURIComponent(searchOptions.searchFor)}&on=${searchOptions.searchIn}`;
-            }
-        }
+        console.log('API uri', uri);
 
         const response = await api().get(uri);
+        console.log('API', response);
 
         return response.data;
     },
+
     async update(data){
         // Normalize the data for submission to backend
         const formData = {

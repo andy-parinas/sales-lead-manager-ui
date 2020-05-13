@@ -4,7 +4,8 @@
            <v-col cols="12">
                <v-row>
                    <v-col cols="12">
-                       <v-text-field outlined clearable
+                       <v-text-field outlined clearable v-model="searchFor"
+                                     :loading="searchLoading"
                                      placeholder="Search for First Name, Last Name or Email"
                                      hint="Only First 10 is displayed"
                                      persistent-hint>
@@ -40,14 +41,25 @@
 </template>
 
 <script>
-    import {mapState} from 'vuex';
+    import {mapState, mapActions} from 'vuex';
 
     export default {
         name: "FormSalesContactSelect",
         data() {
             return {
-                selectedContact: null,
                 selected: null,
+                options: {
+                    page: 1,
+                    itemsPerPage: 10,
+                    sortBy: ['firstName'],
+                    sortDesc: [false],
+                    groupBy: [],
+                    groupDesc: [],
+                    mustSort: false,
+                    multiSort: false
+                },
+                searchFor: '',
+                searchLoading: false
             }
         },
         computed: {
@@ -55,12 +67,33 @@
 
         },
         methods: {
-
+            ...mapActions('salesContacts', ['selectContact', 'fetchSalesContacts'])
         },
         watch: {
             selected(){
-                console.log('Selected', this.selected);
-                this.$emit('setSalesContactId', this.selected)
+                this.$emit('setSalesContactId', this.selected.id)
+                this.selectContact(this.selected)
+            },
+
+            searchFor(){
+
+                if(this.searchLoading) return;
+
+                if(this.searchFor !== null && this.searchFor.trim() !== '' && this.searchFor.length >= 3){
+                    this.searchLoading = true;
+                    console.log('Search for Contacts');
+                    this.fetchSalesContacts({
+                        options: this.options,
+                        searchOptions: {
+                            searchFor: this.searchFor
+                    }}).then(() => {
+                        this.searchLoading = false;
+
+                    }).catch(error => {
+                        console.log(error);
+                        this.searchLoading = false;
+                    })
+                }
             }
         }
     }

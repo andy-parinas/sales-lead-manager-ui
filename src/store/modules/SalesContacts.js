@@ -6,7 +6,8 @@ export default {
 
     state: {
         salesContacts: [],
-        meta: {}
+        meta: {},
+        selectedContact: null
     },
     getters: {
         getSalesContactById(state){
@@ -25,6 +26,9 @@ export default {
         },
         addSalesContact(state, contact){
             state.salesContacts.push(contact);
+        },
+        setSelectedContact(state, contact){
+            state.selectedContact = contact;
         }
     },
     actions: {
@@ -82,6 +86,9 @@ export default {
             commit('setSalesContacts', contacts);
             commit('setSalesContactMeta', newMeta);
 
+        },
+        selectContact({commit}, contact){
+            commit('setSelectedContact', contact)
         }
     }
 }

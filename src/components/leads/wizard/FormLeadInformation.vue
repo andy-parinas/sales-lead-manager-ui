@@ -47,11 +47,11 @@
                             ></v-date-picker>
                         </v-menu>
                     </v-col>
-                    <v-col cols="12" sm="6">
+                    <v-col cols="12" sm="6" v-if="selectedContact">
                         <v-text-field
                                       prepend-icon="mdi-briefcase"
                                       label="Lead Type"
-                                      :value="contact.customerType | capitalize "
+                                      :value="selectedContact.customerType | capitalize "
                                       readonly
                         />
                     </v-col>
@@ -72,50 +72,52 @@
                 </v-row>
                 <v-divider class="my-5"></v-divider>
 
-                <v-row>
-                    <v-col cols="12" sm="6">
-                        <v-icon small>mdi-account</v-icon>
-                        <span class="ml-2"> {{ contact.firstName}} {{ contact.lastName }} </span>
-                    </v-col>
-                    <v-col cols="12" sm="6">
-                        <v-icon small>mdi-phone</v-icon>
-                        <span class="ml-2">{{ contact.contactNumber }}</span>
-                    </v-col>
-                </v-row>
-                <v-row>
-                    <v-col cols="12" sm="6">
-                        <v-icon small>mdi-email</v-icon>
-                        <span class="ml-2"> {{ contact.email }}</span>
-                    </v-col>
-                    <v-col cols="12" sm="6">
-                        <v-icon small>mdi-email</v-icon>
-                        <span class="ml-2">{{ contact.email2 }}</span>
-                    </v-col>
-                </v-row>
-                <v-row>
-                    <v-col cols="12" sm="6">
-                        <v-icon small>mdi-home</v-icon>
-                        <span class="ml-2">{{ contact.street1 }}</span>
-                    </v-col>
-                    <v-col cols="12" sm="6">
-                        <v-icon small>mdi-sign-direction</v-icon>
-                        <span class="ml-2"> {{ contact.street2 }}</span>
-                    </v-col>
-                </v-row>
-                <v-row>
-                    <v-col cols="12" sm="12">
-                        <v-icon small>mdi-map</v-icon>
-                        <span class="ml-2">{{contact.suburb}}, {{contact.state}}, {{contact.postcode}}</span>
-                    </v-col>
-                </v-row>
-                <v-divider class="my-5"></v-divider>
-                <v-row>
-                    <v-btn color="primary" class="mr-2" @click="$emit('cancel')">Cancel</v-btn>
-                    <v-btn color="primary" class="mr-2" @click="$emit('moveBack')">Back</v-btn>
-                    <v-btn color="primary"
-                           @click="moveNext"
-                           :disabled="!valid">Continue</v-btn>
-                </v-row>
+                <div v-if="selectedContact">
+                    <v-row>
+                        <v-col cols="12" sm="6">
+                            <v-icon small>mdi-account</v-icon>
+                            <span class="ml-2"> {{ selectedContact.firstName}} {{ selectedContact.lastName }} </span>
+                        </v-col>
+                        <v-col cols="12" sm="6">
+                            <v-icon small>mdi-phone</v-icon>
+                            <span class="ml-2">{{ selectedContact.contactNumber }}</span>
+                        </v-col>
+                    </v-row>
+                    <v-row>
+                        <v-col cols="12" sm="6">
+                            <v-icon small>mdi-email</v-icon>
+                            <span class="ml-2"> {{ selectedContact.email }}</span>
+                        </v-col>
+                        <v-col cols="12" sm="6">
+                            <v-icon small>mdi-email</v-icon>
+                            <span class="ml-2">{{ selectedContact.email2 }}</span>
+                        </v-col>
+                    </v-row>
+                    <v-row>
+                        <v-col cols="12" sm="6">
+                            <v-icon small>mdi-home</v-icon>
+                            <span class="ml-2">{{ selectedContact.street1 }}</span>
+                        </v-col>
+                        <v-col cols="12" sm="6">
+                            <v-icon small>mdi-sign-direction</v-icon>
+                            <span class="ml-2"> {{ selectedContact.street2 }}</span>
+                        </v-col>
+                    </v-row>
+                    <v-row>
+                        <v-col cols="12" sm="12">
+                            <v-icon small>mdi-map</v-icon>
+                            <span class="ml-2">{{selectedContact.suburb}}, {{selectedContact.state}}, {{selectedContact.postcode}}</span>
+                        </v-col>
+                    </v-row>
+                    <v-divider class="my-5"></v-divider>
+                    <v-row>
+                        <v-btn color="primary" class="mr-2" @click="$emit('cancel')">Cancel</v-btn>
+                        <v-btn color="primary" class="mr-2" @click="$emit('moveBack')">Back</v-btn>
+                        <v-btn color="primary"
+                               @click="moveNext"
+                               :disabled="!valid">Continue</v-btn>
+                    </v-row>
+                </div>
             </v-container>
 <!--            <pre>{{ franchiseItems }}</pre>-->
 <!--            <pre>{{ contact }}</pre>-->
@@ -134,9 +136,6 @@
 
     export default {
         name: "FormLeadInformation",
-        props: {
-          contact: {required: true, type: Object}
-        },
         components: {FormPostcodeAlert},
         data(){
             return {
@@ -164,6 +163,7 @@
         },
         computed: {
             ...mapState('auth', ['franchises']),
+            ...mapState('salesContacts', ['selectedContact']),
             computedDateFormattedDatefns () {
                 return this.date ? format(parseISO(this.date), 'dd/MM/yyyy') : ''
             },
@@ -200,10 +200,9 @@
                     const filtered = postcodes.filter(postcode => {
                         this.franchisePostcodes.push(postcode.postcode);
 
-                        return postcode.postcode === this.contact.postcode
+                        return postcode.postcode === this.selectedContact.postcode
                     })
 
-                    console.log('Filtered Length', filtered, this.contact.postcode);
 
                     if(filtered.length === 0){
                         this.dialog = true;
@@ -245,9 +244,10 @@
                 this.checkFranchisePostcode();
 
             },
-            contact: {
-                handler(){
+            selectedContact: {
 
+                handler(){
+                    console.log('watching selected contact')
                     if(this.franchiseId !== ''){
                         if(this.franchiseChecking) return;
 
