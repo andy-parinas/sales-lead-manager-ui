@@ -5,7 +5,7 @@
                 <LeadTabDetails
                         title="Details"
                         :lead="lead">
-                    <template v-slot:actions>
+                    <template v-slot:action>
                         <v-btn text @click="goBack">
                             <v-icon>mdi-arrow-left-bold</v-icon>
                             <span> Go Back </span>

@@ -44,7 +44,7 @@
                         <v-stepper-content step="5">
                             <FormConfirm
                                     :summary="form"
-                                    @moveNext="moveNext"
+                                    @confirm="create"
                                     @moveBack="moveBack"
                                     @cancel="cancel"/>
                         </v-stepper-content>
@@ -52,7 +52,6 @@
                 </v-stepper>
             </v-col>
         </v-row>
-        <pre>{{ form }}</pre>
     </div>
 </template>
 
@@ -93,6 +92,7 @@
                     jobType: {
                         takenBy: '',
                         dateAllocated: '',
+                        productId: '',
                         product: '',
                         description: '',
                         designAdvisor: '',
@@ -101,6 +101,7 @@
                     appointment: {
                         appointmentDate: '',
                         appointmentTime: '',
+                        quotedPrice: '',
                         notes: '',
                         outcome: '',
                         comments: ''
@@ -113,6 +114,7 @@
         },
         methods: {
             ...mapActions('salesContacts', ['selectContact']),
+            ...mapActions('leads', ['createLead']),
             setSalesContact(contactId){
                 this.form.sales_contact_id = contactId
             },
@@ -129,6 +131,14 @@
                 this.$router.back();
                 this.selectContact(null)
             },
+            create(){
+                this.createLead(this.form).then(() => {
+                    this.$router.push({name: 'LeadTable'})
+                    console.log('Lead Created');
+                }).catch(error => {
+                    console.log(error.response);
+                })
+            }
 
         }
     }

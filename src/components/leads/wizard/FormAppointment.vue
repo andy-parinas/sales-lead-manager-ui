@@ -93,7 +93,7 @@
 
                     <v-col cols="12" sm="6">
                         <v-textarea
-                                v-model="form.notes"
+                                v-model="form.comments"
                                 rows="1"
                                 outlined
                                 label="Comments"
@@ -131,7 +131,8 @@
                     appointmentTime: '',
                     outcome: '',
                     quotedPrice: '',
-                    notes: ''
+                    notes: '',
+                    comments: ''
 
                 },
                 rules: {

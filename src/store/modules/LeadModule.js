@@ -6,7 +6,7 @@ export default {
     state: {
         leads: [],
         meta: {},
-        lead: {}
+        lead: null
     },
     mutations: {
         setLeads(state, leads){
@@ -45,7 +45,14 @@ export default {
 
         },
         clearLeadObject({commit}){
-            commit('setLead', {});
+            commit('setLead', null);
+        },
+
+        async createLead({commit}, formData){
+            const response = await  LeadAPI.createLead(formData);
+
+            commit('setLead', response.data);
+            console.log(response);
         }
 
     }
