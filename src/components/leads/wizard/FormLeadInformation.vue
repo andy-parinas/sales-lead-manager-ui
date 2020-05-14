@@ -149,7 +149,9 @@
                 form: {
                     leadNumber: '',
                     franchiseId: '',
+                    franchiseNumber: '',
                     leadSourceId: '',
+                    leadSourceName: '',
                     leadDate: new Date().toISOString().substr(0, 10),
 
                 },
@@ -183,6 +185,22 @@
         },
         methods: {
             moveNext(){
+
+                if(this.franchiseItems.length > 0 && this.leadSources.length > 0){
+
+                    //Include the Text information in the form:
+                    const franchise = this.franchiseItems.find(f => {
+                        return f.value === this.form.franchiseId
+                    })
+
+                    if (franchise) this.form.franchiseNumber = franchise.text;
+
+                    const leadSource = this.leadSources.find(s => {
+                        return s.value === this.form.leadSourceId
+                    })
+                    if( leadSource ) this.form.leadSourceName = leadSource.text;
+                }
+
                 this.$emit('moveNext', this.form)
             },
             checkFranchisePostcode(){

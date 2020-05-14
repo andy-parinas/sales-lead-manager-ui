@@ -37,26 +37,24 @@
                    </v-col>
                    <v-col cols="12" sm="6">
                        <v-autocomplete
-                               v-model="form.productId"
+                               v-model="product"
                                :items="products"
                                :rules="rules.required"
+                               return-object
                                label="Product"
                                prepend-icon="mdi-cart"
                                required
                        ></v-autocomplete>
                    </v-col>
                    <v-col cols="12" sm="6">
-<!--                       <v-text-field v-model="form.takenBy"-->
-<!--                                     prepend-icon="mdi-card-account-details"-->
-<!--                                     label="Design Advisor"-->
-<!--                                     :rules="rules.required"-->
-<!--                       />-->
                        <v-autocomplete
-                               v-model="form.designAssessorId"
+                               v-model="designAssessor"
                                :items="designAssessors"
                                :rules="rules.required"
                                :loading="searchAssessorLoading"
                                :search-input.sync="search"
+                               @keyup="searchOnKeyUp"
+                               return-object
                                no-filter
                                cache-items
                                label="Design Advisor"
@@ -102,11 +100,15 @@
                 menu: false,
                 valid: false,
                 productLoading: false,
+                designAssessor: null,
+                product: null,
                 form: {
                     takenBy: '',
                     dateAllocated: new Date().toISOString().substr(0, 10),
                     productId: '',
+                    productName: '',
                     designAssessorId: '',
+                    designAssessorName: '',
                     description: ''
                 },
                 rules: {
@@ -126,9 +128,6 @@
             },
         },
         methods: {
-            test(val){
-              console.log('Activating', val)
-            },
             getAllProducts(){
                 this.productLoading = true;
                 ProductAPI.getProducts().then(response => {
@@ -146,7 +145,34 @@
                 })
             },
             moveNext(){
+
+                if(this.product) {
+                    this.form.productId = this.product.value;
+                    this.form.productName = this.product.text;
+                }
+
+                if(this.designAssessor){
+                    this.form.designAssessorId = this.designAssessor.value;
+                    this.form.designAssessorName = this.designAssessor.text;
+                }
+
                 this.$emit('moveNext', this.form)
+            },
+            searchOnKeyUp(event){
+
+                const excludedKeys = [
+                    9,16,18,17, 112,113,114,115,116,117,118,119,120,121,122, 123,
+                    36,35,144,20,45,33,34,27,37,38,39,40,91,13
+                ]
+
+                console.log(event);
+                // Do not listen for the Tab Key
+                if(event && !excludedKeys.includes(event.keyCode)){
+                    if(this.search && this.search.length >= 3 && this.search.trim() !== '' ){
+                        this.searchAssessor(this.search)
+                    }
+                }
+
             },
             searchAssessor(val){
 
@@ -175,12 +201,15 @@
             }
         },
         watch: {
-            search(newValue, oldValue){
-                if(newValue && newValue.length >= 3){
-                    if(newValue !== oldValue){
-                        this.searchAssessor(newValue);
-                    }
-                }
+            // search(newValue, oldValue){
+            //     if(newValue && newValue.length >= 3){
+            //         if(newValue !== oldValue){
+            //             this.searchAssessor(newValue);
+            //         }
+            //     }
+            // },
+            designAssessor(){
+                console.log(this.designAssessor);
             }
         },
         created() {
