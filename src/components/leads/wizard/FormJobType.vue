@@ -106,9 +106,9 @@
                     takenBy: '',
                     dateAllocated: new Date().toISOString().substr(0, 10),
                     productId: '',
-                    productName: '',
+                    product: '',
                     designAssessorId: '',
-                    designAssessorName: '',
+                    designAdvisor: '',
                     description: ''
                 },
                 rules: {
@@ -148,15 +148,17 @@
 
                 if(this.product) {
                     this.form.productId = this.product.value;
-                    this.form.productName = this.product.text;
+                    this.form.product = this.product.text;
                 }
 
                 if(this.designAssessor){
                     this.form.designAssessorId = this.designAssessor.value;
-                    this.form.designAssessorName = this.designAssessor.text;
+                    this.form.designAdvisor = this.designAssessor.text;
                 }
 
-                this.$emit('moveNext', this.form)
+                this.$emit('moveNext', {
+                    jobType: this.form
+                })
             },
             searchOnKeyUp(event){
 
@@ -198,18 +200,6 @@
                 })
 
 
-            }
-        },
-        watch: {
-            // search(newValue, oldValue){
-            //     if(newValue && newValue.length >= 3){
-            //         if(newValue !== oldValue){
-            //             this.searchAssessor(newValue);
-            //         }
-            //     }
-            // },
-            designAssessor(){
-                console.log(this.designAssessor);
             }
         },
         created() {

@@ -32,7 +32,7 @@
                     <span class="ml-2 caption font-weight-bold"> Design Advisor: </span> <span> {{ data.designAdvisor }} </span>
                 </v-col>
             </v-row>
-            <v-row>
+            <v-row v-if="data.designAdvisorContactNumber && data.designAdvisorEmail">
                 <v-col cols="12" sm="6">
                     <v-icon small>mdi-phone</v-icon>
                     <span class="ml-2"> {{ data.designAdvisorContactNumber }} </span>

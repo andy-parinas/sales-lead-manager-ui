@@ -151,7 +151,7 @@
                     franchiseId: '',
                     franchiseNumber: '',
                     leadSourceId: '',
-                    leadSourceName: '',
+                    leadSource: '',
                     leadDate: new Date().toISOString().substr(0, 10),
 
                 },
@@ -198,10 +198,15 @@
                     const leadSource = this.leadSources.find(s => {
                         return s.value === this.form.leadSourceId
                     })
-                    if( leadSource ) this.form.leadSourceName = leadSource.text;
+                    if( leadSource ) this.form.leadSource = leadSource.text;
                 }
 
-                this.$emit('moveNext', this.form)
+                this.$emit('moveNext', {
+                    details: {
+                        ...this.form,
+                        ...this.selectedContact
+                    }
+                })
             },
             checkFranchisePostcode(){
 

@@ -42,7 +42,8 @@
                                     @cancel="cancel"/>
                         </v-stepper-content>
                         <v-stepper-content step="5">
-                            <FormAppointment
+                            <FormConfirm
+                                    :summary="form"
                                     @moveNext="moveNext"
                                     @moveBack="moveBack"
                                     @cancel="cancel"/>
@@ -62,15 +63,48 @@
     import FormAppointment from "./FormAppointment";
 
     import {mapState, mapActions} from 'vuex';
+    import FormConfirm from "./FormConfirm";
 
     export default {
         name: "FormWizard",
-        components: { FormSalesContactSelect, FormLeadInformation, FormJobType, FormAppointment },
+        components: {FormConfirm, FormSalesContactSelect, FormLeadInformation, FormJobType, FormAppointment },
         data(){
             return {
                 stage: 1,
                 form: {
-                    sales_contact_id: -1
+                    sales_contact_id: -1,
+                    details: {
+                        leadNumber: '',
+                        franchiseNumber: '',
+                        leadDate: '',
+                        customerType: '',
+                        leadSource: '',
+                        firstName: '',
+                        lastName: '',
+                        contactNumber: '',
+                        email: '',
+                        email2: '',
+                        street1: '',
+                        street2: '',
+                        suburb: '',
+                        state: '',
+                        postcode: ''
+                    },
+                    jobType: {
+                        takenBy: '',
+                        dateAllocated: '',
+                        product: '',
+                        description: '',
+                        designAdvisor: '',
+
+                    },
+                    appointment: {
+                        appointmentDate: '',
+                        appointmentTime: '',
+                        notes: '',
+                        outcome: '',
+                        comments: ''
+                    }
                 }
             }
         },

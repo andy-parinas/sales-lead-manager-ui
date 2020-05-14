@@ -24,7 +24,7 @@
                                 ></v-text-field>
                             </template>
                             <v-date-picker
-                                    v-model="appointmentDate"
+                                    v-model="form.appointmentDate"
                                     @input="menu = false"
                             ></v-date-picker>
                         </v-menu>
@@ -33,9 +33,11 @@
 
                     <v-col cols="6" sm="3">
                         <v-menu
-                                v-model="menu"
                                 ref="menu"
+                                v-model="menu2"
                                 :close-on-content-click="false"
+                                :nudge-right="40"
+                                :return-value.sync="form.appointmentTime"
                                 transition="scale-transition"
                                 offset-y
                                 max-width="290px"
@@ -43,18 +45,20 @@
                         >
                             <template v-slot:activator="{ on }">
                                 <v-text-field
-                                        prepend-icon="event"
-                                        :value="computedDateFormattedDatefns"
-                                        :rules="rules.required"
+                                        :value="computedTime"
                                         label="Appointment Time"
+                                        prepend-icon="access_time"
                                         readonly
                                         v-on="on"
                                 ></v-text-field>
                             </template>
-                            <v-date-picker
-                                    v-model="appointmentDate"
-                                    @input="menu = false"
-                            ></v-date-picker>
+                            <v-time-picker
+                                    v-if="menu2"
+                                    v-model="form.appointmentTime"
+                                    ampm-in-title
+                                    full-width
+                                    @click:minute="$refs.menu.save(form.appointmentTime)">
+                            </v-time-picker>
                         </v-menu>
                     </v-col>
 
@@ -99,7 +103,7 @@
                 </v-row>
                 <v-row>
                     <v-btn color="primary" class="mr-2" @click="$emit('moveBack')">Back</v-btn>
-                    <v-btn color="primary"
+                    <v-btn color="primary" @click="moveNext"
                            :disabled="!valid">Continue</v-btn>
                     <v-spacer></v-spacer>
                     <v-btn color="primary" class="mr-2" @click="$emit('moveBack')">Cancel</v-btn>
@@ -111,6 +115,7 @@
 
 <script>
     import {format, parseISO} from "date-fns";
+    import Utils from "../../../helpers/Utils";
 
     export default {
         name: "FormAppointment",
@@ -118,10 +123,12 @@
             return {
                 valid: false,
                 menu: false,
+                menu2: false,
                 appointmentDate: new Date().toISOString().substr(0, 10),
                 appointmentTime: '',
                 form: {
-                    appointmentDate: '',
+                    appointmentDate: new Date().toISOString().substr(0, 10),
+                    appointmentTime: '',
                     outcome: '',
                     quotedPrice: '',
                     notes: ''
@@ -144,8 +151,23 @@
         },
         computed: {
             computedDateFormattedDatefns () {
-                return this.appointmentDate ? format(parseISO(this.appointmentDate), 'dd/MM/yyyy') : ''
+                return this.form.appointmentDate ? format(parseISO(this.form.appointmentDate), 'dd/MM/yyyy') : ''
             },
+            computedTime(){
+                if(this.form.appointmentTime){
+                   return Utils.convertToAMPM(this.form.appointmentTime)
+                }else {
+                    return ''
+                }
+
+            }
+        },
+        methods: {
+            moveNext(){
+                this.$emit('moveNext', {
+                    appointment: this.form
+                })
+            }
         }
     }
 </script>
