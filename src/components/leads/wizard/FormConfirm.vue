@@ -8,7 +8,7 @@
             <v-btn color="primary" class="mr-2" @click="$emit('moveBack')">Back</v-btn>
             <v-btn color="success" @click="$emit('confirm')" >Create Lead</v-btn>
             <v-spacer></v-spacer>
-            <v-btn color="primary" class="mr-2" @click="$emit('moveBack')">Cancel</v-btn>
+            <v-btn color="primary" class="mr-2" @click="$emit('cancel')">Cancel</v-btn>
         </v-row>
     </v-container>
 </template>

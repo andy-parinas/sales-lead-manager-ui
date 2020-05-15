@@ -26,6 +26,16 @@
                     <v-icon small>mdi-web</v-icon>
                     <span class="ml-2 caption font-weight-bold">Lead Source: </span> <span class="ml-1"> {{ data.leadSource | capitalize }} </span>
                 </v-col>
+                <v-col cols="12" sm="6">
+                    <v-icon small>mdi-map-marker</v-icon>
+                    <span class="ml-2 caption font-weight-bold">Status: </span>
+                    <v-chip small label :color="isInsideFranchise" text-color="white">
+                        {{ status }}
+                    </v-chip>
+                </v-col>
+            </v-row>
+            <v-row>
+
             </v-row>
             <v-divider class="my-5"></v-divider>
             <v-row>
@@ -73,6 +83,23 @@
         name: "LeadContactPartial",
         props: {
             data: {required: true, type: Object}
+        },
+        computed: {
+            status(){
+                if(this.data && this.data.postcodeStatus === 'outside_of_franchise'){
+                    return 'Outside Of Franchise'
+                }
+
+                return 'Within Franchise'
+            },
+            isInsideFranchise(){
+
+                if(this.data && this.data.postcodeStatus === 'inside_of_franchise'){
+                    return 'green'
+                }
+
+                return 'orange darken-3'
+            }
         }
     }
 </script>

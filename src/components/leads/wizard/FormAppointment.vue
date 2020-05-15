@@ -106,7 +106,7 @@
                     <v-btn color="primary" @click="moveNext"
                            :disabled="!valid">Continue</v-btn>
                     <v-spacer></v-spacer>
-                    <v-btn color="primary" class="mr-2" @click="$emit('moveBack')">Cancel</v-btn>
+                    <v-btn color="primary" class="mr-2" @click="$emit('cancel')">Cancel</v-btn>
                 </v-row>
             </v-container>
         </v-form>

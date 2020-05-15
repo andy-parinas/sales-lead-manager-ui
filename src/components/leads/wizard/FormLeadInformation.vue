@@ -111,11 +111,12 @@
                     </v-row>
                     <v-divider class="my-5"></v-divider>
                     <v-row>
-                        <v-btn color="primary" class="mr-2" @click="$emit('cancel')">Cancel</v-btn>
                         <v-btn color="primary" class="mr-2" @click="$emit('moveBack')">Back</v-btn>
                         <v-btn color="primary"
                                @click="moveNext"
                                :disabled="!valid">Continue</v-btn>
+                        <v-spacer></v-spacer>
+                        <v-btn color="primary" class="mr-2" @click="$emit('cancel')">Cancel</v-btn>
                     </v-row>
                 </div>
             </v-container>
@@ -230,9 +231,11 @@
                     if(filtered.length === 0){
                         this.dialog = true;
                         this.postcodeStatus = 'OUTSIDE_FRANCHISE';
+                        this.form.postcodeStatus = 'outside_of_franchise'
 
                     }else{
                         this.postcodeStatus = 'INSIDE_FRANCHISE';
+                        this.form.postcodeStatus = 'inside_of_franchise'
                     }
 
                 }).catch(error => {

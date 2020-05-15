@@ -75,11 +75,12 @@
                    </v-col>
                </v-row>
                <v-row>
-                   <v-btn color="primary" class="mr-2" @click="$emit('moveBack')">Cancel</v-btn>
                    <v-btn color="primary" class="mr-2" @click="$emit('moveBack')">Back</v-btn>
                    <v-btn color="primary"
                           :disabled="!valid"
                           @click="moveNext">Continue</v-btn>
+                   <v-spacer></v-spacer>
+                   <v-btn color="primary" class="mr-2" @click="$emit('cancel')">Cancel</v-btn>
                </v-row>
            </v-container>
        </v-form>
@@ -167,7 +168,6 @@
                     36,35,144,20,45,33,34,27,37,38,39,40,91,13
                 ]
 
-                console.log(event);
                 // Do not listen for the Tab Key
                 if(event && !excludedKeys.includes(event.keyCode)){
                     if(this.search && this.search.length >= 3 && this.search.trim() !== '' ){
@@ -177,8 +177,6 @@
 
             },
             searchAssessor(val){
-
-                console.log('searching')
 
                 if(this.searchAssessorLoading) return;
 

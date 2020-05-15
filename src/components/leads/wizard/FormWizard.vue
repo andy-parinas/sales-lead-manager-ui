@@ -98,6 +98,7 @@
                         leadDate: '',
                         customerType: '',
                         leadSource: '',
+                        postcodeStatus: '',
                         firstName: '',
                         lastName: '',
                         contactNumber: '',
