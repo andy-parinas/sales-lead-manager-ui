@@ -16,6 +16,10 @@
                     item-key="id"
                     class="elevation-0">
 
+                <template v-slot:item.leadDate="{item}">
+                    <span>{{item.leadDate | formatDate }}</span>
+                </template>
+
                 <template v-slot:item.outcome="{item}">
                     <ChipOutcome :outcome="item.outcome" :small="true" />
                 </template>

@@ -6,10 +6,10 @@
                     <v-icon small>mdi-calendar-clock</v-icon>
                     <span class="ml-2 caption font-weight-bold"> Appointment Date: </span>
                     <v-chip class="ma-2" color="yellow darken-4" text-color="white">
-                        12-24-2020
+                        {{ data.date | formatDate }}
                     </v-chip>
                     <v-chip class="ma-2" color="orange" text-color="white">
-                        12:50 PM
+                        {{ data.date | formatTime }}
                     </v-chip>
                 </v-col>
             </v-row>

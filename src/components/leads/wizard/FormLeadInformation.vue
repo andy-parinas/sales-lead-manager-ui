@@ -42,7 +42,7 @@
                                 ></v-text-field>
                             </template>
                             <v-date-picker
-                                    v-model="date"
+                                    v-model="form.leadDate"
                                     @input="menu = false"
                             ></v-date-picker>
                         </v-menu>
@@ -167,7 +167,7 @@
             ...mapState('auth', ['franchises']),
             ...mapState('salesContacts', ['selectedContact']),
             computedDateFormattedDatefns () {
-                return this.date ? format(parseISO(this.date), 'dd/MM/yyyy') : ''
+                return this.form.leadDate ? format(parseISO(this.form.leadDate), 'dd/MM/yyyy') : ''
             },
             franchiseItems(){
                 const items = this.franchises.map(franchise => {

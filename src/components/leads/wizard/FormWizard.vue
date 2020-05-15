@@ -1,6 +1,5 @@
 <template>
     <div>
-
         <v-row justify="center">
             <v-col cols="12" sm="11">
                 <div>Create New Lead</div>
@@ -16,6 +15,9 @@
                         <v-divider></v-divider>
                         <v-stepper-step step="5">Confirm</v-stepper-step>
                     </v-stepper-header>
+                    <div style="height: 10px">
+                        <v-progress-linear indeterminate color="green" v-if="loading"></v-progress-linear>
+                    </div>
                     <v-stepper-items>
                         <v-stepper-content step="1">
                             <FormSalesContactSelect
@@ -52,6 +54,18 @@
                 </v-stepper>
             </v-col>
         </v-row>
+
+
+        <v-dialog v-model="showDialogResult" persistent max-width="290">
+            <v-card>
+                <v-card-title class="subtitle-2">{{ dialogResult.title }}</v-card-title>
+                <v-card-text>{{ dialogResult.content }}</v-card-text>
+                <v-card-actions>
+                    <v-spacer></v-spacer>
+                    <v-btn color="grey darken-1" text @click="showDetails">OK</v-btn>
+                </v-card-actions>
+            </v-card>
+        </v-dialog>
     </div>
 </template>
 
@@ -70,6 +84,12 @@
         data(){
             return {
                 stage: 1,
+                loading: false,
+                showDialogResult: false,
+                dialogResult: {
+                    title: '',
+                    content: ''
+                },
                 form: {
                     sales_contact_id: -1,
                     details: {
@@ -132,12 +152,20 @@
                 this.selectContact(null)
             },
             create(){
+                this.loading = true;
                 this.createLead(this.form).then(() => {
-                    this.$router.push({name: 'LeadTable'})
-                    console.log('Lead Created');
+                    this.dialogResult.title = 'Lead Successfully Created'
+                    this.dialogResult.content = 'The lead is successfully created'
+                    this.showDialogResult = true;
                 }).catch(error => {
                     console.log(error.response);
+                }).finally(() => {
+                    this.loading = false;
                 })
+            },
+            showDetails(){
+                this.showDialogResult = false;
+                this.$router.push({name: 'LeadTable'})
             }
 
         }

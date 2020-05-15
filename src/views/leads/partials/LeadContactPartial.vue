@@ -14,7 +14,7 @@
             <v-row>
                 <v-col cols="12" sm="6">
                     <v-icon small>mdi-calendar</v-icon>
-                    <span class="ml-2 caption font-weight-bold">Lead Date: </span> <span class="ml-1"> {{ data.leadDate }} </span>
+                    <span class="ml-2 caption font-weight-bold">Lead Date: </span> <span class="ml-1"> {{ data.leadDate | formatDate }} </span>
                 </v-col>
                 <v-col cols="12" sm="6">
                     <v-icon small>mdi-briefcase</v-icon>

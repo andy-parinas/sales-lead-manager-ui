@@ -8,7 +8,7 @@
                 </v-col>
                 <v-col cols="12" sm="6">
                     <v-icon small>mdi-calendar-multiple-check</v-icon>
-                    <span class="ml-2 caption font-weight-bold"> Date Allocated: </span> <span> {{ data.dateAllocated }} </span>
+                    <span class="ml-2 caption font-weight-bold"> Date Allocated: </span> <span> {{ data.dateAllocated | formatDate }} </span>
                 </v-col>
             </v-row>
             <v-row>
