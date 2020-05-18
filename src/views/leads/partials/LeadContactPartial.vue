@@ -82,8 +82,7 @@
 
         <v-row justify="center">
             <v-dialog v-model="editDialog" persistent max-width="800px">
-                <LeadInfoEditDialog @close="editDialog = false" />
-
+                <LeadInfoEditDialog @close="editDialog = false" @success="$emit('success')" />
             </v-dialog>
         </v-row>
     </div>

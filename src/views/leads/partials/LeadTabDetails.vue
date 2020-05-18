@@ -3,13 +3,7 @@
         <v-toolbar flat color="blue-grey" dark>
             <v-toolbar-title>{{ title }}</v-toolbar-title>
             <v-spacer></v-spacer>
-            <slot name="action">
-
-            </slot>
-<!--            <v-btn text @click="goBack">-->
-<!--                <v-icon>mdi-arrow-left-bold</v-icon>-->
-<!--                <span> Go Back </span>-->
-<!--            </v-btn>-->
+            <slot name="action"></slot>
         </v-toolbar>
         <v-tabs vertical>
 
@@ -19,7 +13,7 @@
             <v-tab> Documents </v-tab>
 
             <v-tab-item>
-                <LeadContactPartial :data="lead.details" />
+                <LeadContactPartial :data="lead.details" @success="onSuccess" />
             </v-tab-item>
             <v-tab-item>
                 <JobTypePartial :data="lead.jobType" />
@@ -31,6 +25,13 @@
 
             </v-tab-item>
         </v-tabs>
+        <v-snackbar v-model="showSnackbar"
+                    color="success"
+                    :timeout="0"
+                    :bottom="true" >
+            Lead Successfully Updated
+            <v-btn dark text @click="showSnackbar = false" > Close </v-btn>
+        </v-snackbar>
     </v-card>
 </template>
 
@@ -46,7 +47,17 @@
             lead: {required: true, type: Object},
             title: {required: true, type: String}
         },
-        components: {LeadContactPartial, JobTypePartial, AppointmentPartial}
+        components: {LeadContactPartial, JobTypePartial, AppointmentPartial},
+        data(){
+            return {
+                showSnackbar: false
+            }
+        },
+        methods: {
+            onSuccess(){
+                this.showSnackbar = true
+            }
+        }
     }
 </script>
 
