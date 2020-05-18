@@ -65,7 +65,7 @@
                 </v-card-actions>
             </v-card>
         </v-dialog>
-        <pre>{{form}}</pre>
+<!--        <pre>{{form}}</pre>-->
     </div>
 </template>
 

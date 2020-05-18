@@ -1,5 +1,6 @@
 import api from "./api";
 import {URIBuilder} from "./helpers";
+import Csrf from "./csrf";
 // import Csrf from './csrf';
 
 
@@ -52,16 +53,32 @@ const LeadAPI = {
 
         const uri = `/api/franchises/${formData.details.franchiseId}/leads`;
 
-        console.log(uri)
-
-        console.log('Normalize Data', data);
+        await Csrf.getCSRFCookie();
 
         const response = await api().post(uri, data);
 
-        console.log('API Response', response);
 
         return response.data;
 
+    },
+
+    async updateLeadDetails(formData){
+
+        //Normalize the data
+        const data = {
+            lead_number:  formData.leadNumber,
+            lead_date: formData.leadDate,
+            franchise_id: formData.franchiseId,
+            lead_source_id: formData.leadSourceId
+        }
+
+        const uri = `/api/leads/${formData.id}`;
+
+        await Csrf.getCSRFCookie();
+
+        const response = await api().patch(uri, data);
+
+        return response.data;
     }
 }
 

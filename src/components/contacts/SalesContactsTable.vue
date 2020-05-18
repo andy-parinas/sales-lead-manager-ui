@@ -26,7 +26,7 @@
                     <SalesContactDetails :length="headers.length" :item="item" />
                 </template>]
                 <template v-slot:top>
-                    <v-dialog v-model="editDialog" width="800px">
+                    <v-dialog v-model="editDialog"  persistent width="800px">
                         <SalesContactForm
                                 @closeForm="close"
                                 @save="save"

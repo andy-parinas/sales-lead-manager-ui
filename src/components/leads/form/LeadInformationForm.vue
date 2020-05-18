@@ -1,6 +1,6 @@
 <template>
     <v-form v-model="valid">
-        <v-container>
+        <v-container v-if="!loading">
             <v-row class="mx-2">
                 <v-col cols="12" sm="6">
                     <v-text-field v-model="form.leadNumber"
@@ -68,8 +68,12 @@
             </v-row>
             <v-divider class="my-5"></v-divider>
 
-
         </v-container>
+        <v-skeleton-loader v-else
+                ref="skeleton"
+                type="article"
+                class="mx-auto"
+        ></v-skeleton-loader>
     </v-form>
 </template>
 
@@ -91,6 +95,7 @@
         },
         data(){
             return {
+                loading: false,
                 postcodeStatus: '',
                 franchiseChecking: false,
                 valid: false,
@@ -197,6 +202,7 @@
             }
         },
         created() {
+            this.loading = true;
             LeadSourceAPI.getleadSources().then(response => {
 
                 this.leadSources = response.data.map(s => {
@@ -208,6 +214,8 @@
 
             }).catch(error => {
                 console.log(error);
+            }).finally(() => {
+                this.loading = false;
             })
         },
         mounted() {

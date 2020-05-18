@@ -53,6 +53,12 @@ export default {
 
             commit('setLead', response.data);
             console.log(response);
+        },
+
+         async updateLeadDetails({commit}, formData){
+            const response = await LeadAPI.updateLeadDetails(formData);
+
+            commit('setLead', response.data);
         }
 
     }
