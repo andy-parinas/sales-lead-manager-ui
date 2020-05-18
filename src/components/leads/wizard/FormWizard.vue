@@ -26,7 +26,7 @@
                                     @cancel="cancel"/>
                         </v-stepper-content>
                         <v-stepper-content step="2">
-                            <FormLeadInformation
+                            <LeadInfoWizardItem
                                     @moveNext="moveNext"
                                     @moveBack="moveBack"
                                     @cancel="cancel"/>
@@ -55,7 +55,6 @@
             </v-col>
         </v-row>
 
-
         <v-dialog v-model="showDialogResult" persistent max-width="290">
             <v-card>
                 <v-card-title class="subtitle-2">{{ dialogResult.title }}</v-card-title>
@@ -66,12 +65,13 @@
                 </v-card-actions>
             </v-card>
         </v-dialog>
+        <pre>{{form}}</pre>
     </div>
 </template>
 
 <script>
     import FormSalesContactSelect from "./FormSalesContactSelect";
-    import FormLeadInformation from "./FormLeadInformation";
+    import LeadInfoWizardItem from "./LeadInfoWizardItem";
     import FormJobType from "./FormJobType";
     import FormAppointment from "./FormAppointment";
 
@@ -80,7 +80,7 @@
 
     export default {
         name: "FormWizard",
-        components: {FormConfirm, FormSalesContactSelect, FormLeadInformation, FormJobType, FormAppointment },
+        components: {FormConfirm, FormSalesContactSelect, LeadInfoWizardItem, FormJobType, FormAppointment },
         data(){
             return {
                 stage: 1,

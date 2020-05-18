@@ -3,7 +3,7 @@ import api from "./api";
 
 const LeadSourceAPI = {
 
-    async getleadSoruces(){
+    async getleadSources(){
 
         const uri = '/api/lead-sources';
 
