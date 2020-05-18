@@ -32,7 +32,7 @@
                                     @cancel="cancel"/>
                         </v-stepper-content>
                         <v-stepper-content step="3">
-                            <FormJobType
+                            <JobTypeWizardItem
                                     @moveNext="moveNext"
                                     @moveBack="moveBack"
                                     @cancel="cancel"/>
@@ -72,7 +72,7 @@
 <script>
     import FormSalesContactSelect from "./FormSalesContactSelect";
     import LeadInfoWizardItem from "./LeadInfoWizardItem";
-    import FormJobType from "./FormJobType";
+    import JobTypeWizardItem from "./JobTypeWizardItem";
     import FormAppointment from "./FormAppointment";
 
     import {mapState, mapActions} from 'vuex';
@@ -80,7 +80,7 @@
 
     export default {
         name: "FormWizard",
-        components: {FormConfirm, FormSalesContactSelect, LeadInfoWizardItem, FormJobType, FormAppointment },
+        components: {FormConfirm, FormSalesContactSelect, LeadInfoWizardItem, JobTypeWizardItem, FormAppointment },
         data(){
             return {
                 stage: 1,

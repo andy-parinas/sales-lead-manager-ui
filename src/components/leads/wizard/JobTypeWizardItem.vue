@@ -1,0 +1,70 @@
+<template>
+   <div>
+        <JobTypeForm
+                @updateData="updateData"
+                :initial-data="initialData"></JobTypeForm>
+       <v-container>
+           <v-row>
+               <v-btn color="primary" class="mr-2" @click="$emit('moveBack')">Back</v-btn>
+               <v-btn color="primary"
+                      @click="moveNext">Continue</v-btn>
+               <v-spacer></v-spacer>
+               <v-btn color="primary" class="mr-2" @click="$emit('cancel')">Cancel</v-btn>
+           </v-row>
+           <pre>{{form}}</pre>
+       </v-container>
+   </div>
+</template>
+
+<script>
+
+    import JobTypeForm from "../form/JobTypeForm";
+
+    export default {
+        name: "JobTypeWizardItem",
+        components: {JobTypeForm},
+        data(){
+            return {
+
+                form: {
+                    takenBy: '',
+                    dateAllocated: '',
+                    productId: '',
+                    product: '',
+                    designAssessorId: '',
+                    designAdvisor: '',
+                    description: ''
+                },
+                initialData: {
+                    takenBy: '',
+                    dateAllocated: new Date().toISOString().substr(0, 10),
+                    productId: '',
+                    product: '',
+                    designAssessorId: '',
+                    designAdvisor: '',
+                    description: ''
+                },
+
+            }
+        },
+
+        methods: {
+
+            moveNext(){
+
+                this.$emit('moveNext', {
+                    jobType: this.form
+                })
+            },
+            updateData(form){
+                this.form = Object.assign({}, form);
+            }
+
+        },
+
+    }
+</script>
+
+<style scoped>
+
+</style>

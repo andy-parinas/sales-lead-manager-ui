@@ -33,6 +33,7 @@ export default new Vuex.Store({
         clearAllState({commit}){
             commit('leads/setLeads', [])
             commit('leads/setMeta', {})
+            commit('leads/setLead', null)
             commit('salesContacts/setSalesContacts', [])
             commit('salesContacts/setSalesContactMeta', {})
         }
