@@ -38,7 +38,7 @@
                                     @cancel="cancel"/>
                         </v-stepper-content>
                         <v-stepper-content step="4">
-                            <FormAppointment
+                            <AppointmentWizardItem
                                     @moveNext="moveNext"
                                     @moveBack="moveBack"
                                     @cancel="cancel"/>
@@ -73,14 +73,14 @@
     import FormSalesContactSelect from "./FormSalesContactSelect";
     import LeadInfoWizardItem from "./LeadInfoWizardItem";
     import JobTypeWizardItem from "./JobTypeWizardItem";
-    import FormAppointment from "./FormAppointment";
+    import AppointmentWizardItem from "./AppointmentWizardItem";
 
     import {mapState, mapActions} from 'vuex';
     import FormConfirm from "./FormConfirm";
 
     export default {
         name: "FormWizard",
-        components: {FormConfirm, FormSalesContactSelect, LeadInfoWizardItem, JobTypeWizardItem, FormAppointment },
+        components: {FormConfirm, FormSalesContactSelect, LeadInfoWizardItem, JobTypeWizardItem, AppointmentWizardItem },
         data(){
             return {
                 stage: 1,

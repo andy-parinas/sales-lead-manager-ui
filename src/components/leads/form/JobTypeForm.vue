@@ -221,13 +221,11 @@
         },
         mounted() {
             this.form = Object.assign({}, this.initialData)
-            if(this.initialData){
+            if(this.initialData && this.initialData.designAssessorId && this.initialData.designAssessor){
                 const designAssessor = {
                     value: this.initialData.designAssessorId,
                     text: this.initialData.designAssessor
                 }
-
-                console.log()
                 this.designAssessors.push(designAssessor)
             }
         }

@@ -11,7 +11,6 @@
                <v-spacer></v-spacer>
                <v-btn color="primary" class="mr-2" @click="$emit('cancel')">Cancel</v-btn>
            </v-row>
-           <pre>{{form}}</pre>
        </v-container>
    </div>
 </template>
