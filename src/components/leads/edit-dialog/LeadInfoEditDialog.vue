@@ -25,9 +25,6 @@
                         </v-btn>
                     </v-col>
                 </v-row>
-
-
-
             </v-alert>
         </v-card-text>
         <v-card-actions>

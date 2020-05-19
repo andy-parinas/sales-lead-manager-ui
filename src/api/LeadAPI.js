@@ -79,6 +79,30 @@ const LeadAPI = {
         const response = await api().patch(uri, data);
 
         return response.data;
+    },
+
+
+    async updateJobType(leadId, formData){
+        //Normalize the data
+        const data = {
+            taken_by: formData.takenBy,
+            date_allocated: formData.dateAllocated,
+            product_id: formData.productId,
+            design_assessor_id: formData.designAssessorId,
+            description: formData.description
+        }
+
+        console.log('data tp be submitted', data)
+
+        const uri = `/api/leads/${leadId}/job-types/${formData.id}`;
+
+        await Csrf.getCSRFCookie();
+
+        const response = await api().patch(uri, data);
+
+        console.log(response.data);
+
+        return response.data;
     }
 }
 

@@ -1,6 +1,6 @@
 <template>
     <v-form v-model="valid">
-        <v-container>
+        <v-container v-if="!productLoading" >
             <v-row class="mx-2">
                 <v-col cols="12" sm="6">
                     <v-text-field v-model="form.takenBy"
@@ -36,11 +36,10 @@
                 </v-col>
                 <v-col cols="12" sm="6">
                     <v-autocomplete
-                            v-model="product"
+                            v-model="form.productId"
                             :items="products"
                             :rules="rules.required"
                             @change="productChange"
-                            return-object
                             label="Product"
                             prepend-icon="mdi-cart"
                             required
@@ -48,14 +47,13 @@
                 </v-col>
                 <v-col cols="12" sm="6">
                     <v-autocomplete
-                            v-model="designAssessor"
+                            v-model="form.designAssessorId"
                             :items="designAssessors"
                             :rules="rules.required"
                             :loading="searchAssessorLoading"
                             :search-input.sync="search"
                             @keyup="searchOnKeyUp"
                             @change="designAssessorChange"
-                            return-object
                             no-filter
                             cache-items
                             label="Design Advisor"
@@ -76,6 +74,11 @@
                 </v-col>
             </v-row>
         </v-container>
+        <v-skeleton-loader v-else
+                           ref="skeleton"
+                           type="article"
+                           class="mx-auto"
+        ></v-skeleton-loader>
     </v-form>
 </template>
 
@@ -177,16 +180,30 @@
 
             },
             productChange(){
-                if(this.product) {
-                    this.form.productId = this.product.value;
-                    this.form.product = this.product.text;
+                // if(this.product) {
+                //     this.form.productId = this.product.value;
+                //     this.form.product = this.product.text;
+                // }
+                if(this.products.length > 0){
+                    const product = this.products.find(p => {
+                        return p.value === this.form.productId
+                    })
+
+                    if(product) this.form.product = product.text
                 }
             },
             designAssessorChange(){
 
-                if(this.designAssessor){
-                    this.form.designAssessorId = this.designAssessor.value;
-                    this.form.designAdvisor = this.designAssessor.text;
+                // if(this.designAssessor){
+                //     this.form.designAssessorId = this.designAssessor.value;
+                //     this.form.designAdvisor = this.designAssessor.text;
+                // }
+                if(this.designAssessors.length > 0){
+                    const designAssessor = this.designAssessors.find(d => {
+                        return d.value === this.form.designAssessorId
+                    })
+
+                    if(designAssessor) this.form.designAssessor = designAssessor.text
                 }
             }
 
@@ -194,7 +211,6 @@
         watch: {
             form: {
                 handler(){
-                    console.log('watching form in Jobtype')
                     this.$emit('updateData', this.form)
                 },
                 deep: true
@@ -205,6 +221,15 @@
         },
         mounted() {
             this.form = Object.assign({}, this.initialData)
+            if(this.initialData){
+                const designAssessor = {
+                    value: this.initialData.designAssessorId,
+                    text: this.initialData.designAssessor
+                }
+
+                console.log()
+                this.designAssessors.push(designAssessor)
+            }
         }
     }
 </script>

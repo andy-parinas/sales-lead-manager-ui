@@ -16,7 +16,7 @@
                 <LeadContactPartial :data="lead.details" @success="onSuccess" />
             </v-tab-item>
             <v-tab-item>
-                <JobTypePartial :data="lead.jobType" />
+                <JobTypePartial :data="lead.jobType" @success="onSuccess" />
             </v-tab-item>
             <v-tab-item>
                 <AppointmentPartial :data="lead.appointment" />
