@@ -2,7 +2,7 @@
     <v-form v-model="valid">
         <v-container>
             <v-row class="mx-2">
-                <v-col cols="6" sm="3">
+                <v-col cols="6" sm="6">
                     <v-menu
                             v-model="menu"
                             ref="menu"
@@ -31,7 +31,7 @@
                 </v-col>
 
 
-                <v-col cols="6" sm="3">
+                <v-col cols="6" sm="6">
                     <v-menu
                             ref="menu"
                             v-model="menu2"
@@ -64,13 +64,6 @@
                 </v-col>
 
 
-                <v-col cols="12" sm="6">
-                    <v-text-field v-model="form.quotedPrice"
-                                  prepend-icon="mdi-tag"
-                                  label="Quoted Price"
-                                  :rules="rules.required" />
-                </v-col>
-
                 <v-col cols="12">
                     <v-textarea
                             v-model="form.notes"
@@ -78,6 +71,13 @@
                             outlined
                             label="Notes"
                     ></v-textarea>
+                </v-col>
+
+                <v-col cols="12" sm="6">
+                    <v-text-field v-model="form.quotedPrice"
+                                  prepend-icon="mdi-tag"
+                                  label="Quoted Price"
+                                  :rules="rules.required" />
                 </v-col>
 
 
@@ -92,7 +92,7 @@
                     ></v-autocomplete>
                 </v-col>
 
-                <v-col cols="12" sm="6">
+                <v-col cols="12" sm="12">
                     <v-textarea
                             v-model="form.comments"
                             rows="1"
@@ -100,9 +100,7 @@
                             label="Comments"
                     ></v-textarea>
                 </v-col>
-
             </v-row>
-
         </v-container>
     </v-form>
 </template>

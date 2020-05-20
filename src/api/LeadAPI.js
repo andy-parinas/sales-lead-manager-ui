@@ -92,15 +92,32 @@ const LeadAPI = {
             description: formData.description
         }
 
-        console.log('data tp be submitted', data)
-
         const uri = `/api/leads/${leadId}/job-types/${formData.id}`;
 
         await Csrf.getCSRFCookie();
 
         const response = await api().patch(uri, data);
 
-        console.log(response.data);
+        return response.data;
+    },
+
+    async updateAppointment(leadId, formData)
+    {
+
+        // Normalized Data
+        const data = {
+            appointment_date: formData.date,
+            appointment_notes: formData.notes,
+            outcome: formData.outcome,
+            quoted_price: formData.quotedPrice,
+            comments: formData.comments
+        }
+
+        const uri = `/api/leads/${leadId}/appointments/${formData.id}`;
+
+        await Csrf.getCSRFCookie();
+
+        const response = await api().patch(uri, data);
 
         return response.data;
     }

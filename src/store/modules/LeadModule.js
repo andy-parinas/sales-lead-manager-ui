@@ -66,6 +66,13 @@ export default {
             const response = await  LeadAPI.updateJobType(leadId, formData);
 
             commit('setLead', response.data);
+        },
+
+        async updateLeadAppointment({commit,state}, formData){
+            const leadId = state.lead.details.id
+            const response = await LeadAPI.updateAppointment(leadId, formData);
+
+            commit('setLead', response.data);
         }
 
     }
