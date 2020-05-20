@@ -20,7 +20,7 @@
                     </div>
                     <v-stepper-items>
                         <v-stepper-content step="1">
-                            <FormSalesContactSelect
+                            <SalesContactWizardItem
                                     @setSalesContactId="setSalesContact"
                                     @moveNext="moveNext"
                                     @cancel="cancel"/>
@@ -44,7 +44,7 @@
                                     @cancel="cancel"/>
                         </v-stepper-content>
                         <v-stepper-content step="5">
-                            <FormConfirm
+                            <ConfirmWizardItem
                                     :summary="form"
                                     @confirm="create"
                                     @moveBack="moveBack"
@@ -70,17 +70,17 @@
 </template>
 
 <script>
-    import FormSalesContactSelect from "./FormSalesContactSelect";
+    import SalesContactWizardItem from "./SalesContactWizardItem";
     import LeadInfoWizardItem from "./LeadInfoWizardItem";
     import JobTypeWizardItem from "./JobTypeWizardItem";
     import AppointmentWizardItem from "./AppointmentWizardItem";
 
     import {mapState, mapActions} from 'vuex';
-    import FormConfirm from "./FormConfirm";
+    import ConfirmWizardItem from "./ConfirmWizardItem";
 
     export default {
         name: "FormWizard",
-        components: {FormConfirm, FormSalesContactSelect, LeadInfoWizardItem, JobTypeWizardItem, AppointmentWizardItem },
+        components: {ConfirmWizardItem, SalesContactWizardItem, LeadInfoWizardItem, JobTypeWizardItem, AppointmentWizardItem },
         data(){
             return {
                 stage: 1,

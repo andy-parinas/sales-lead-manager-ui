@@ -63,7 +63,7 @@
                     ></v-autocomplete>
                 </v-col>
                 <v-col cols="12" sm="12" >
-                    <FormPostcodeAlert  v-if="isOutsideFranchise" />
+                    <PostcodeAlert  v-if="isOutsideFranchise" />
                 </v-col>
             </v-row>
             <v-divider class="my-5"></v-divider>
@@ -78,7 +78,7 @@
 </template>
 
 <script>
-    import FormPostcodeAlert from "../wizard/FormPostcodeAlert";
+    import PostcodeAlert from "../PostcodeAlert";
     import LeadSourceAPI from "../../../api/LeadSourceAPI";
     import PostcodeAPI from "../../../api/PostcodeAPI";
     import {mapState} from "vuex";
@@ -88,7 +88,7 @@
 
     export default {
         name: "LeadInformationForm",
-        components: {FormPostcodeAlert},
+        components: {PostcodeAlert},
         props: {
             initialData: {required: true, type: Object},
             contactPostcode: {required: true, type: String}

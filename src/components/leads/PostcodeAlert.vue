@@ -30,7 +30,7 @@
 
 <script>
     export default {
-        name: "FormPostcodeAlert",
+        name: "PostcodeAlert",
     }
 </script>
 
