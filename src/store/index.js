@@ -31,11 +31,15 @@ export default new Vuex.Store({
             commit('setAppError', {status, message})
         },
         clearAllState({commit}){
-            commit('leads/setLeads', [])
-            commit('leads/setMeta', {})
-            commit('leads/setLead', null)
-            commit('salesContacts/setSalesContacts', [])
-            commit('salesContacts/setSalesContactMeta', {})
+            // Avoid some Nasty message in the console
+            // wait for the components to unload first before setting the state objects to null
+            setTimeout(() => {
+                commit('leads/setLeads', [])
+                commit('leads/setMeta', {})
+                commit('leads/setLead', null)
+                commit('salesContacts/setSalesContacts', [])
+                commit('salesContacts/setSalesContactMeta', {})
+            }, 1000)
         }
     },
     modules: {
