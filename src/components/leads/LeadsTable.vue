@@ -16,6 +16,20 @@
                     item-key="id"
                     class="elevation-0">
 
+                <template v-slot:item.leadNumber="{item}">
+                    <span><v-icon small color="green" class="mr-2">mdi-check-decagram</v-icon></span>
+                    <span>{{ item.leadNumber }}</span>
+                    <span v-if="item.postcodeStatus === 'outside_of_franchise'" >
+                        <v-tooltip bottom>
+                            <template v-slot:activator="{ on }">
+                                 <v-icon v-on="on" small color="orange" class="ml-2">mdi-alert-circle-outline</v-icon>
+                            </template>
+                            <span> Outside of Franchise </span>
+                        </v-tooltip>
+
+                    </span>
+                </template>
+
                 <template v-slot:item.leadDate="{item}">
                     <span>{{item.leadDate | formatDate }}</span>
                 </template>

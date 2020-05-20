@@ -103,7 +103,8 @@ export default {
                 postcode: lead.details.postcode,
                 source: lead.details.leadSource,
                 state: lead.details.state,
-                suburb: lead.details.suburb
+                suburb: lead.details.suburb,
+                postcodeStatus: lead.details.postcodeStatus
             }
 
             let index = state.leads.findIndex(l => l.leadId === leadObject.leadId)
