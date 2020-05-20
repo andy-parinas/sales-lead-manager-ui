@@ -107,6 +107,7 @@
                 },
                 leadSources: [],
                 franchiseId: '',
+                franchiseHint: '',
                 form: {
                     leadNumber: '',
                     franchiseId: '',
@@ -128,7 +129,7 @@
                 const items = this.franchises.map(franchise => {
                     return {
                         value: franchise.id,
-                        text: franchise.franchiseNumber
+                        text: `${franchise.franchiseNumber} - ${franchise.type}`
                     }
                 })
 
@@ -136,7 +137,7 @@
             },
             isOutsideFranchise(){
                 return this.form.postcodeStatus === 'outside_of_franchise';
-            }
+            },
         },
         methods: {
             checkFranchisePostcode(){
