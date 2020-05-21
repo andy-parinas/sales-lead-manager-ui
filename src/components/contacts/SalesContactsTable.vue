@@ -94,6 +94,7 @@
     import SalesContactForm from "./SalesContactForm";
     import ErrorHandler from "../../helpers/ErrorHandler";
     import SalesContactSearchForm from "./SalesContactSearchForm";
+    import ErrorHandlerMixins from "../../mixins/ErrorHandler";
 
     export default {
         name: "SalesContactsTable",
@@ -182,6 +183,7 @@
                 },
             }
         },
+        mixins: [ErrorHandlerMixins],
         computed: {
             ...mapState('salesContacts', {
                 salesContacts: state => state.salesContacts,
@@ -198,7 +200,7 @@
         methods: {
             ...mapActions('salesContacts',
                 ['fetchSalesContacts', 'updateSalesContact', 'createSalesContact', 'deleteSalesContact']),
-            ...mapActions(['setAppLoadingState']),
+            ...mapActions(['setAppLoadingState', 'setSuccessMessage']),
             newContact(){
                 // this.$refs.contactForm.resetForm()
                 if(this.$refs.salesContactForm){
@@ -324,17 +326,20 @@
                 this.fetchSalesContacts({options, searchOptions}).then(() => {
                     this.loading = false;
                 }).catch(error => {
-                    console.error(error.response)
-                    if(error.response && error.response.status){
-                        ErrorHandler.handlerError(error.response.status, (message) => {
-                            this.$emit('throwError', true, message);
-                        })
-                    }else {
-                        console.error(error);
-                        ErrorHandler.handlerError(503, (message) => {
-                            this.$emit('throwError', true, message);
-                        })
-                    }
+                    // console.error(error.response)
+                    // if(error.response && error.response.status){
+                    //     ErrorHandler.handlerError(error.response.status, (message) => {
+                    //         //this.$emit('throwError', true, message);
+                    //         this.setErrorMessage(message)
+                    //     })
+                    // }else {
+                    //     console.error(error);
+                    //     ErrorHandler.handlerError(503, (message) => {
+                    //         //this.$emit('throwError', true, message);
+                    //         this.setErrorMessage(message)
+                    //     })
+                    // }
+                    this.handleError(error)
                 }).finally(() => {
                     this.loading = false;
                 })
@@ -363,17 +368,20 @@
             this.fetchSalesContacts({options:this.options}).then(() => {
                 this.isInitialLoad = false;
             }).catch(error => {
-                if(error.response && error.response.status){
-                    console.error(error.response);
-                    ErrorHandler.handlerError(error.response.status, (message) => {
-                        this.$emit('throwError', true, message);
-                    })
-                }else {
-                    console.error(error);
-                    ErrorHandler.handlerError(503, (message) => {
-                        this.$emit('throwError', true, message);
-                    })
-                }
+                // if(error.response && error.response.status){
+                //     console.error(error.response);
+                //     ErrorHandler.handlerError(error.response.status, (message) => {
+                //         //this.$emit('throwError', true, message);
+                //         this.setErrorMessage(message)
+                //     })
+                // }else {
+                //     console.error(error);
+                //     ErrorHandler.handlerError(503, (message) => {
+                //         //this.$emit('throwError', true, message);
+                //         this.setErrorMessage(message)
+                //     })
+                // }
+                this.handleError(error)
             }).finally(() => {
                 this.$store.dispatch('setAppLoadingState', false)
             })

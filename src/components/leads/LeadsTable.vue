@@ -99,9 +99,10 @@
 <script>
 
     import {mapState, mapActions} from 'vuex';
-    import ErrorHandler from "../../helpers/ErrorHandler";
+    //import ErrorHandler from "../../helpers/ErrorHandler";
     import LeadSearchForm from "./LeadSearchForm";
     import ChipOutcome from "./ChipOutcome";
+    import ErrorHandlerMixins from "../../mixins/ErrorHandler";
 
     export default {
         name: "LeadsTable",
@@ -157,6 +158,7 @@
                 deleteError: null
             }
         },
+        mixins: [ErrorHandlerMixins],
         computed: {
             ...mapState('leads', ['leads', 'meta']),
             isHeadOffice(){
@@ -177,17 +179,18 @@
                     this.fetchLeads({options, searchOptions}).then(() => {
                         this.loading = false;
                     }).catch(error => {
-                        if(error.response && error.response.status){
-                            console.error(error.response)
-                            ErrorHandler.handlerError(error.response.status, (message) => {
-                                this.$emit('throwError', true, message);
-                            })
-                        }else {
-                            console.error(error);
-                            ErrorHandler.handlerError(503, (message) => {
-                                this.$emit('throwError', true, message);
-                            })
-                        }
+                        // if(error.response && error.response.status){
+                        //     console.error(error.response)
+                        //     ErrorHandler.handlerError(error.response.status, (message) => {
+                        //         this.$emit('throwError', true, message);
+                        //     })
+                        // }else {
+                        //     console.error(error);
+                        //     ErrorHandler.handlerError(503, (message) => {
+                        //         this.$emit('throwError', true, message);
+                        //     })
+                        // }
+                        this.handleError(error);
                     }).finally(() => {
                         this.loading = false;
                         this.$set(this.footerProps, 'disablePagination', false)
@@ -208,17 +211,18 @@
                         this.changeOptions();
                         this.setSuccessMessage('Lead Successfully Deleted')
                     }).catch(error => {
-                        if(error.response && error.response.status){
-                            console.error(error.response)
-                            ErrorHandler.handlerError(error.response.status, (message) => {
-                                this.deleteError = message
-                            })
-                        }else {
-                            console.error(error);
-                            ErrorHandler.handlerError(503, (message) => {
-                                this.deleteError = message
-                            })
-                        }
+                        // if(error.response && error.response.status){
+                        //     console.error(error.response)
+                        //     ErrorHandler.handlerError(error.response.status, (message) => {
+                        //         this.deleteError = message
+                        //     })
+                        // }else {
+                        //     console.error(error);
+                        //     ErrorHandler.handlerError(503, (message) => {
+                        //         this.deleteError = message
+                        //     })
+                        // }
+                        this.handleError(error);
                     }).finally(() => {
                         this.deleting = false
                     })

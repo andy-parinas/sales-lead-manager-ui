@@ -14,7 +14,9 @@ export default new Vuex.Store({
         appError: false,
         appMessage: '',
         successMessage: '',
-        showSuccessMessage: false
+        showSuccessMessage: false,
+        errorMessage: '',
+        showErrorMessage: false
     },
     mutations: {
         setAppLoading(state, status){
@@ -33,6 +35,15 @@ export default new Vuex.Store({
                 state.successMessage = '';
             }
 
+        },
+        setErrorMessage(state, message){
+            if(message && message.trim() !== ''){
+                state.showErrorMessage = true;
+                state.errorMessage = message;
+            }else {
+                state.showErrorMessage = false;
+                state.errorMessage = '';
+            }
         }
     },
     actions: {
@@ -45,6 +56,9 @@ export default new Vuex.Store({
         setSuccessMessage({commit}, message){
             commit('setSuccessMessage', message)
         },
+        setErrorMessage({commit}, message){
+            commit('setErrorMessage', message)
+        },
         clearAllState({commit}){
             // Avoid some Nasty message in the console
             // wait for the components to unload first before setting the state objects to null
@@ -54,6 +68,8 @@ export default new Vuex.Store({
                 commit('leads/setLead', null)
                 commit('salesContacts/setSalesContacts', [])
                 commit('salesContacts/setSalesContactMeta', {})
+                commit('setErrorMessage', null)
+                commit('setSuccessMessage', null)
             }, 1000)
         }
     },

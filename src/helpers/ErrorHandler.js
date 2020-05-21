@@ -11,7 +11,7 @@ const ErrorHandler = {
                 break;
 
             case 401:
-                callback('You are not authorized. Please logout and login again. Please check your credentials with your administator')
+                callback('You are not authorized. Please logout and login again. Please check your credentials with your administrators')
                 break;
 
             case 403:
