@@ -6,7 +6,18 @@ export default {
     state: {
         leads: [],
         meta: {},
-        lead: null
+        lead: null,
+        pageOptions: {
+            page: 1,
+            itemsPerPage: 10,
+            sortBy: ['leadDate'],
+            sortDesc: [true],
+            groupBy: [],
+            groupDesc: [],
+            mustSort: false,
+            multiSort: false
+        },
+        newLeads: []
     },
     mutations: {
         setLeads(state, leads){
@@ -21,6 +32,12 @@ export default {
         },
         updateLeads(state, updateInfo){
             Vue.set(state.leads, updateInfo.index, updateInfo.lead)
+        },
+        insertToLeads(state, lead) {
+            state.newLeads.push(lead)
+        },
+        changePageOptions(state, options){
+            state.pageOptions = Object.assign({}, options)
         }
     },
     actions: {
@@ -54,8 +71,10 @@ export default {
         async createLead({commit}, formData){
             const response = await  LeadAPI.createLead(formData);
 
-            commit('setLead', response.data);
-            console.log(response);
+            const lead = response.data;
+
+            commit('setLead',lead);
+            //dispatch('insertToLeads', lead)
         },
 
          async updateLeadDetails({commit, dispatch}, formData){
@@ -113,6 +132,34 @@ export default {
                 commit('updateLeads' , {index: index, lead: leadObject})
             }
 
+        },
+
+        insertToLeads({commit}, lead){
+
+            const newLead = {
+                contactNumber: lead.details.contactNumber,
+                created_at: lead.details.created_at,
+                email: lead.details.email,
+                firstName: lead.details.firstName,
+                franchiseNumber: lead.details.franchiseNumber,
+                lastName: lead.details.lastName,
+                leadDate: lead.details.leadDate,
+                leadId: lead.details.id,
+                leadNumber: lead.details.leadNumber,
+                outcome: lead.appointment.outcome,
+                postcode: lead.details.postcode,
+                source: lead.details.leadSource,
+                state: lead.details.state,
+                suburb: lead.details.suburb,
+                postcodeStatus: lead.details.postcodeStatus,
+                isNew: true
+            }
+
+            commit('insertToLeads', newLead)
+        },
+
+        changePageOptions({commit}, options){
+            commit('changePageOptions', options)
         }
 
     }

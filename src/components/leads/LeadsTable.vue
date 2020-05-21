@@ -13,11 +13,18 @@
                     :single-expand="true"
                     :loading="loading"
                     :footer-props="footerProps"
+                    @update:page="changeOptions"
+                    @update:sort-by="changeOptions"
+                    @update:sort-desc="changeOptions"
+                    @update:items-per-page="changeOptions"
                     item-key="id"
                     class="elevation-0">
 
                 <template v-slot:item.leadNumber="{item}">
-                    <span><v-icon small color="green" class="mr-2">mdi-check-decagram</v-icon></span>
+
+                    <span v-if="isNew(item.created_at)">
+                        <v-icon small color="green" class="mr-2">mdi-check-decagram</v-icon>
+                    </span>
                     <span>{{ item.leadNumber }}</span>
                     <span v-if="item.postcodeStatus === 'outside_of_franchise'" >
                         <v-tooltip bottom>
@@ -73,13 +80,15 @@
                     { text: 'Actions', value: 'actions', sortable: false }
                 ],
                 footerProps: {
-                    "items-per-page-options": [5,10,15,20]
+                    "items-per-page-options": [5,10,15,20],
+                    disablePagination: false,
+                    disableItemsPerPage : false
                 },
                 options: {
                     page: 1,
                     itemsPerPage: 10,
-                    sortBy: ['leadNumber'],
-                    sortDesc: [false],
+                    sortBy: ['leadDate'],
+                    sortDesc: [true],
                     groupBy: [],
                     groupDesc: [],
                     mustSort: false,
@@ -88,8 +97,8 @@
                 defaultOptions: {
                     page: 1,
                     itemsPerPage: 10,
-                    sortBy: ['leadNumber'],
-                    sortDesc: [false],
+                    sortBy: ['leadDate'],
+                    sortDesc: [true],
                     groupBy: [],
                     groupDesc: [],
                     mustSort: false,
@@ -97,91 +106,100 @@
                 },
                 searchIn: '',
                 searchFor: '',
-                isInitialLoad: true
+                isInitialLoad: true,
+                dateToday: new Date().toISOString().substr(0, 10)
             }
         },
         computed: {
-            ...mapState('leads', ['leads', 'meta'])
+            ...mapState('leads', ['leads', 'meta', 'pageOptions'])
         },
         methods: {
-            ...mapActions('leads', ['fetchLeads']),
+            ...mapActions('leads', ['fetchLeads', 'changePageOptions']),
 
             getLeads(options, searchOptions){
-                this.loading = true;
-                this.fetchLeads({options, searchOptions}).then(() => {
-                    this.loading = false;
-                }).catch(error => {
-                    console.error(error.response)
-                    if(error.response && error.response.status){
-                        ErrorHandler.handlerError(error.response.status, (message) => {
-                            this.$emit('throwError', true, message);
-                        })
-                    }else {
-                        console.error(error);
-                        ErrorHandler.handlerError(503, (message) => {
-                            this.$emit('throwError', true, message);
-                        })
-                    }
-                }).finally(() => {
-                    this.loading = false;
-                })
+
+                if(!this.loading){ //Make sure to avoid multiple request when request is already sent
+
+                    console.log('getting leads')
+
+                    this.loading = true;
+                    this.$set(this.footerProps, 'disablePagination', true)
+                    this.$set(this.footerProps, 'disableItemsPerPage', true)
+
+                    this.fetchLeads({options, searchOptions}).then(() => {
+                        this.loading = false;
+                    }).catch(error => {
+                        console.error(error.response)
+                        if(error.response && error.response.status){
+                            ErrorHandler.handlerError(error.response.status, (message) => {
+                                this.$emit('throwError', true, message);
+                            })
+                        }else {
+                            console.error(error);
+                            ErrorHandler.handlerError(503, (message) => {
+                                this.$emit('throwError', true, message);
+                            })
+                        }
+                    }).finally(() => {
+                        this.loading = false;
+                        this.$set(this.footerProps, 'disablePagination', false)
+                        this.$set(this.footerProps, 'disableItemsPerPage', false)
+                    })
+                }
+
             },
             searchLeads({searchIn, searchFor}){
                 this.searchFor = searchFor;
                 this.searchIn = searchIn;
 
-                console.log('Search', this.searchIn, this.searchFor)
-
-                // This will trigger the watcher in the options.
-                // With the SearchFor and SearchIn having a value, this will trigger the search in api
+                // Reset the page options at the start of the search
                 this.options = Object.assign({}, this.defaultOptions);
+
+                if(this.searchIn.trim() !== '' && this.searchFor.trim() !== '')
+                {
+                    this.getLeads(this.options, {
+                        searchFor: this.searchFor,
+                        searchIn: this.searchIn
+                    });
+                }
+
             },
             resetSearch(){
                 this.searchFor = '';
                 this.searchIn = '';
-                this.options = Object.assign({}, this.defaultOptions);
+
+                //this.changePageOptions(this.defaultOptions);
+                this.getLeads(this.options);
+
             },
             showLead(item){
                this.$emit('showDetail', item.leadId);
-            }
-        },
-        watch: {
-            options: {
-                handler(){
-                    if(!this.isInitialLoad){
-                        if(this.searchIn.trim() !== '' && this.searchFor.trim() !== '')
-                        {
-                            this.getLeads(this.options, {
-                                searchFor: this.searchFor,
-                                searchIn: this.searchIn
-                            });
-                        }else {
-                            this.getLeads(this.options);
-                        }
-                    }
-                },
-                deep: true
-            }
-        },
-        mounted() {
-            this.$store.dispatch('setAppLoadingState', true)
-            this.fetchLeads({options:this.options}).then(() => {
-                this.isInitialLoad = false;
-            }).catch(error => {
-                if(error.response && error.response.status){
-                    console.error(error.response);
-                    ErrorHandler.handlerError(error.response.status, (message) => {
-                        this.$emit('throwError', true, message);
-                    })
+            },
+            changeOptions(){
+
+                //this.changePageOptions(this.options);
+
+                if(this.searchIn.trim() !== '' && this.searchFor.trim() !== '')
+                {
+                    this.getLeads(this.options, {
+                        searchFor: this.searchFor,
+                        searchIn: this.searchIn
+                    });
                 }else {
-                    console.error(error);
-                    ErrorHandler.handlerError(503, (message) => {
-                        this.$emit('throwError', true, message);
-                    })
+                    this.getLeads(this.options);
                 }
-            }).finally(() => {
-                this.$store.dispatch('setAppLoadingState', false)
-            })
+            },
+            isNew(date){
+                const dateTimeArray = date.split(" ");
+
+                if(dateTimeArray.length < 2) return '';
+
+                return dateTimeArray[0] === new Date().toISOString().substr(0, 10);
+            }
+        },
+        async mounted() {
+                this.getLeads(this.options);
+
         }
     }
 </script>

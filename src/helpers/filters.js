@@ -25,3 +25,11 @@ Vue.filter('formatTime', function (value) {
     return Utils.convertToAMPM(dateTimeArray[1]);
 
 })
+
+Vue.filter('dateOnly', function (value) {
+    const dateTimeArray = value.split(" ");
+
+    if(dateTimeArray.length < 2) return '';
+
+    return dateTimeArray[0];
+})
