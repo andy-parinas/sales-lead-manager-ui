@@ -14,6 +14,22 @@
             </v-btn>
         </v-app-bar>
         <v-navigation-drawer v-model="drawer" clipped app class="px-2" >
+            <v-list>
+                <v-list-item>
+                    <v-list-item-icon>
+                        <v-icon color="primary" large>mdi-account-circle</v-icon>
+                    </v-list-item-icon>
+                    <v-list-item-content>
+                        <v-list-item-title>{{ currentUser.username }}</v-list-item-title>
+                        <v-list-item-subtitle> <span class="overline">{{ currentUser.userType }}</span> </v-list-item-subtitle>
+<!--                        <v-list-item-subtitle>-->
+<!--                            <span   class="overline"-->
+<!--                                    v-for="franchise in franchises" :key="franchise.id">{{ franchise.franchiseNumber}} | </span>-->
+<!--                        </v-list-item-subtitle>-->
+                    </v-list-item-content>
+                </v-list-item>
+            </v-list>
+            <v-divider></v-divider>
             <v-list class="mt-3">
                 <v-list-item v-for="(link, index) in links" :key="index" router :to="link.route" active-class="border">
                     <v-list-item-action>
@@ -30,7 +46,7 @@
 
 <script>
 
-    import {mapActions} from 'vuex';
+    import {mapActions, mapState} from 'vuex';
 
     export default {
         name: 'Navbar',
@@ -51,6 +67,7 @@
             }
         },
         computed: {
+            ...mapState('auth', ['currentUser', 'franchises']),
             links(){
                 const user = this.$store.state.auth.currentUser;
                 let links = [];
@@ -59,7 +76,7 @@
                     links = [
                         {icon: 'dashboard', text: 'Dashboard', route: '/'},
                         {icon: 'perm_contact_calendar', text: 'Contacts', route: '/sales-contact'},
-                        {icon: 'person_pin', text: 'Leads', route: '/lead'},
+                        {icon: 'mdi-account-group', text: 'Leads', route: '/lead'},
                     ]
                 }
 
@@ -68,7 +85,7 @@
                         {icon: 'dashboard', text: 'Dashboard', route: '/'},
                         {icon: 'store', text: 'Franchise', route: '/franchise'},
                         {icon: 'perm_contact_calendar', text: 'Contacts', route: '/sales-contact'},
-                        {icon: 'person_pin', text: 'Leads', route: '/lead'},
+                        {icon: 'mdi-account-group', text: 'Leads', route: '/lead'},
                     ]
                 }
 
@@ -77,7 +94,7 @@
                         {icon: 'dashboard', text: 'Dashboard', route: '/'},
                         {icon: 'store', text: 'Franchise', route: '/franchise'},
                         {icon: 'perm_contact_calendar', text: 'Contacts', route: '/sales-contact'},
-                        {icon: 'person_pin', text: 'Leads', route: '/lead'},
+                        {icon: 'mdi-account-group', text: 'Leads', route: '/lead'},
                     ]
                 }
 

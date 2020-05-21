@@ -22,9 +22,9 @@
 
                 <template v-slot:item.leadNumber="{item}">
 
-                    <span v-if="isNew(item.created_at)">
-                        <v-icon small color="green" class="mr-2">mdi-check-decagram</v-icon>
-                    </span>
+<!--                    <span v-if="isNew(item.created_at)">-->
+<!--                        <v-icon small color="green" class="mr-2">mdi-check-decagram</v-icon>-->
+<!--                    </span>-->
                     <span>{{ item.leadNumber }}</span>
                     <span v-if="item.postcodeStatus === 'outside_of_franchise'" >
                         <v-tooltip bottom>
@@ -111,10 +111,10 @@
             }
         },
         computed: {
-            ...mapState('leads', ['leads', 'meta', 'pageOptions'])
+            ...mapState('leads', ['leads', 'meta'])
         },
         methods: {
-            ...mapActions('leads', ['fetchLeads', 'changePageOptions']),
+            ...mapActions('leads', ['fetchLeads']),
 
             getLeads(options, searchOptions){
 
@@ -169,7 +169,7 @@
                 this.searchIn = '';
 
                 //this.changePageOptions(this.defaultOptions);
-                this.getLeads(this.options);
+                this.getLeads(this.defaultOptions);
 
             },
             showLead(item){

@@ -1,4 +1,4 @@
-// import Utils from "../helpers/Utils";
+import Utils from "../helpers/Utils";
 
 
 export const URIBuilder = {
@@ -10,7 +10,7 @@ export const URIBuilder = {
         let uri = `${requestURI}?size=${size}`;
 
         if (options.sortBy.length > 0){
-            const field = options.sortBy[0]
+            const field = Utils.camelToSnake(options.sortBy[0])
             const direction = options.sortDesc[0] ? 'desc' : 'asc';
 
             uri = uri + `&sort=${field}&direction=${direction}`
