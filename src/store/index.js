@@ -12,7 +12,9 @@ export default new Vuex.Store({
     state: {
         appLoading: false,
         appError: false,
-        appMessage: ''
+        appMessage: '',
+        successMessage: '',
+        showSuccessMessage: false
     },
     mutations: {
         setAppLoading(state, status){
@@ -21,6 +23,16 @@ export default new Vuex.Store({
         setAppError(state, {status, message}){
             state.appError = status;
             state.appMessage = message;
+        },
+        setSuccessMessage(state, message){
+            if(message && message.trim() !== ''){
+                state.showSuccessMessage = true;
+                state.successMessage = message;
+            }else {
+                state.showSuccessMessage = false;
+                state.successMessage = '';
+            }
+
         }
     },
     actions: {
@@ -29,6 +41,9 @@ export default new Vuex.Store({
         },
         setAppErrorState({commit}, {status, message}){
             commit('setAppError', {status, message})
+        },
+        setSuccessMessage({commit}, message){
+            commit('setSuccessMessage', message)
         },
         clearAllState({commit}){
             // Avoid some Nasty message in the console

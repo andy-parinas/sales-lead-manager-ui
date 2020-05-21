@@ -121,6 +121,16 @@ const LeadAPI = {
         const response = await api().patch(uri, data);
 
         return response.data;
+    },
+
+    async deleteLead(leadId){
+        const uri = `/api/leads/${leadId}`;
+
+        await Csrf.getCSRFCookie();
+
+        const response = await api().delete(uri);
+
+        console.log(response);
     }
 }
 

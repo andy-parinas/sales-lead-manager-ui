@@ -77,6 +77,10 @@ export default {
             //dispatch('insertToLeads', lead)
         },
 
+        async deleteLead(context, leadId){
+            await LeadAPI.deleteLead(leadId);
+        },
+
          async updateLeadDetails({commit, dispatch}, formData){
             const response = await LeadAPI.updateLeadDetails(formData);
 

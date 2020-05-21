@@ -56,6 +56,7 @@
         },
         methods: {
             ...mapActions('leads', ['updateLeadDetails']),
+            ...mapActions(['setSuccessMessage']),
             updateData(form){
                 this.form = Object.assign({}, form)
             },
@@ -63,7 +64,8 @@
                 this.loading = true;
 
                 this.updateLeadDetails(this.form).then(() => {
-                    this.$emit('success');
+                    //this.$emit('success');
+                    this.setSuccessMessage('Lead Successfully Updated')
                     this.$emit('close');
                 }).catch(error => {
                     if(error.response && error.response.status){

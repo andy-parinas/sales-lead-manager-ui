@@ -45,7 +45,7 @@
                 <template v-slot:item.actions="{item}">
                    <v-container>
                        <v-row class="justify-sm-start">
-                           <v-btn x-small fab elevation="4" dark color="error" class="mr-3">
+                           <v-btn x-small fab elevation="4" dark color="error" class="mr-3" @click="showDeleteConfirmation(item)">
                                <v-icon small > mdi-trash-can-outline </v-icon>
                            </v-btn>
                            <v-btn x-small fab elevation="4" dark color="accent" @click="showLead(item)" :loading="item.leadId === selectedId" >
@@ -58,6 +58,41 @@
 
             </v-data-table>
         </v-card>
+
+
+
+
+        <v-dialog v-model="deleteDialog" persistent max-width="650" class="px-2 py-5">
+            <v-card v-if="forDeletionItem">
+                <v-card-title class="headline">Delete Lead: {{ forDeletionItem.leadNumber }}  ?</v-card-title>
+                <v-card-text>
+                    <p class="body-1 font-weight-medium" > {{ forDeletionItem.firstName }} {{ forDeletionItem.lastName }} </p>
+                    <p class="body-2 font-weight-medium">{{ forDeletionItem.suburb }}, {{ forDeletionItem.state }}, {{ forDeletionItem.postcode }}</p>
+                    <p class="subtitle-1  red--text">You won't be able to recover this Sales Contact once deleted.</p>
+                    <v-alert v-if="deleteError" text prominent type="error" icon="mdi-alert">
+                        <v-row align="center">
+                            <v-col class="grow">{{ deleteError }}</v-col>
+                            <v-col class="shrink">
+                                <v-btn @click="deleteError = null"
+                                       text fab small color="red">
+                                    <v-icon>mdi-close</v-icon>
+                                </v-btn>
+                            </v-col>
+                        </v-row>
+                    </v-alert>
+                </v-card-text>
+                <v-card-actions>
+                    <v-spacer></v-spacer>
+                    <v-btn color="grey darken-1" small dark @click="onCloseDelete" >Cancel</v-btn>
+                    <v-btn color="red darken-1" small dark :loading="deleting" @click="onDelete" >
+                        Delete
+                    </v-btn>
+                </v-card-actions>
+            </v-card>
+        </v-dialog>
+
+
+
     </div>
 </template>
 
@@ -115,7 +150,11 @@
                 searchFor: '',
                 isInitialLoad: true,
                 dateToday: new Date().toISOString().substr(0, 10),
-                selectedId: ''
+                selectedId: '',
+                deleteDialog: false,
+                forDeletionItem: null,
+                deleting: false,
+                deleteError: null
             }
         },
         computed: {
@@ -126,14 +165,11 @@
             },
         },
         methods: {
-            ...mapActions('leads', ['fetchLeads']),
-
+            ...mapActions('leads', ['fetchLeads', 'deleteLead']),
+            ...mapActions(['setSuccessMessage']),
             getLeads(options, searchOptions){
 
                 if(!this.loading){ //Make sure to avoid multiple request when request is already sent
-
-                    console.log('getting leads')
-
                     this.loading = true;
                     this.$set(this.footerProps, 'disablePagination', true)
                     this.$set(this.footerProps, 'disableItemsPerPage', true)
@@ -141,8 +177,8 @@
                     this.fetchLeads({options, searchOptions}).then(() => {
                         this.loading = false;
                     }).catch(error => {
-                        console.error(error.response)
                         if(error.response && error.response.status){
+                            console.error(error.response)
                             ErrorHandler.handlerError(error.response.status, (message) => {
                                 this.$emit('throwError', true, message);
                             })
@@ -159,6 +195,38 @@
                     })
                 }
 
+            },
+            showDeleteConfirmation(item){
+                this.deleteDialog = true;
+                this.forDeletionItem = item
+            },
+            onDelete(){
+                if(this.forDeletionItem){
+                    this.deleting = true;
+                    this.deleteLead(this.forDeletionItem.leadId).then(() => {
+                        this.onCloseDelete();
+                        this.changeOptions();
+                        this.setSuccessMessage('Lead Successfully Deleted')
+                    }).catch(error => {
+                        if(error.response && error.response.status){
+                            console.error(error.response)
+                            ErrorHandler.handlerError(error.response.status, (message) => {
+                                this.deleteError = message
+                            })
+                        }else {
+                            console.error(error);
+                            ErrorHandler.handlerError(503, (message) => {
+                                this.deleteError = message
+                            })
+                        }
+                    }).finally(() => {
+                        this.deleting = false
+                    })
+                }
+            },
+            onCloseDelete(){
+                this.deleteDialog = false;
+                this.forDeletionItem = null
             },
             searchLeads({searchIn, searchFor}){
                 this.searchFor = searchFor;
