@@ -22,9 +22,6 @@
 
                 <template v-slot:item.leadNumber="{item}">
 
-<!--                    <span v-if="isNew(item.created_at)">-->
-<!--                        <v-icon small color="green" class="mr-2">mdi-check-decagram</v-icon>-->
-<!--                    </span>-->
                     <span>{{ item.leadNumber }}</span>
                     <span v-if="item.postcodeStatus === 'outside_of_franchise'" >
                         <v-tooltip bottom>
@@ -46,7 +43,17 @@
                 </template>
 
                 <template v-slot:item.actions="{item}">
-                    <v-icon small class="mr-5" @click="showLead(item)"> mdi-forward </v-icon>
+                   <v-container>
+                       <v-row class="justify-sm-start">
+                           <v-btn x-small fab elevation="4" dark color="error" class="mr-3">
+                               <v-icon small > mdi-trash-can-outline </v-icon>
+                           </v-btn>
+                           <v-btn x-small fab elevation="4" dark color="accent" @click="showLead(item)" :loading="item.leadId === selectedId" >
+                               <v-icon small > mdi-file-outline </v-icon>
+                           </v-btn>
+                       </v-row>
+                   </v-container>
+
                 </template>
 
             </v-data-table>
@@ -107,11 +114,16 @@
                 searchIn: '',
                 searchFor: '',
                 isInitialLoad: true,
-                dateToday: new Date().toISOString().substr(0, 10)
+                dateToday: new Date().toISOString().substr(0, 10),
+                selectedId: ''
             }
         },
         computed: {
-            ...mapState('leads', ['leads', 'meta'])
+            ...mapState('leads', ['leads', 'meta']),
+            isHeadOffice(){
+                const userType = this.$store.state.auth.currentUser.userType;
+                return  userType === 'head_office';
+            },
         },
         methods: {
             ...mapActions('leads', ['fetchLeads']),
@@ -173,7 +185,8 @@
 
             },
             showLead(item){
-               this.$emit('showDetail', item.leadId);
+                this.selectedId = item.leadId
+                this.$emit('showDetail', item.leadId);
             },
             changeOptions(){
 
@@ -189,12 +202,8 @@
                     this.getLeads(this.options);
                 }
             },
-            isNew(date){
-                const dateTimeArray = date.split(" ");
-
-                if(dateTimeArray.length < 2) return '';
-
-                return dateTimeArray[0] === new Date().toISOString().substr(0, 10);
+            stopLoading(){
+                this.selectedId = ''
             }
         },
         async mounted() {

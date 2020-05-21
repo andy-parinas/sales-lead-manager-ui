@@ -19,8 +19,18 @@
                     class="elevation-0">
 
                 <template v-slot:item.actions="{ item }">
-                    <v-icon small class="mr-5" @click="editContact(item)" > mdi-pencil</v-icon>
-                    <v-icon small @click="deleteItem(item)" v-if="isHeadOffice" > mdi-delete </v-icon>
+                    <v-container>
+                        <v-row class="justify-sm-start">
+                            <v-btn x-small fab elevation="4" dark color="error" class="mr-3"  v-if="isHeadOffice"  @click="deleteItem(item)">
+                                <v-icon small >mdi-trash-can-outline </v-icon>
+                            </v-btn>
+                            <v-btn x-small fab elevation="4" dark color="accent" @click="editContact(item)" >
+                                <v-icon small> mdi-file-document-edit-outline</v-icon>
+                            </v-btn>
+                        </v-row>
+                    </v-container>
+
+
                 </template>
                 <template v-slot:expanded-item="{ headers, item }">
                     <SalesContactDetails :length="headers.length" :item="item" />

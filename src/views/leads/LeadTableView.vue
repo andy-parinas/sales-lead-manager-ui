@@ -2,7 +2,7 @@
     <div>
         <v-row class="mt-6" justify="center" v-show="!isDetailShown">
             <v-col cols="12" sm="12" md="12">
-                <LeadsTable @showDetail="showDetail" />
+                <LeadsTable @showDetail="showDetail" ref="leadTable" />
             </v-col>
         </v-row>
         <div v-if="isDetailShown">
@@ -42,13 +42,15 @@
 
             },
             showDetail(id){
-                this.$store.dispatch('setAppLoadingState', true)
+                //this.$store.dispatch('setAppLoadingState', true)
                 this.fetchSingleLead(id).then(() => {
                     this.isDetailShown = true;
-                    this.$store.dispatch('setAppLoadingState', false)
+                    //this.$store.dispatch('setAppLoadingState', false)
                 }).catch(error => {
                     console.log(error)
-                    this.$store.dispatch('setAppLoadingState', false)
+                    //this.$store.dispatch('setAppLoadingState', false)
+                }).finally(() => {
+                    this.$refs.leadTable.stopLoading();
                 })
             },
             goBack(){
