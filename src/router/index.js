@@ -69,6 +69,38 @@ const routes = [
                 component: () => import(/* webpackChunkName: "dashboard" */ "@/views/PageSalesContact.vue"),
                 meta: {requiresAuth: true}
         
+            },
+            {
+                path: 'admin',
+                name: 'AdminPage',
+                component: () => import(/* webpackChunkName: "adminPage" */ "@/views/admin/AdminPage.vue"),
+                meta: {requiresAuth: true},
+                children: [
+                    {
+                        path: 'users',
+                        name: 'UsersAdmin',
+                        component: () => import(/* webpackChunkName: "usersAdmin" */"@/views/admin/UsersAdminPage.vue"),
+                        meta: {requiresAuth: true}
+                    },
+                    {
+                        path: 'postcodes',
+                        name: 'PostcodeAdmin',
+                        component: () => import(/* webpackChunkName: "postcodeAdmin" */"@/views/admin/PostcodeAdminPage.vue"),
+                        meta: {requiresAuth: true}
+                    },
+                    {
+                        path: 'products',
+                        name: 'ProductAdmin',
+                        component: () => import(/* webpackChunkName: "productAdmin" */"@/views/admin/ProductAdminPage.vue"),
+                        meta: {requiresAuth: true}
+                    },
+                    {
+                        path: 'trade-types',
+                        name: 'TradeTypeAdmin',
+                        component: () => import(/* webpackChunkName: "tradeTypeAdmin" */"@/views/admin/TradeTypeAdminPage.vue"),
+                        meta: {requiresAuth: true}
+                    }
+                ]
             }
         ],
 

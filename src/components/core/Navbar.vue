@@ -32,13 +32,27 @@
             <v-divider></v-divider>
             <v-list class="mt-3">
                 <v-list-item v-for="(link, index) in links" :key="index" router :to="link.route" active-class="border">
-                    <v-list-item-action>
-                    <v-icon>{{ link.icon }}</v-icon>
-                    </v-list-item-action>
-                    <v-list-item-content>
+                    <v-list-item-icon>
+                    <v-icon >{{ link.icon }}</v-icon>
+                    </v-list-item-icon>
                     <v-list-item-title>{{link.text}}</v-list-item-title>
-                    </v-list-item-content>
                 </v-list-item>
+                <v-subheader class="mt-4 grey--text text--darken-1">ADMIN AND SETTINGS</v-subheader>
+                <v-list-group v-model="adminMenu"
+                              :prepend-icon="adminMenu? 'mdi-chevron-up' : 'mdi-chevron-down'"
+                              append-icon="">
+                    <template v-slot:activator>
+                        <v-list-item-content>
+                            <v-list-item-title>
+                                Admin Menu
+                            </v-list-item-title>
+                        </v-list-item-content>
+                    </template>
+                <v-list-item v-for="(admin, i) in admins" :key="i" link router :to="admin.route" active-class="border">
+                    <v-list-item-icon> <v-icon v-text="admin.icon"></v-icon> </v-list-item-icon>
+                    <v-list-item-title v-text="admin.text"></v-list-item-title>
+                </v-list-item>
+                </v-list-group>
             </v-list>
         </v-navigation-drawer>
      </nav>
@@ -53,6 +67,13 @@
         components: {},
         data: () => ({
             drawer: true,
+            adminMenu: false,
+            admins: [
+                {icon: 'mdi-account-settings', text: 'User Admin', route: '/admin/users'},
+                {icon: 'mdi-mailbox-open', text: 'Postcode Admin', route: '/admin/postcodes'},
+                {icon: 'mdi-cart', text: 'Product Admin', route: '/admin/products'},
+                {icon: 'mdi-hammer-screwdriver', text: 'Trade Type Admin', route: '/admin/trade-types'}
+            ],
         }),
         methods: {
             ...mapActions('auth', ['logout']),
@@ -95,6 +116,7 @@
                         {icon: 'store', text: 'Franchise', route: '/franchise'},
                         {icon: 'perm_contact_calendar', text: 'Contacts', route: '/sales-contact'},
                         {icon: 'mdi-account-group', text: 'Leads', route: '/lead'},
+                        //{icon: 'settings', text: 'Admin', route: '/admin'},
                     ]
                 }
 
