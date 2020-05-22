@@ -13,14 +13,14 @@
             <v-container>
                 <v-row class="mx-2">
                     <v-col cols="12" sm="6">
-                        <v-text-field v-model="item.firstName"
+                        <v-text-field v-model="editedItem.firstName"
                                 prepend-icon="mdi-account"
                                 label="First Name"
                                       :rules="rules.requireLessThan50"
                         />
                     </v-col>
                     <v-col cols="12" sm="6">
-                        <v-text-field v-model="item.lastName"
+                        <v-text-field v-model="editedItem.lastName"
                                 prepend-icon="mdi-account-plus"
                                 label="Last Name"
                                       :rules="rules.requireLessThan50"
@@ -28,14 +28,14 @@
                     </v-col>
         <!--  Email Sections-->
                     <v-col cols="12" sm="6">
-                        <v-text-field v-model="item.email"
+                        <v-text-field v-model="editedItem.email"
                                 prepend-icon="mdi-email"
                                 label="E-Mail"
                                       :rules="rules.emailRules"
                         />
                     </v-col>
                     <v-col cols="12" sm="6">
-                        <v-text-field v-model="item.email2"
+                        <v-text-field v-model="editedItem.email2"
                                 prepend-icon="mdi-email-outline"
                                 label="Additonal Email (Optional)"
                                 :rules="rules.optionalEmailRules"
@@ -44,7 +44,7 @@
         <!--  End of Email Sections-->
         <!--  Address Sections-->
                     <v-col cols="12" sm="6">
-                        <v-text-field v-model="item.contactNumber"
+                        <v-text-field v-model="editedItem.contactNumber"
                                       type="tel"
                                       prepend-icon="mdi-phone"
                                       label="Contact Number"
@@ -52,7 +52,7 @@
                         />
                     </v-col>
                     <v-col cols="12" sm="6">
-                        <v-text-field v-model="item.street1"
+                        <v-text-field v-model="editedItem.street1"
                                 prepend-icon="mdi-home"
                                 label="Address"
                                 :rules="rules.requiredField"
@@ -61,13 +61,13 @@
         <!--  End of Address Sections-->
         <!--  Street Sections-->
                     <v-col cols="12" sm="6">
-                        <v-text-field v-model="item.street2"
+                        <v-text-field v-model="editedItem.street2"
                                 prepend-icon="mdi-sign-direction"
                                 label="Street Address (optional)"
                         />
                     </v-col>
                     <v-col cols="12" sm="6">
-                        <v-text-field v-model="item.suburb"
+                        <v-text-field v-model="editedItem.suburb"
                                 prepend-icon="mdi-home-modern"
                                 label="Suburb"
                                 :rules="rules.requiredField"
@@ -76,7 +76,7 @@
         <!--  End of Street Sections-->
         <!-- State Sections-->
                     <v-col cols="12" sm="6">
-                        <v-text-field v-model="item.state"
+                        <v-text-field v-model="editedItem.state"
                                 prepend-icon="mdi-map"
                                 label="State"
                                 :rules="rules.requiredField"
@@ -84,11 +84,13 @@
                     </v-col>
                     <v-col cols="12" sm="6">
                         <v-autocomplete
-                                v-model="item.postcode"
+                                v-model="editedItem.postcode"
                                 :items="postcodes"
                                 :search-input.sync="search"
                                 :loading="postcodeLoading"
                                 :rules="rules.requiredField"
+                                cache-items
+                                no-filter
                                 color="black"
                                 label="PostcodeAPI"
                                 prepend-icon="mdi-mailbox"
@@ -98,7 +100,7 @@
         <!--  Start of Contact status Sections-->
                     <v-col cols="12" sm="6">
                         <v-select
-                                v-model="item.customerType"
+                                v-model="editedItem.customerType"
                                 :items="customerType"
                                 :rules="[v => !!v || 'Field is required']"
                                 label="Contact Type"
@@ -108,7 +110,7 @@
                     </v-col>
                     <v-col cols="12" sm="6">
                         <v-select
-                                v-model="item.status"
+                                v-model="editedItem.status"
                                 :items="status"
                                 :rules="[v => !!v || 'Field is required']"
                                 label="Contact Status"
@@ -121,23 +123,22 @@
             </v-container>
             <v-card-actions>
                 <v-spacer />
-                <v-btn
-                        text
-                        color="primary"
-                        @click="$emit('closeForm')"
+                <v-btn color="grey darken-1" dark
+                        @click="closeForm"
                 >Cancel</v-btn>
-                <v-btn
-                        :disabled="!valid"
-                        text
-                        @click="submit"
+                <v-btn color="primary" dark :loading="saving" :disabled="!valid"
+                        @click="save"
                 >Save</v-btn>
             </v-card-actions>
         </v-form>
+<!--        <pre>{{editedItem}}</pre>-->
+<!--        <pre>{{item}}</pre>-->
     </v-card>
 </template>
 
 <script>
     import {mapActions, mapState} from 'vuex';
+    import ErrorHandlerMixins from "../../mixins/ErrorHandler";
     export default {
         name: "SalesContactForm",
         props: {
@@ -145,6 +146,7 @@
             formTitle: {required: true, type: String},
             loading: {required: true, type: Boolean}
         },
+        mixins: [ErrorHandlerMixins],
         data(){
             return {
                 valid: false,
@@ -183,7 +185,34 @@
                 search: '',
                 postcodeLoading: false,
                 error: false,
-                errorMessage: ''
+                errorMessage: '',
+                saving: false,
+                editedItem: {
+                    id: '',
+                    firstName: '',
+                    lastName: '',
+                    email: '',
+                    email2: '',
+                    contactNumber: '',
+                    street1: '',
+                    street2: '',
+                    suburb: '',
+                    state: '',
+                    postcode: '',
+                },
+                emptyItem: {
+                    id: '',
+                    firstName: '',
+                    lastName: '',
+                    email: '',
+                    email2: '',
+                    contactNumber: '',
+                    street1: '',
+                    street2: '',
+                    suburb: '',
+                    state: '',
+                    postcode: '',
+                }
 
             }
         },
@@ -194,6 +223,8 @@
         },
         methods: {
             ...mapActions('postcodes', ['pushPostCode', 'findPostcodes']),
+            ...mapActions('salesContacts', ['updateSalesContact', 'createSalesContact']),
+            ...mapActions(['setSuccessMessage']),
             submit(){
                 this.$refs.contactForm.validate();
                 this.$emit('save')
@@ -209,6 +240,40 @@
             showErrorMessage(message){
                 this.errorMessage = message;
                 this.error = true;
+            },
+            save(){
+                this.saving = true;
+                if(this.editedItem.id !== ''){
+                    this.updateSalesContact(this.editedItem).then(() => {
+                        this.setSuccessMessage("Contact Successfully Saved")
+                        this.closeForm();
+                    }).catch(error => {
+                        this.handleError(error)
+                    }).finally(() => {
+                        this.saving = false;
+                    })
+
+                }else {
+
+                    this.createSalesContact(this.editedItem).then(() => {
+                        this.setSuccessMessage("Contact Successfully Saved")
+                        this.closeForm();
+                    }).catch(error => {
+                        this.handleError(error)
+                    }).finally(() => {
+                        this.saving = false;
+                    })
+                }
+            },
+            closeForm(){
+                setTimeout(() => {
+                    this.editedItem = Object.assign({}, this.emptyItem)
+                }, 100)
+                this.$emit('closeForm')
+            },
+            copyPropsToState(item){
+                console.log('Copying State to props', item);
+                this.editedItem = Object.assign({}, item)
             }
         },
         watch: {
@@ -223,7 +288,7 @@
                         this.postcodeLoading = false;
                     }).catch(error => {
                         this.postcodeLoading = false;
-                        console.error(error.response);
+                        this.handleError(error)
                     })
                 }
             },
@@ -232,6 +297,9 @@
             if(this.item.postcode.trim() !== ''){
                 this.pushPostCode(this.item.postcode);
             }
+            console.log('mounted contact form')
+            this.copyPropsToState(this.item)
+
         }
     }
 </script>

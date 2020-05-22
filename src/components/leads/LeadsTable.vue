@@ -179,17 +179,6 @@
                     this.fetchLeads({options, searchOptions}).then(() => {
                         this.loading = false;
                     }).catch(error => {
-                        // if(error.response && error.response.status){
-                        //     console.error(error.response)
-                        //     ErrorHandler.handlerError(error.response.status, (message) => {
-                        //         this.$emit('throwError', true, message);
-                        //     })
-                        // }else {
-                        //     console.error(error);
-                        //     ErrorHandler.handlerError(503, (message) => {
-                        //         this.$emit('throwError', true, message);
-                        //     })
-                        // }
                         this.handleError(error);
                     }).finally(() => {
                         this.loading = false;
@@ -211,17 +200,6 @@
                         this.changeOptions();
                         this.setSuccessMessage('Lead Successfully Deleted')
                     }).catch(error => {
-                        // if(error.response && error.response.status){
-                        //     console.error(error.response)
-                        //     ErrorHandler.handlerError(error.response.status, (message) => {
-                        //         this.deleteError = message
-                        //     })
-                        // }else {
-                        //     console.error(error);
-                        //     ErrorHandler.handlerError(503, (message) => {
-                        //         this.deleteError = message
-                        //     })
-                        // }
                         this.handleError(error);
                     }).finally(() => {
                         this.deleting = false
@@ -252,6 +230,7 @@
                 this.searchFor = '';
                 this.searchIn = '';
 
+                this.options = Object.assign({}, this.defaultOptions);
                 //this.changePageOptions(this.defaultOptions);
                 this.getLeads(this.defaultOptions);
 
@@ -261,8 +240,6 @@
                 this.$emit('showDetail', item.leadId);
             },
             changeOptions(){
-
-                //this.changePageOptions(this.options);
 
                 if(this.searchIn.trim() !== '' && this.searchFor.trim() !== '')
                 {

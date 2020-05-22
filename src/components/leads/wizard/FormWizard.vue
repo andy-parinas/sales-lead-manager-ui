@@ -169,6 +169,12 @@
                 this.$router.push({name: 'LeadTable'})
             }
 
+        },
+        mounted() {
+            if(this.selectedContact){
+                this.form.sales_contact_id = this.selectedContact.id
+                this.stage = 2;
+            }
         }
     }
 </script>
