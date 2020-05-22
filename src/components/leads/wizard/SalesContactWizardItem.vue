@@ -12,7 +12,7 @@
                        </v-text-field>
                    </v-col>
                </v-row>
-               <v-radio-group v-model="selected">
+               <v-radio-group v-model="selected" @change="onSelectContact">
                    <v-list>
                        <v-row>
                            <v-col cols="12" sm="6"  v-for="contact in salesContacts" :key="contact.id">
@@ -63,17 +63,22 @@
             }
         },
         computed: {
-            ...mapState('salesContacts', ['salesContacts']),
+            ...mapState('salesContacts', ['salesContacts', 'selectedContact']),
 
         },
         methods: {
-            ...mapActions('salesContacts', ['selectContact', 'fetchSalesContacts'])
-        },
-        watch: {
-            selected(){
+            ...mapActions('salesContacts', ['selectContact', 'fetchSalesContacts']),
+            onSelectContact(){
+                console.log('Select Contact')
                 this.$emit('setSalesContactId', this.selected.id)
                 this.selectContact(this.selected)
-            },
+            }
+        },
+        watch: {
+            // selected(){
+            //     this.$emit('setSalesContactId', this.selected.id)
+            //     this.selectContact(this.selected)
+            // },
 
             searchFor(){
 
@@ -94,6 +99,11 @@
                         this.searchLoading = false;
                     })
                 }
+            }
+        },
+        mounted() {
+            if(this.selectedContact){
+                this.selected = this.selectedContact
             }
         }
     }

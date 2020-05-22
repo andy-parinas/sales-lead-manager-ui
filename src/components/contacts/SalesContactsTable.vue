@@ -46,7 +46,6 @@
                     <v-dialog v-model="editDialog"  persistent width="800px">
                         <SalesContactForm
                                 @closeForm="closeEditDialog"
-                                @save="save"
                                 :item="editedItem"
                                 :formTitle="formTitle"
                                 :loading="formLoading"

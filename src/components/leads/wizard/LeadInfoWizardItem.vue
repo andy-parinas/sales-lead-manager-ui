@@ -161,14 +161,21 @@
         watch: {
             selectedContact: {
                 handler(){
-                    this.contactPostcode = this.selectedContact.postcode
-                    if(this.form.franchiseId !== ''){
-                        if(this.franchiseChecking) return;
-                        this.$refs.leadForm.checkFranchisePostcode();
+                    if(this.selectedContact){
+                        this.contactPostcode = this.selectedContact.postcode
+                        if(this.form.franchiseId !== ''){
+                            if(this.franchiseChecking) return;
+                            this.$refs.leadForm.checkFranchisePostcode();
+                        }
                     }
                 },
                 deep: true
             },
+        },
+        mounted() {
+            if(this.selectedContact){
+                this.contactPostcode = this.selectedContact.postcode
+            }
         }
 
 

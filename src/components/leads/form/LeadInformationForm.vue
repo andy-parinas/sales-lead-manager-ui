@@ -146,8 +146,6 @@
                 this.postcodeStatus = '';
                 this.franchiseChecking = true;
 
-                console.log('Checking Franchise Postcode')
-
                 PostcodeAPI.getFranchisePostcodes(this.form.franchiseId).then(response => {
 
                     this.franchiseChecking = false;
