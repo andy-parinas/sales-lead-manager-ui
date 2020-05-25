@@ -6,7 +6,7 @@ const ErrorHandlerMixins =  {
         ...mapActions(['setErrorMessage']),
         handleError(error){
             if(error.response && error.response.status){
-                console.error(error.response)
+                console.error(error.response.data)
                 ErrorHandler.handlerError(error.response.status, (message) => {
                     //this.$emit('throwError', true, message);
                     this.setErrorMessage(message)

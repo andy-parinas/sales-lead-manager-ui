@@ -6,10 +6,10 @@ import Csrf from "./csrf";
 
 const LeadAPI = {
 
-    async getLeads(options, searhOption){
+    async getLeads(options, searchOption){
 
         const requestUri = '/api/leads'
-        const uri = URIBuilder.build(requestUri, options, searhOption)
+        const uri = URIBuilder.build(requestUri, options, searchOption)
 
         const response = await api().get(uri);
 

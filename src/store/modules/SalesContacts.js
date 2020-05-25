@@ -57,8 +57,6 @@ export default {
                     }
             })
 
-            console.log('Inside Actions', updatedContacts);
-
             commit('setSalesContacts', updatedContacts);
 
         },

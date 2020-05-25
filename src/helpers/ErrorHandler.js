@@ -2,7 +2,7 @@
 
 const ErrorHandler = {
 
-    handlerError(errorCode, callback){
+    handlerError(errorCode, callback, errorMessage){
 
         switch (errorCode) {
 
@@ -22,6 +22,13 @@ const ErrorHandler = {
                 callback("Something went wrong. Please try again")
                 break;
 
+            case 409:
+                if(errorMessage){
+                    callback(errorMessage)
+                }else {
+                    callback("Problem processing your data. Please check and try again")
+                }
+                break;
             default:
                 callback("Something went wrong. Please try again")
                 break;

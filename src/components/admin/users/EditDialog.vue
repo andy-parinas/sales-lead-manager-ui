@@ -7,26 +7,46 @@
                 <v-icon>mdi-close</v-icon>
             </v-btn>
         </v-toolbar>
-        <UserForm />
+        <UserForm :initialData="selectedUser" @onSave="onUserUpdate" :loading="loading" />
     </v-card>
 </template>
 
 <script>
+    import {mapState, mapActions} from 'vuex';
     import UserForm from "./shared/UserForm";
+    import ErrorHandlerMixins from "../../../mixins/ErrorHandler";
     export default {
         name: "EditDialog",
         components: {UserForm},
         data(){
             return {
-                assignedFranchise: [
-                    '100','200','300','400','500','600','700','800','900','1000',
-                ],
-                allFranchises: [
-                    '100','200','300','400','500','600','700','800','900','1000',
-                    '1001','2001','3001','4001','5001','6001','7001','8001','9001','1002',
-                ]
+                loading: false,
+                user: {}
+            }
+        },
+        mixins: [ErrorHandlerMixins],
+        computed: {
+            ...mapState('users',['selectedUser'])
+        },
+        methods: {
+            ...mapActions('users', ['updateUser']),
+            ...mapActions(['setSuccessMessage']),
+
+            onUserUpdate(user){
+
+                this.loading = true;
+
+                this.updateUser(user).then(() => {
+                    this.setSuccessMessage('User successfully Updated')
+                    this.$emit('close')
+                }).catch(error => {
+                    this.handleError(error)
+                }).finally(() => {
+                    this.loading = false;
+                })
             }
         }
+
     }
 </script>
 
