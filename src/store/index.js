@@ -7,6 +7,7 @@ import auth from "./modules/Auth";
 import salesContacts from './modules/SalesContacts';
 import postcodes from './modules/Postcodes';
 import LeadModule from "./modules/LeadModule";
+import UserModule from "./modules/UserModule";
 
 export default new Vuex.Store({
     state: {
@@ -77,6 +78,7 @@ export default new Vuex.Store({
         auth,
         salesContacts,
         postcodes,
-        leads: LeadModule
+        leads: LeadModule,
+        users: UserModule
     }
 })

@@ -1,7 +1,12 @@
 <template>
     <div>
         <PageHeader title="Users Admin" class="mb-1" />
-        <UsersAdminTable />
+        <v-row class="mt-6" justify="center">
+            <v-col cols="12" sm="12" md="10">
+                <UsersAdminTable />
+            </v-col>
+        </v-row>
+
     </div>
 </template>
 

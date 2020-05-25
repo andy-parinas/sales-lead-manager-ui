@@ -33,3 +33,20 @@ Vue.filter('dateOnly', function (value) {
 
     return dateTimeArray[0];
 })
+
+Vue.filter('snakeCaseToRegular', function (value) {
+    const valueArray = value.split("_");
+
+    let finalWords = '';
+
+    for (let i = 0; i < valueArray.length; i++){
+        const word = valueArray[i];
+
+        finalWords = finalWords + word.charAt(0).toUpperCase() + word.slice(1) + ' ';
+    }
+
+
+    return finalWords;
+
+
+})

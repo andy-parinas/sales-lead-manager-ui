@@ -236,30 +236,6 @@
                 this.deleteDialog = false;
                 this.deleting = false;
             },
-            // save(){
-            //     this.formLoading = true;
-            //     if(this.editedItemIndex > -1){
-            //         this.updateSalesContact(this.editedItem).then(() => {
-            //             this.setSuccessMessage("Contact Successfully Saved")
-            //             this.closeEditDialog();
-            //         }).catch(error => {
-            //             this.handleError(error)
-            //         }).finally(() => {
-            //             this.formLoading = false;
-            //         })
-            //
-            //     }else {
-            //         console.log('Saving the Form')
-            //         this.createSalesContact(this.editedItem).then(() => {
-            //             this.setSuccessMessage("Contact Successfully Saved")
-            //             this.closeEditDialog();
-            //         }).catch(error => {
-            //             this.handleError(error)
-            //         }).finally(() => {
-            //             this.formLoading = false;
-            //         })
-            //     }
-            // },
             resetSelectedItem(){
                 this.editedItem = Object.assign({}, this.defaultItem)
                 this.editedItemIndex = -1
