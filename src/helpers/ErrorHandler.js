@@ -2,16 +2,24 @@
 
 const ErrorHandler = {
 
-    handlerError(errorCode, callback, errorMessage){
+    handlerError(errorCode, callback, errorResponse){
 
         switch (errorCode) {
 
             case 422:
-                callback('Error in processing your form. Please check and try again')
+                if(errorResponse && errorResponse.data && Object.keys(errorResponse.data).length !== 0){
+                    let message = ''
+                    for(let props in errorResponse.data){
+                        message = message + errorResponse.data[props][0] + ' '
+                    }
+                    callback(message)
+                }else {
+                    callback('Error in processing your form. Please check and try again')
+                }
                 break;
 
             case 401:
-                callback('You are not authorized. Please logout and login again. Please check your credentials with your administrators')
+                callback('You are not authorized. Please logout and login again.')
                 break;
 
             case 403:
@@ -23,11 +31,7 @@ const ErrorHandler = {
                 break;
 
             case 409:
-                if(errorMessage){
-                    callback(errorMessage)
-                }else {
-                    callback("Problem processing your data. Please check and try again")
-                }
+                callback("Problem processing your data. Please check and try again")
                 break;
             default:
                 callback("Something went wrong. Please try again")

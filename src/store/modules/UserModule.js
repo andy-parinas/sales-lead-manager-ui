@@ -49,11 +49,17 @@ export default {
 
             const response = await UsersAPI.updateUser(userUpdates);
 
-            console.log('modules', response.data);
-
             commit('updateUserInUsers', response.data);
 
         },
+        async createUser(context, userData){
+
+             const response = await UsersAPI.createUser(userData);
+
+             console.log(response.data);
+
+        },
+
         selectUser({commit}, user){
             commit('setSelectedUser', user)
         },

@@ -20,6 +20,27 @@ const UsersAPI = {
 
     },
 
+    async createUser(userData){
+
+        const uri = '/api/users';
+
+        const data = {
+            name: userData.name,
+            username: userData.username,
+            email: userData.email,
+            user_type: userData.userType,
+            password: userData.password,
+            password_confirmation: userData.passwordConfirmation
+        }
+
+        await csrf.getCSRFCookie();
+
+        const response = await api().post(uri, data);
+
+        return response.data;
+
+    },
+
     async updateUser(userUpdates){
         const uri = `/api/users/${userUpdates.id}`;
 
@@ -27,7 +48,7 @@ const UsersAPI = {
             name: userUpdates.name,
             username: userUpdates.username,
             email: userUpdates.email,
-            user_type: userUpdates.userType
+            user_type: userUpdates.userType,
         }
 
         await csrf.getCSRFCookie();

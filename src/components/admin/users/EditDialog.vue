@@ -1,13 +1,13 @@
 <template>
     <v-card>
-        <v-toolbar color="blue-grey darken-1" dark >
-            <v-toolbar-title><span>Edit User </span> </v-toolbar-title>
-            <v-spacer></v-spacer>
-            <v-btn icon @click="$emit('close')">
-                <v-icon>mdi-close</v-icon>
-            </v-btn>
-        </v-toolbar>
-        <UserForm :initialData="selectedUser" @onSave="onUserUpdate" :loading="loading" />
+        <DialogHeader title="Edit User">
+            <template v-slot:action>
+                <v-btn icon @click="$emit('close')">
+                    <v-icon>mdi-close</v-icon>
+                </v-btn>
+            </template>
+        </DialogHeader>
+        <UserForm :initialData="selectedUser" @onSave="onUserUpdate" :loading="loading" :edit="true" />
     </v-card>
 </template>
 
@@ -15,9 +15,10 @@
     import {mapState, mapActions} from 'vuex';
     import UserForm from "./shared/UserForm";
     import ErrorHandlerMixins from "../../../mixins/ErrorHandler";
+    import DialogHeader from "../../core/DialogHeader";
     export default {
         name: "EditDialog",
-        components: {UserForm},
+        components: {DialogHeader, UserForm},
         data(){
             return {
                 loading: false,
