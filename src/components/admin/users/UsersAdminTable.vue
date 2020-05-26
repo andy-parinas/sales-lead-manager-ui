@@ -52,6 +52,10 @@
                 <EditDialog @close="showEditDialog = false"  />
             </v-dialog>
 
+            <v-dialog v-model="showFranchiseDialog" persistent max-width="850" class="px-2">
+                <FranchisesDialog @close="showFranchiseDialog = false"  />
+            </v-dialog>
+
         </v-card>
     </div>
 </template>
@@ -63,14 +67,16 @@
     import EditDialog from "./EditDialog";
     import UserSearchForm from "./UserSearchForm";
     import ErrorHandlerMixins from "../../../mixins/ErrorHandler";
+    import FranchisesDialog from "./FranchisesDialog";
 
     export default {
         name: "UsersAdminTable",
-        components: {UserSearchForm, EditDialog, ChipUserType},
+        components: {FranchisesDialog, UserSearchForm, EditDialog, ChipUserType},
         data(){
             return {
                 loading: false,
                 showEditDialog: false,
+                showFranchiseDialog: true,
                 headers : [
                     { text: 'Name',value: 'name'},
                     { text: 'Username',value: 'username'},
