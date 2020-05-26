@@ -24,6 +24,10 @@ export const URIBuilder = {
             if(searchOptions.searchFor.trim() !== '' && searchOptions.searchIn.trim() !== ''){
                 uri = uri + `&search=${encodeURIComponent(searchOptions.searchFor)}&on=${searchOptions.searchIn}`;
             }
+        }else if (searchOptions && searchOptions.searchFor){
+            if(searchOptions.searchFor.trim() !== ''){
+                uri = uri + `&search=${encodeURIComponent(searchOptions.searchFor)}`;
+            }
         }
 
         return uri;

@@ -1,9 +1,11 @@
 <template>
     <div>
         <v-list two-line>
-
+                <div style="height: 10px">
+                    <v-progress-linear indeterminate color="primary" v-if="loading"></v-progress-linear>
+                </div>
                 <v-divider></v-divider>
-                <template v-for="(item, index) in franchises">
+                <template v-for="(item, index) in items">
                     <FranchiseListItem  :key="index"
                                         :item="item"
                                         :add="add"
@@ -13,9 +15,7 @@
                     <v-divider :key="index  + 100"></v-divider>
                 </template>
 
-            <v-pagination class="mt-2"
-                          :length="4"
-            ></v-pagination>
+                <slot name="pagination"></slot>
         </v-list>
 
     </div>
@@ -27,7 +27,9 @@
         name: "FranchiseList",
         props: {
             add: {type: Boolean},
-            remove: {type: Boolean}
+            remove: {type: Boolean},
+            loading: {type: Boolean},
+            items: {required: true, type: Array}
         },
         components: {FranchiseListItem},
         data(){

@@ -56,8 +56,20 @@ const UsersAPI = {
         const response = await api().patch(uri, data);
 
         return response.data;
-    }
+    },
 
+    async getUsersFranchises(userId, pageOptions, searchOptions){
+
+        const requesturi = `/api/users/${userId}/franchises`;
+
+        const uri = URIBuilder.build(requesturi, pageOptions, searchOptions);
+
+        console.log(uri)
+
+        const response = await api().get(uri);
+
+        return response.data;
+    }
 
 }
 

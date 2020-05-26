@@ -8,7 +8,7 @@
             </template>
         </DialogHeader>
         <v-card-text >
-            <div class="d-flex align-end my-10">
+            <div class="d-flex align-start my-10">
                 <v-col cols="12" sm="6">
                     <FranchisesAll />
                 </v-col>

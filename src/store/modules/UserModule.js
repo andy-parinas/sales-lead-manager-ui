@@ -6,7 +6,9 @@ export default {
     state: {
         users: [],
         pagination: {},
-        selectedUser: null
+        selectedUser: null,
+        franchises: [],
+        franchisePagination: null
     },
     mutations: {
         setUsers(state, users){
@@ -29,6 +31,12 @@ export default {
             })
 
             state.users = updatedUsers;
+        },
+        setUsersFranchises(state, franchises){
+            state.franchises = franchises;
+        },
+        setUsersFranchisesPagination(state, pagination){
+            state.franchisePagination = pagination;
         }
     },
     
@@ -60,8 +68,26 @@ export default {
 
         },
 
+        async getUsersFranchises({commit}, userOptions){
+
+            const response = await UsersAPI.getUsersFranchises(userOptions.userId,
+                userOptions.pageOptions, userOptions.searchOptions)
+
+            console.log(response.data)
+            console.log(response.pagination)
+            commit('setUsersFranchises', response.data);
+            commit('setUsersFranchisesPagination', response.pagination)
+        },
+
+        clearUsersFranchisesData({commit}){
+            commit('setUsersFranchises', []);
+            commit('setUsersFranchisesPagination', null)
+        },
         selectUser({commit}, user){
             commit('setSelectedUser', user)
         },
+
+
+
     }
 }

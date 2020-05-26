@@ -34,7 +34,8 @@
                                 Edit
                                 <v-icon small right > mdi-pencil</v-icon>
                             </v-btn>
-                            <v-btn small elevation="4" dark color="green darken-4" class="mr-3" >
+                            <v-btn  @click="editFranchise(item)"
+                                    small elevation="4" dark color="green darken-4" class="mr-3" >
                                 Franchises
                                 <v-icon small right > mdi-store</v-icon>
                             </v-btn>
@@ -49,11 +50,11 @@
             </v-data-table>
 
             <v-dialog v-model="showEditDialog" persistent max-width="850" class="px-2">
-                <EditDialog @close="showEditDialog = false"  />
+                <EditDialog @close="closeDialog"  />
             </v-dialog>
 
             <v-dialog v-model="showFranchiseDialog" persistent max-width="850" class="px-2">
-                <FranchisesDialog @close="showFranchiseDialog = false"  />
+                <FranchisesDialog @close="closeFranchiseDialog"  />
             </v-dialog>
 
         </v-card>
@@ -76,7 +77,7 @@
             return {
                 loading: false,
                 showEditDialog: false,
-                showFranchiseDialog: true,
+                showFranchiseDialog: false,
                 headers : [
                     { text: 'Name',value: 'name'},
                     { text: 'Username',value: 'username'},
@@ -118,7 +119,7 @@
             ...mapState('users', ['users', 'pagination'])
         },
         methods:{
-            ...mapActions('users', ['getUsers', 'selectUser']),
+            ...mapActions('users', ['getUsers', 'selectUser', 'clearUsersFranchisesData']),
             getAllUsers(pageOptions, searchOptions){
 
                 if(!this.loading){
@@ -141,8 +142,19 @@
                 this.selectUser(item);
                 this.showEditDialog =true;
             },
+            editFranchise(item){
+                this.selectUser(item)
+                this.showFranchiseDialog = true;
+            },
             closeDialog(){
+                this.selectUser(null);
                 this.showEditDialog = false;
+
+            },
+            closeFranchiseDialog(){
+                this.selectUser(null);
+                this.clearUsersFranchisesData();
+                this.showFranchiseDialog = false;
             },
             onPageOptionChanged(){
                 if(this.searchIn.trim() !== '' && this.searchFor.trim() !== '')
