@@ -4,7 +4,10 @@
             <v-list-item-content>
                 <v-list-item-title v-text="item.franchiseNumber"></v-list-item-title>
                 <v-list-item-subtitle class="text--primary" v-text="item.name"></v-list-item-subtitle>
-                <v-list-item-subtitle v-text="item.type"></v-list-item-subtitle>
+                <v-list-item-subtitle>
+                    <span>{{ item.type }} </span>
+                    <span v-if="item.parent"> of {{ item.parent }} </span>
+                </v-list-item-subtitle>
             </v-list-item-content>
 
             <v-list-item-action>

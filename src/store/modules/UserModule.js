@@ -48,7 +48,6 @@ export default {
             const users = response.data;
             const pagination = response.pagination;
 
-            console.log('Actions', response)
 
             commit('setUsers', users);
             commit('setPagination', pagination);
@@ -73,8 +72,6 @@ export default {
             const response = await UsersAPI.getUsersFranchises(userOptions.userId,
                 userOptions.pageOptions, userOptions.searchOptions)
 
-            console.log(response.data)
-            console.log(response.pagination)
             commit('setUsersFranchises', response.data);
             commit('setUsersFranchisesPagination', response.pagination)
         },

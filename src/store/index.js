@@ -8,6 +8,7 @@ import salesContacts from './modules/SalesContacts';
 import postcodes from './modules/Postcodes';
 import LeadModule from "./modules/LeadModule";
 import UserModule from "./modules/UserModule";
+import FranchiseModule from "./modules/FranchiseModule";
 
 export default new Vuex.Store({
     state: {
@@ -79,6 +80,7 @@ export default new Vuex.Store({
         salesContacts,
         postcodes,
         leads: LeadModule,
-        users: UserModule
+        users: UserModule,
+        franchises: FranchiseModule
     }
 })

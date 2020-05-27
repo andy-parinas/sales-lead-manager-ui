@@ -13,7 +13,7 @@
         <FranchiseList :items="franchises" :loading="loading"
                 remove >
             <template v-slot:pagination>
-                <v-pagination class="mt-2"
+                <v-pagination class="mt-2" v-if="franchisePagination"
                               v-model="pageOptions.page"
                               :length="franchisePagination.total_pages"
                 ></v-pagination>
