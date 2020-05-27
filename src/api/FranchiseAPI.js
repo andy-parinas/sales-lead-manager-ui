@@ -1,5 +1,6 @@
 import {URIBuilder} from "./helpers";
 import api from "./api";
+import csrf from "./csrf";
 
 
 const FranchiseAPI = {
@@ -13,6 +14,19 @@ const FranchiseAPI = {
         const response = await api().get(uri)
 
         console.log('Franchises', response.data);
+        return response.data;
+
+    },
+
+    async attachUsersFranchise(userId, franchiseId){
+
+        const uri = `/api/users/${userId}/franchises/${franchiseId}`;
+
+        await csrf.getCSRFCookie();
+
+        const response = await api().post(uri);
+
+
         return response.data;
 
     }

@@ -30,7 +30,9 @@ export default {
             commit('setFranchises', response.data);
             commit('setPagination', response.pagination);
 
-        }
+        },
+
+
 
     }
 }

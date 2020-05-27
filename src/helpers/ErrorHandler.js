@@ -17,7 +17,13 @@ const ErrorHandler = {
                     callback('Error in processing your form. Please check and try again')
                 }
                 break;
-
+            case 400:
+                if(errorResponse && errorResponse.data && typeof errorResponse.data === "string" ){
+                    callback(errorResponse.data)
+                }else {
+                    callback("Something went wrong. Please check your data and try again")
+                }
+                break;
             case 401:
                 callback('You are not authorized. Please logout and login again.')
                 break;

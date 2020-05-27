@@ -1,4 +1,5 @@
 import UsersAPI from "../../api/UsersAPI";
+import FranchiseAPI from "../../api/FranchiseAPI";
 
 
 export default {
@@ -37,6 +38,9 @@ export default {
         },
         setUsersFranchisesPagination(state, pagination){
             state.franchisePagination = pagination;
+        },
+        addUsersFranchise(state, franchise){
+            state.franchises.push(franchise)
         }
     },
     
@@ -84,7 +88,12 @@ export default {
             commit('setSelectedUser', user)
         },
 
+        async attachFranchise({commit}, payload){
 
+            const response = await FranchiseAPI.attachUsersFranchise(payload.userId, payload.franchiseId);
+
+            commit('addUsersFranchise', response.data);
+        }
 
     }
 }

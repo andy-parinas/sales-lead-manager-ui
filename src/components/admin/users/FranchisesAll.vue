@@ -19,6 +19,10 @@
             <v-pagination class="mt-2" v-if="pagination"
                           v-model="pageOptions.page"
                           :length="pagination.total_pages"
+                          :total-visible="6"
+                          @next="changePage"
+                          @previous="changePage"
+                          :disabled="loading"
             ></v-pagination>
             </template>
         </FranchiseList>
@@ -28,6 +32,7 @@
 <script>
     import {mapActions, mapState} from 'vuex';
     import FranchiseList from "./shared/FranchiseList";
+    import ErrorHandlerMixins from "../../../mixins/ErrorHandler";
 
 
     export default {
@@ -47,22 +52,21 @@
                 }
             }
         },
+        mixins: [ErrorHandlerMixins],
         computed: {
             ...mapState('franchises', ['franchises', 'pagination']),
             ...mapState('users', [ 'selectedUser'])
         },
         methods: {
             ...mapActions('franchises', ['getFranchises']),
-
+            ...mapActions('users', ['attachFranchise']),
             getAllFranchises(){
                 this.loading = true;
                 this.getFranchises({pageOptions: this.pageOptions,
                     searchOptions: this.searchOptions}).then(() => {
 
-                        console.log('Frachises acquired')
                 }).catch(error => {
-
-                    console.log(error);
+                    this.handleError(error);
                 }).finally(() => {
                     this.loading = false;
                 })
@@ -72,6 +76,19 @@
 
             addToUsersFranchise(item){
                 console.log(item);
+                this.loading = true;
+                this.attachFranchise({userId: this.selectedUser.id, franchiseId: item.id}).then(() => {
+                    console.log('success')
+                }).catch(error => {
+                    this.handleError(error)
+                }).finally(() => {
+                    this.loading = false;
+                })
+            },
+
+            changePage(){
+                // console.log(this.pageOptions)
+                // this.getAllFranchises();
             }
         },
         watch: {
@@ -79,6 +96,14 @@
                 handler(){
                     if(this.selectedUser && Object.keys(this.selectedUser).length > 0 && this.franchises.length === 0) {
                         this.getAllFranchises()
+                    }
+                },
+                deep: true
+            },
+            pageOptions: {
+                handler(){
+                    if(!this.loading){
+                        this.getAllFranchises();
                     }
                 },
                 deep: true

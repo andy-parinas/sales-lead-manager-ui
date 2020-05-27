@@ -152,8 +152,10 @@
 
             },
             closeFranchiseDialog(){
-                this.selectUser(null);
-                this.clearUsersFranchisesData();
+                setTimeout(() => {
+                    this.selectUser(null);
+                    this.clearUsersFranchisesData();
+                }, 100)
                 this.showFranchiseDialog = false;
             },
             onPageOptionChanged(){
