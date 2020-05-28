@@ -39,7 +39,8 @@
                                 Franchises
                                 <v-icon small right > mdi-store</v-icon>
                             </v-btn>
-                            <v-btn small elevation="4" dark color="orange darken-4" class="mr-3" >
+                            <v-btn @click="passwordReset(item)"
+                                    small elevation="4" dark color="orange darken-4" class="mr-3" >
                                 Password Reset
                                 <v-icon small right > mdi-lock </v-icon>
                             </v-btn>
@@ -57,6 +58,9 @@
                 <FranchisesDialog @close="closeFranchiseDialog"  />
             </v-dialog>
 
+            <v-dialog v-model="showPasswordReset" persistent max-width="850" class="px-2">
+                <PasswordResetDialog @close="closePasswordReset"  />
+            </v-dialog>
         </v-card>
     </div>
 </template>
@@ -69,15 +73,17 @@
     import UserSearchForm from "./UserSearchForm";
     import ErrorHandlerMixins from "../../../mixins/ErrorHandler";
     import FranchisesDialog from "./FranchisesDialog";
+    import PasswordResetDialog from "./PasswordResetDialog";
 
     export default {
         name: "UsersAdminTable",
-        components: {FranchisesDialog, UserSearchForm, EditDialog, ChipUserType},
+        components: {PasswordResetDialog, FranchisesDialog, UserSearchForm, EditDialog, ChipUserType},
         data(){
             return {
                 loading: false,
                 showEditDialog: false,
                 showFranchiseDialog: false,
+                showPasswordReset: false,
                 headers : [
                     { text: 'Name',value: 'name'},
                     { text: 'Username',value: 'username'},
@@ -146,6 +152,10 @@
                 this.selectUser(item)
                 this.showFranchiseDialog = true;
             },
+            passwordReset(item){
+                this.selectUser(item);
+                this.showPasswordReset = true;
+            },
             closeDialog(){
                 this.selectUser(null);
                 this.showEditDialog = false;
@@ -157,6 +167,10 @@
                     this.clearUsersFranchisesData();
                 }, 100)
                 this.showFranchiseDialog = false;
+            },
+            closePasswordReset(){
+                this.selectUser(null);
+                this.showPasswordReset = false;
             },
             onPageOptionChanged(){
                 if(this.searchIn.trim() !== '' && this.searchFor.trim() !== '')

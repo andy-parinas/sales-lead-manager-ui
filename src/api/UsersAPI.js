@@ -56,6 +56,22 @@ const UsersAPI = {
         return response.data;
     },
 
+    async updatePassword(userUpdates){
+
+        const uri = `/api/users/${userUpdates.id}`;
+
+        const data = {
+            password: userUpdates.password,
+            password_confirmation: userUpdates.passwordConfirmation
+        }
+
+        await csrf.getCSRFCookie();
+
+        const response = await api().patch(uri, data);
+
+        return response.data;
+    },
+
     async getUsersFranchises(userId, pageOptions, searchOptions){
 
         const requesturi = `/api/users/${userId}/franchises`;
