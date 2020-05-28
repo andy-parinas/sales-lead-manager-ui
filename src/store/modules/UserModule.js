@@ -41,6 +41,10 @@ export default {
         },
         addUsersFranchise(state, franchise){
             state.franchises.push(franchise)
+        },
+        removeUsersFranchise(state, franchise){
+            const updatedFranchise = state.franchises.filter(f => f.id !== franchise.id)
+            state.franchises = updatedFranchise;
         }
     },
     
@@ -93,6 +97,13 @@ export default {
             const response = await FranchiseAPI.attachUsersFranchise(payload.userId, payload.franchiseId);
 
             commit('addUsersFranchise', response.data);
+        },
+
+        async detachFranchise({commit}, {userId, franchiseId}){
+
+            const response = await UsersAPI.detachFranchise(userId, franchiseId);
+
+            commit('removeUsersFranchise', response.data);
         }
 
     }

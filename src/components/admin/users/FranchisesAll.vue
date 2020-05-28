@@ -2,13 +2,21 @@
     <v-card outlined>
         <div class="mx-3 mt-5">
             <h3 class="mb-3">Available Franchises</h3>
-            <v-text-field
-                    placeholder="Search"
-                    prepend-inner-icon="search"
-                    filled
-                    rounded
-                    dense
-            ></v-text-field>
+            <div class="d-flex">
+                <v-text-field
+                        v-model="searchOptions.searchFor"
+                        class="mr-1"
+                        placeholder="Search"
+                        prepend-inner-icon="search"
+                        filled
+                        rounded
+                        dense
+                ></v-text-field>
+                <v-btn @click="reset"
+                        x-small fab text color="green darken-1" dark class="mt-1">
+                    <v-icon >refresh</v-icon>
+                </v-btn>
+            </div>
         </div>
         <FranchiseList :items="franchises"
                        :loading="loading"
@@ -20,8 +28,6 @@
                           v-model="pageOptions.page"
                           :length="pagination.total_pages"
                           :total-visible="6"
-                          @next="changePage"
-                          @previous="changePage"
                           :disabled="loading"
             ></v-pagination>
             </template>
@@ -42,6 +48,12 @@
             return {
                 loading: false,
                 pageOptions: {
+                    page: 1,
+                    itemsPerPage: 5,
+                    sortBy: ['name'],
+                    sortDesc: [false],
+                },
+                defaultPageOptions: {
                     page: 1,
                     itemsPerPage: 5,
                     sortBy: ['name'],
@@ -86,9 +98,13 @@
                 })
             },
 
-            changePage(){
-                // console.log(this.pageOptions)
-                // this.getAllFranchises();
+            reset(){
+                if(!this.loading){
+                    this.searchOptions.searchFor = ''
+                    this.pageOptions = Object.assign({}, this.defaultPageOptions)
+
+                    //this.getAllFranchises();
+                }
             }
         },
         watch: {
@@ -103,6 +119,14 @@
             pageOptions: {
                 handler(){
                     if(!this.loading){
+                        this.getAllFranchises();
+                    }
+                },
+                deep: true
+            },
+            searchOptions: {
+                handler(){
+                    if(!this.loading && this.searchOptions.searchFor.length >= 2){
                         this.getAllFranchises();
                     }
                 },

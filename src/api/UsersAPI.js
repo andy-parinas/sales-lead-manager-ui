@@ -14,8 +14,6 @@ const UsersAPI = {
 
         const response = await api().get(uri);
 
-        console.log(response.data)
-
         return response.data;
 
     },
@@ -64,11 +62,21 @@ const UsersAPI = {
 
         const uri = URIBuilder.build(requesturi, pageOptions, searchOptions);
 
-        console.log(uri)
-
         const response = await api().get(uri);
 
         return response.data;
+    },
+
+    async detachFranchise(userId, franchiseId){
+
+        const uri = `/api/users/${userId}/franchises/${franchiseId}`;
+
+        await csrf.getCSRFCookie();
+
+        const response = await api().delete(uri);
+
+        return response.data;
+
     }
 
 }

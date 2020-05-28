@@ -25,7 +25,7 @@ const ErrorHandler = {
                 }
                 break;
             case 401:
-                callback('You are not authorized. Please logout and login again.')
+                callback('Authorization Expired. Please logout and login again.')
                 break;
 
             case 403:

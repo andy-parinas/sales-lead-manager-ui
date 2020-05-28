@@ -11,7 +11,7 @@
                                         :add="add"
                                         :remove="remove"
                                         @add="$emit('onAddClicked', item)"
-                                        @remove="$emit('onRemovedClicked', item)"/>
+                                        @remove="$emit('onRemoveClicked', item)"/>
                     <v-divider :key="index  + 100"></v-divider>
                 </template>
 

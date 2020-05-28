@@ -10,6 +10,7 @@ const FranchiseAPI = {
         const requestUri = '/api/franchises';
 
         const uri = URIBuilder.build(requestUri, pageOptions, searchOptions);
+        console.log(uri)
 
         const response = await api().get(uri)
 

@@ -12,11 +12,11 @@
 
             <v-list-item-action>
                 <v-btn  v-if="add" @click="$emit('add', item)"
-                        x-small fab color="primary" dark>
+                        x-small fab text color="primary" dark>
                     <v-icon>add</v-icon>
                 </v-btn>
                 <v-btn  v-if="remove" @click="$emit('remove', item)"
-                        x-small fab color="error" dark>
+                        x-small fab text color="error" dark>
                     <v-icon small>remove</v-icon>
                 </v-btn>
             </v-list-item-action>
