@@ -45,6 +45,10 @@ export default {
         removeUsersFranchise(state, franchise){
             const updatedFranchise = state.franchises.filter(f => f.id !== franchise.id)
             state.franchises = updatedFranchise;
+        },
+        removeUser(state, userId){
+            const updatedUsers = state.users.filter(u => u.id !== userId);
+            state.users = updatedUsers;
         }
     },
     
@@ -104,6 +108,13 @@ export default {
             const response = await UsersAPI.detachFranchise(userId, franchiseId);
 
             commit('removeUsersFranchise', response.data);
+        },
+
+        async deleteUser({commit}, userId){
+
+            await UsersAPI.deleteUser(userId);
+
+            commit('removeUser', userId);
         }
 
     }

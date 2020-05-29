@@ -93,6 +93,19 @@ const UsersAPI = {
 
         return response.data;
 
+    },
+
+    async deleteUser(userId){
+
+        const uri = `/api/users/${userId}`;
+
+
+        await csrf.getCSRFCookie();
+
+        const response = await api().delete(uri);
+
+        return response;
+
     }
 
 }

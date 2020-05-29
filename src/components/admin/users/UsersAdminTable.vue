@@ -25,7 +25,8 @@
                 <template v-slot:expanded-item="{item}">
                     <td :colspan="headers.length" class="py-4">
                         <v-row class="justify-sm-start mt-5 mb-12 mx-5" >
-                            <v-btn small elevation="4" dark color="red darken-4" class="mr-3" >
+                            <v-btn @click="deleteUser(item)"
+                                small elevation="4" dark color="red darken-4" class="mr-3" >
                                 Delete
                                 <v-icon small right > mdi-trash-can-outline </v-icon>
                             </v-btn>
@@ -61,6 +62,10 @@
             <v-dialog v-model="showPasswordReset" persistent max-width="850" class="px-2">
                 <PasswordResetDialog @close="closePasswordReset"  />
             </v-dialog>
+
+            <v-dialog v-model="showDeleteDialog" persistent max-width="450" class="px-2">
+                <DeleteDialog @close="closeDeleteDialog"  />
+            </v-dialog>
         </v-card>
     </div>
 </template>
@@ -74,16 +79,18 @@
     import ErrorHandlerMixins from "../../../mixins/ErrorHandler";
     import FranchisesDialog from "./FranchisesDialog";
     import PasswordResetDialog from "./PasswordResetDialog";
+    import DeleteDialog from "./DeleteDialog";
 
     export default {
         name: "UsersAdminTable",
-        components: {PasswordResetDialog, FranchisesDialog, UserSearchForm, EditDialog, ChipUserType},
+        components: {DeleteDialog, PasswordResetDialog, FranchisesDialog, UserSearchForm, EditDialog, ChipUserType},
         data(){
             return {
                 loading: false,
                 showEditDialog: false,
                 showFranchiseDialog: false,
                 showPasswordReset: false,
+                showDeleteDialog: false,
                 headers : [
                     { text: 'Name',value: 'name'},
                     { text: 'Username',value: 'username'},
@@ -156,6 +163,10 @@
                 this.selectUser(item);
                 this.showPasswordReset = true;
             },
+            deleteUser(item){
+                this.selectUser(item);
+                this.showDeleteDialog = true;
+            },
             closeDialog(){
                 this.selectUser(null);
                 this.showEditDialog = false;
@@ -171,6 +182,10 @@
             closePasswordReset(){
                 this.selectUser(null);
                 this.showPasswordReset = false;
+            },
+            closeDeleteDialog(){
+                this.selectUser(null);
+                this.showDeleteDialog = false;
             },
             onPageOptionChanged(){
                 if(this.searchIn.trim() !== '' && this.searchFor.trim() !== '')
