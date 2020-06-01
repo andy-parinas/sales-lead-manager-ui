@@ -83,7 +83,6 @@
                     this.loading = false;
                 })
 
-
             },
 
             addToUsersFranchise(item){

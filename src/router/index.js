@@ -39,7 +39,7 @@ const routes = [
             {
                 path: 'franchise',
                 name: 'franchise',
-                component: () => import(/* webpackChunkName: "dashboard" */ "@/views/Franchise.vue"),
+                component: () => import(/* webpackChunkName: "dashboard" */ "@/views/franchise/FranchiseListView.vue"),
                 meta: {requiresAuth: true}
 
             },
