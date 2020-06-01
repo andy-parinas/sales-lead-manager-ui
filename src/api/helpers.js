@@ -9,7 +9,7 @@ export const URIBuilder = {
 
         let uri = `${requestURI}?size=${size}`;
 
-        if (options.sortBy.length > 0){
+        if (options.sortBy && options.sortBy.length > 0){
             const field = Utils.camelToSnake(options.sortBy[0])
             const direction = options.sortDesc[0] ? 'desc' : 'asc';
 

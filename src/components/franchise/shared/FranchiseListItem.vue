@@ -12,10 +12,21 @@
                </v-list-item-content>
 
                <v-list-item-action>
-                   <v-btn  @click="$emit('remove', item)"
-                           x-small fab text color="error" dark>
-                       <v-icon small>remove</v-icon>
-                   </v-btn>
+                    <div class="d-flex">
+                        <v-btn  @click="$emit('remove', item)"
+                                x-small fab text color="primary" dark>
+                            <v-icon small>edit</v-icon>
+                        </v-btn>
+                        <v-btn  @click="$emit('remove', item)"
+                                x-small fab text color="error" dark>
+                            <v-icon small>delete</v-icon>
+                        </v-btn>
+                        <v-btn  v-if="withSelect"
+                                @click="$emit('select', item)"
+                                x-small fab text :color="active? 'primary' : 'grey darken-1'" dark>
+                            <v-icon small>arrow_forward_ios</v-icon>
+                        </v-btn>
+                    </div>
                </v-list-item-action>
            </v-card>
         </template>
@@ -27,6 +38,14 @@
         name: "FranchiseListItem",
         props: {
             item: {required: true, type:Object},
+            withSelect: {type: Boolean}
+        },
+        methods: {
+            itemClicked(item){
+                if(this.withSelect){
+                    this.$emit('select', item)
+                }
+            }
         }
     }
 </script>

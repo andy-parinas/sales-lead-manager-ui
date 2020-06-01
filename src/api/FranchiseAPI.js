@@ -10,11 +10,9 @@ const FranchiseAPI = {
         const requestUri = '/api/franchises';
 
         const uri = URIBuilder.build(requestUri, pageOptions, searchOptions);
-        console.log(uri)
 
         const response = await api().get(uri)
 
-        console.log('Franchises', response.data);
         return response.data;
 
     },
@@ -30,6 +28,17 @@ const FranchiseAPI = {
 
         return response.data;
 
+    },
+
+    async getRelatedFranchise(franchiseId, pageOptions, searchOptions){
+
+        const requestUri = `/api/franchises/${franchiseId}/related`;
+
+        const uri = URIBuilder.build(requestUri, pageOptions, searchOptions);
+
+        const response = await api().get(uri);
+
+        return response.data;
     }
 
 }

@@ -12,18 +12,23 @@
                         rounded
                         dense
                 ></v-text-field>
-                <v-btn
+                <v-btn @click="reset"
                        x-small fab text color="green darken-1" dark class="mt-1">
                     <v-icon >refresh</v-icon>
                 </v-btn>
             </div>
         </div>
-        <v-card outlined>
-            <FranchiseList :franchises="franchises" ></FranchiseList>
+        <v-card outlined :loading="loading">
+
+            <FranchiseList :franchises="franchises"
+                            :with-select="true"
+                           @onSelectedClicked="franchiseSelected"
+                           ref="franchiseList"
+            ></FranchiseList>
         </v-card>
-        <v-pagination class="mt-2"
+        <v-pagination class="mt-2" v-if="pagination"
                       v-model="pageOptions.page"
-                      :length="4"
+                      :length="pagination.total_pages"
                       :total-visible="6"
                       :disabled="loading"
         ></v-pagination>
@@ -61,21 +66,53 @@
         },
         mixins: [ErrorHandlerMixins],
         computed: {
-            ...mapState('franchises', ['franchises'])
+            ...mapState('franchises', ['franchises', 'pagination'])
         },
         methods: {
-            ...mapActions('franchises', ['getFranchises']),
+            ...mapActions('franchises', ['getFranchises', 'setSelectedFranchise']),
 
             getAllFranchises(){
                 this.loading = true;
-                this.getFranchises({pageOptions: this.pageOptions,
-                    searchOptions: this.searchOptions}).then(() => {
+                this.getFranchises({
+                    pageOptions: this.pageOptions,
+                    searchOptions: this.searchOptions
+                }).then(() => {
 
                 }).catch(error => {
-                    this.handleError(error);
+                    //this.handleError(error);
+                    console.log(error)
                 }).finally(() => {
                     this.loading = false;
                 })
+            },
+            franchiseSelected(item){
+                this.setSelectedFranchise(item);
+            },
+            reset(){
+                if(!this.loading){
+                    console.log('reset')
+                    this.searchOptions.searchFor = ''
+                    this.pageOptions = Object.assign({}, this.defaultOptions)
+
+                }
+            }
+        },
+        watch: {
+           pageOptions: {
+               handler(){
+                   if(!this.loading){
+                       this.getAllFranchises();
+                   }
+               },
+               deep: true
+           },
+            searchOptions: {
+                handler(){
+                    if(!this.loading && this.searchOptions && this.searchOptions.searchFor && this.searchOptions.searchFor.length >= 2){
+                        this.getAllFranchises();
+                    }
+                },
+                deep: true
             }
         },
         mounted() {

@@ -4,7 +4,9 @@
                 <template v-for="(item, index) in franchises">
                     <FranchiseListItem  :key="index"
                                         :item="item"
-                                        @remove="$emit('onRemoveClicked', item)"/>
+                                        :with-select="withSelect"
+                                        @remove="$emit('onRemoveClicked', item)"
+                                        @select="$emit('onSelectedClicked', item)"/>
 <!--                    <v-divider-->
 <!--                            v-if="index + 1 < franchises.length"-->
 <!--                            :key="index  + 100"></v-divider>-->
@@ -19,13 +21,19 @@
     export default {
         name: "FranchiseTable",
         props: {
-            franchises: {required: true, type: Array}
+            franchises: {required: true, type: Array},
+            withSelect: {type: Boolean},
         },
         components: {FranchiseListItem},
         data(){
            return {
-
+                group: -1
            }
+        },
+        methods: {
+            resetGroup(){
+                this.group = -1;
+            }
         }
     }
 </script>
