@@ -25,13 +25,13 @@
                 <template v-slot:item.actions="{ item }">
                     <v-container>
                         <v-row class="justify-sm-start">
-                            <v-btn x-small fab elevation="4" dark color="error" class="mr-3"  v-if="isHeadOffice"  @click="deleteItem(item)">
+                            <v-btn x-small fab text dark color="error" class="mr-3"  v-if="isHeadOffice"  @click="deleteItem(item)">
                                 <v-icon small >mdi-trash-can-outline </v-icon>
                             </v-btn>
-                            <v-btn x-small fab elevation="4" dark color="accent" @click="editContact(item)" >
+                            <v-btn x-small fab text dark color="accent" @click="editContact(item)" >
                                 <v-icon small> mdi-lead-pencil</v-icon>
                             </v-btn>
-                            <v-btn x-small fab elevation="4" dark color="success" class="ml-3" @click="convertToLead(item)">
+                            <v-btn x-small fab text dark color="success" class="ml-3" @click="convertToLead(item)">
                                 <v-icon small>mdi-fast-forward-outline</v-icon>
                             </v-btn>
                         </v-row>
