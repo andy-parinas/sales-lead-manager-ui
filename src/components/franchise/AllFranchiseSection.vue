@@ -89,7 +89,7 @@
                 }).then(() => {
 
                 }).catch(error => {
-                    console.log(error)
+                    this.handleError(error)
                 }).finally(() => {
                     this.loading = false;
                 })
@@ -99,7 +99,6 @@
             },
             reset(){
                 if(!this.loading){
-                    console.log('reset')
                     this.searchOptions.searchFor = ''
                     this.pageOptions = Object.assign({}, this.defaultOptions)
 

@@ -99,13 +99,13 @@
                     this.parents = items;
 
                 }).catch(error => {
-                    //this.handleError(error)
-                    console.log(error)
+                    this.handleError(error)
                 }).finally(() => {
                     this.loading = false;
                 })
             },
             clearData(){
+                this.$refs.form.resetValidation();
                 this.form = Object.assign({}, this.defaultForm)
             }
         },

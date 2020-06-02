@@ -32,6 +32,23 @@ export default {
 
         setSelectedFranchise(state, franchise){
             state.selectedFranchise = franchise;
+        },
+
+        updateFranchises(state, franchise){
+            const updatedFranchises = state.franchises.map(fran => {
+                if(fran.id === franchise.id){
+                    return franchise;
+                }else {
+                    return fran;
+                }
+            })
+
+            state.franchises = updatedFranchises;
+        },
+
+        insertNewFranchise(state, franchise){
+
+            state.franchises.push(franchise);
         }
 
     },
@@ -60,14 +77,19 @@ export default {
             commit('setRelatedPagination', response.pagination);
         },
 
-        async updateFranchise(context, updates){
-
-            console.log('actions', updates)
+        async updateFranchise({commit}, updates){
 
             const response = await FranchiseAPI.updateFranchise(updates);
 
-            console.log(response.data)
+            commit('updateFranchises', response.data);
 
+        },
+
+        async createFranchise({commit}, data){
+
+            const response = await FranchiseAPI.createFranchise(data);
+
+            commit('insertNewFranchise', response.data);
         }
 
     }

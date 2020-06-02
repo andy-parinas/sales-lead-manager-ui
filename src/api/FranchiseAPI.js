@@ -52,8 +52,6 @@ const FranchiseAPI = {
 
     async updateFranchise(updates){
 
-        console.log('api', updates)
-
         const uri = `/api/franchises/${updates.id}`
         //normalize data
         const data = {
@@ -66,6 +64,25 @@ const FranchiseAPI = {
         await csrf.getCSRFCookie();
 
         const response = await api().patch(uri, data)
+
+        return response.data;
+
+    },
+
+    async createFranchise(formData){
+
+        const uri = '/api/franchises'
+
+        const data = {
+            franchise_number: formData.franchiseNumber,
+            name: formData.name,
+            description: formData.description,
+            parent_id: typeof formData.parentId === 'undefined'? null : formData.parentId
+        }
+
+        await csrf.getCSRFCookie();
+
+        const response = await api().post(uri, data)
 
         return response.data;
 
