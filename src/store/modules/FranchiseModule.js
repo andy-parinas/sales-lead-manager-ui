@@ -58,6 +58,16 @@ export default {
 
             commit('setRelateFranchises', response.data);
             commit('setRelatedPagination', response.pagination);
+        },
+
+        async updateFranchise(context, updates){
+
+            console.log('actions', updates)
+
+            const response = await FranchiseAPI.updateFranchise(updates);
+
+            console.log(response.data)
+
         }
 
     }

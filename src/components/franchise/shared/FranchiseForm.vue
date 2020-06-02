@@ -44,7 +44,7 @@
             <v-spacer></v-spacer>
             <v-btn color="blue darken-1" class="mr-10 mb-5 white--text"
                    @click="$emit('onSave', form)"
-                   :loading="loading"
+                   :loading="saving"
                    :disabled="!isFormValid && !edit">
                 Save
             </v-btn>
@@ -58,7 +58,7 @@
 
     export default {
         name: "FranchiseForm",
-        props: ['editedItem'],
+        props: ['editedItem', 'saving'],
         data(){
             return {
                 isFormValid: false,
@@ -74,7 +74,13 @@
                     parentId: ''
 
                 },
-                items: ['Foo', 'Bar', 'Fizz', 'Buzz'],
+                defaultForm: {
+                    franchiseNumber: '',
+                    franchiseName: '',
+                    description: '',
+                    parentId: ''
+
+                },
                 parents: []
             }
         },
@@ -98,6 +104,9 @@
                 }).finally(() => {
                     this.loading = false;
                 })
+            },
+            clearData(){
+                this.form = Object.assign({}, this.defaultForm)
             }
         },
         watch: {

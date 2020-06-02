@@ -89,7 +89,6 @@
                 }).then(() => {
 
                 }).catch(error => {
-                    //this.handleError(error);
                     console.log(error)
                 }).finally(() => {
                     this.loading = false;
@@ -109,7 +108,9 @@
             editFranchise(item){
                 this.selectedItem = Object.assign({}, item);
                 this.showEditDialog = true;
-            }
+            },
+
+
         },
         watch: {
            pageOptions: {

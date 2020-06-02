@@ -50,13 +50,13 @@
                 pageOptions: {
                     page: 1,
                     itemsPerPage: 5,
-                    sortBy: ['name'],
+                    sortBy: ['franchiseNumber'],
                     sortDesc: [false],
                 },
                 defaultPageOptions: {
                     page: 1,
                     itemsPerPage: 5,
-                    sortBy: ['name'],
+                    sortBy: ['franchiseNumber'],
                     sortDesc: [false],
                 },
                 searchOptions: {
