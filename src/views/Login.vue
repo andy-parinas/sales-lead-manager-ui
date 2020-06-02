@@ -9,7 +9,11 @@
                         </v-alert>
                         <v-card class="elevation-12" >
                             <v-toolbar color="primary" dark flat>
-                                <v-toolbar-title>Login to EzCRM</v-toolbar-title>
+                                <v-toolbar-title>
+                                    <span class="font-weight-light">Login to </span>
+                                    <span class="font-weight-medium">Ezi-Task</span>
+                                    <span class="ml-1 font-weight-medium">CRM</span>
+                                </v-toolbar-title>
                             </v-toolbar>
                             <v-progress-linear indeterminate color="green" v-if="loading"></v-progress-linear>
                             <v-card-text>

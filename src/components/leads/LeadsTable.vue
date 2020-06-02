@@ -45,7 +45,8 @@
                 <template v-slot:item.actions="{item}">
                    <v-container>
                        <v-row class="justify-sm-start">
-                           <v-btn x-small fab text dark color="error" class="mr-3" @click="showDeleteConfirmation(item)">
+                           <v-btn v-if="isHeadOffice"
+                                   x-small fab text dark color="error" class="mr-3" @click="showDeleteConfirmation(item)">
                                <v-icon small > mdi-trash-can-outline </v-icon>
                            </v-btn>
                            <v-btn x-small fab text dark color="accent" @click="showLead(item)" :loading="item.leadId === selectedId" >

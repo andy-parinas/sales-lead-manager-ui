@@ -37,10 +37,13 @@
                     </v-list-item-icon>
                     <v-list-item-title>{{link.text}}</v-list-item-title>
                 </v-list-item>
-                <v-subheader class="mt-4 grey--text text--darken-1">ADMIN AND SETTINGS</v-subheader>
-                <v-list-group v-model="adminMenu"
-                              :prepend-icon="adminMenu? 'mdi-chevron-up' : 'mdi-chevron-down'"
-                              append-icon="">
+                <v-subheader v-if="currentUser && currentUser.userType === 'head_office'"
+                        class="mt-4 grey--text text--darken-1">ADMIN AND SETTINGS</v-subheader>
+                <v-list-group
+                            v-if="currentUser && currentUser.userType === 'head_office'"
+                            v-model="adminMenu"
+                          :prepend-icon="adminMenu? 'mdi-chevron-up' : 'mdi-chevron-down'"
+                          append-icon="">
                     <template v-slot:activator>
                         <v-list-item-content>
                             <v-list-item-title>
