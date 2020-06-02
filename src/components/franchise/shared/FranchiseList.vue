@@ -5,6 +5,7 @@
                     <FranchiseListItem  :key="index"
                                         :item="item"
                                         :with-select="withSelect"
+                                        @edit="$emit('onEditClicked', item)"
                                         @remove="$emit('onRemoveClicked', item)"
                                         @select="$emit('onSelectedClicked', item)"/>
 <!--                    <v-divider-->

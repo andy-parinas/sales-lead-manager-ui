@@ -23,6 +23,7 @@
             <FranchiseList :franchises="franchises"
                             :with-select="true"
                            @onSelectedClicked="franchiseSelected"
+                           @onEditClicked="editFranchise"
                            ref="franchiseList"
             ></FranchiseList>
         </v-card>
@@ -32,6 +33,11 @@
                       :total-visible="6"
                       :disabled="loading"
         ></v-pagination>
+        <v-dialog v-model="showEditDialog" persistent width="650" class="px-2">
+            <EditFranchiseDialog
+                    :edited-item="selectedItem"
+                    @close="showEditDialog = false" />
+        </v-dialog>
     </div>
 </template>
 
@@ -40,12 +46,15 @@
     import {mapState, mapActions} from 'vuex'
     import ErrorHandlerMixins from "../../mixins/ErrorHandler";
     import FranchiseList from "./shared/FranchiseList";
+    import EditFranchiseDialog from "./EditFranchiseDialog";
+    // import EditUserFranchise from "../admin/users/EditUserFranchise";
 
     export default {
         name: "AllFranchiseSection",
-        components: {FranchiseList},
+        components: {EditFranchiseDialog, FranchiseList},
         data(){
             return {
+                showEditDialog: false,
                 loading: false,
                 pageOptions: {
                     page: 1,
@@ -61,7 +70,8 @@
                 },
                 searchOptions: {
                     searchFor: '',
-                }
+                },
+                selectedItem: null,
             }
         },
         mixins: [ErrorHandlerMixins],
@@ -95,6 +105,10 @@
                     this.pageOptions = Object.assign({}, this.defaultOptions)
 
                 }
+            },
+            editFranchise(item){
+                this.selectedItem = Object.assign({}, item);
+                this.showEditDialog = true;
             }
         },
         watch: {

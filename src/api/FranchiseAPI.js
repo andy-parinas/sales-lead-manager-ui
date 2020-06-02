@@ -39,6 +39,15 @@ const FranchiseAPI = {
         const response = await api().get(uri);
 
         return response.data;
+    },
+
+    async getParentFranchises(){
+
+        const uri = '/api/franchises/parents';
+
+        const response = await api().get(uri);
+
+        return response.data;
     }
 
 }

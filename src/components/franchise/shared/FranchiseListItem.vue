@@ -13,7 +13,7 @@
 
                <v-list-item-action>
                     <div class="d-flex">
-                        <v-btn  @click="$emit('remove', item)"
+                        <v-btn  @click="$emit('edit', item)"
                                 x-small fab text color="primary" dark>
                             <v-icon small>edit</v-icon>
                         </v-btn>
@@ -23,7 +23,7 @@
                         </v-btn>
                         <v-btn  v-if="withSelect"
                                 @click="$emit('select', item)"
-                                x-small fab text :color="active? 'primary' : 'grey darken-1'" dark>
+                                x-small fab text color="grey darken-1" dark>
                             <v-icon small>arrow_forward_ios</v-icon>
                         </v-btn>
                     </div>
