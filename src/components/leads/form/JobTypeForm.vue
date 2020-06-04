@@ -58,6 +58,8 @@
                             cache-items
                             label="Design Advisor"
                             prepend-icon="mdi-card-account-details"
+                            hint="Enter 3 character to Search"
+                            persistent-hint
                             required
                     ></v-autocomplete>
                 </v-col>
