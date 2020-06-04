@@ -5,7 +5,7 @@ export default {
     namespaced: true,
     state: {
         currentUser: {},
-        franchises: []
+        usersFranchises: []
     },
 
     mutations: {
@@ -13,7 +13,7 @@ export default {
             state.currentUser = user;
         },
         setFranchises(state, franchises){
-            state.franchises = franchises;
+            state.usersFranchises = franchises;
         }
     },
 

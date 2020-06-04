@@ -10,7 +10,8 @@
                     />
                 </v-col>
                 <v-col cols="12" sm="6">
-                    <v-select
+                    <FranchiseSelect  v-if="currentUser.userType === 'head_office'" @onValueChanged="onFranchiseSelectChanged"/>
+                    <v-select v-else
                             @change="franchiseChange"
                             v-model="form.franchiseId"
                             :items="franchiseItems"
@@ -20,6 +21,8 @@
                             prepend-icon="mdi-store"
                             required
                     ></v-select>
+
+
                 </v-col>
 
                 <v-col cols="12" sm="6">
@@ -63,7 +66,18 @@
                     ></v-autocomplete>
                 </v-col>
                 <v-col cols="12" sm="12" >
-                    <PostcodeAlert  v-if="isOutsideFranchise" />
+                    <v-row v-if="franchiseChecking">
+                       <v-col cols="12">
+                           Checking Postcode
+                           <v-progress-linear
+                                   color="primary"
+                                   indeterminate
+                                   rounded
+                                   height="6"
+                           ></v-progress-linear>
+                       </v-col>
+                    </v-row>
+                    <PostcodeAlert  v-if="isOutsideFranchise && !franchiseChecking" />
                 </v-col>
             </v-row>
             <v-divider class="my-5"></v-divider>
@@ -81,14 +95,15 @@
     import PostcodeAlert from "../PostcodeAlert";
     import LeadSourceAPI from "../../../api/LeadSourceAPI";
     import PostcodeAPI from "../../../api/PostcodeAPI";
-    import {mapState} from "vuex";
+    import {mapState, mapActions} from "vuex";
     import {format, parseISO} from "date-fns";
+    import FranchiseSelect from "./FranchiseSelect";
 
 
 
     export default {
         name: "LeadInformationForm",
-        components: {PostcodeAlert},
+        components: {FranchiseSelect, PostcodeAlert},
         props: {
             initialData: {required: true, type: Object},
             contactPostcode: {required: true, type: String}
@@ -121,12 +136,13 @@
             }
         },
         computed: {
-            ...mapState('auth', ['franchises']),
+            ...mapState('auth', ['usersFranchises', 'currentUser']),
+            ...mapState('franchises', ['franchises']),
             computedDateFormattedDatefns () {
                 return this.form.leadDate ? format(parseISO(this.form.leadDate), 'dd/MM/yyyy') : ''
             },
             franchiseItems(){
-                const items = this.franchises.map(franchise => {
+                const items = this.usersFranchises.map(franchise => {
                     return {
                         value: franchise.id,
                         text: `${franchise.franchiseNumber} - ${franchise.type}`
@@ -140,7 +156,10 @@
             },
         },
         methods: {
+            ...mapActions('franchises', ['getFranchises']),
             checkFranchisePostcode(){
+
+                console.log('Checking Postcode')
 
                 this.franchisePostcodes = [];
                 this.postcodeStatus = '';
@@ -190,6 +209,18 @@
 
                     if (franchise) this.form.franchiseNumber = franchise.text;
                 }
+            },
+            onFranchiseSelectChanged(franchise){
+                if(franchise){
+                    this.form.franchiseId = franchise.value;
+                    this.form.franchiseNumber = franchise.text
+                    this.checkFranchisePostcode();
+                }else {
+                    this.form.franchiseId = '';
+                    this.form.franchiseNumber = '';
+                }
+
+                console.log('LeadInfoForm', this.form)
             }
         },
         watch: {
