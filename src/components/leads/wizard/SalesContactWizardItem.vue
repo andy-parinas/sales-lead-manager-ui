@@ -7,7 +7,7 @@
                        <v-text-field outlined clearable v-model="searchFor"
                                      :loading="searchLoading"
                                      placeholder="Search for First Name, Last Name or Email"
-                                     hint="Only First 10 is displayed"
+                                     hint="Enter 3 characters to trigger search"
                                      persistent-hint>
                        </v-text-field>
                    </v-col>
@@ -33,6 +33,12 @@
                        </v-row>
                    </v-list>
                </v-radio-group>
+               <v-divider></v-divider>
+               <v-pagination class="mt-2"
+                             v-model="options.page"
+                             :length="pagination.total_pages"
+                             :total-visible="6"
+               ></v-pagination>
            </v-col>
        </v-row>
        <v-btn color="primary" class="mr-2" @click="$emit('cancel')">Cancel</v-btn>
@@ -63,7 +69,7 @@
             }
         },
         computed: {
-            ...mapState('salesContacts', ['salesContacts', 'selectedContact']),
+            ...mapState('salesContacts', ['salesContacts', 'selectedContact', 'pagination']),
 
         },
         methods: {
@@ -72,32 +78,40 @@
                 console.log('Select Contact')
                 this.$emit('setSalesContactId', this.selected.id)
                 this.selectContact(this.selected)
+            },
+            getSalesContacts(){
+
+                this.searchLoading = true;
+                console.log('Search for Contacts');
+                this.fetchSalesContacts({
+                    options: this.options,
+                    searchOptions: {
+                        searchFor: this.searchFor
+                    }}).then(() => {
+                    this.searchLoading = false;
+
+                }).catch(error => {
+                    console.log(error);
+                    this.searchLoading = false;
+                })
             }
         },
         watch: {
-            // selected(){
-            //     this.$emit('setSalesContactId', this.selected.id)
-            //     this.selectContact(this.selected)
-            // },
+            options: {
+                handler(){
+                    if(this.searchLoading) return;
+
+                    this.getSalesContacts();
+                },
+                deep: true
+            },
 
             searchFor(){
 
                 if(this.searchLoading) return;
 
                 if(this.searchFor !== null && this.searchFor.trim() !== '' && this.searchFor.length >= 3){
-                    this.searchLoading = true;
-                    console.log('Search for Contacts');
-                    this.fetchSalesContacts({
-                        options: this.options,
-                        searchOptions: {
-                            searchFor: this.searchFor
-                    }}).then(() => {
-                        this.searchLoading = false;
-
-                    }).catch(error => {
-                        console.log(error);
-                        this.searchLoading = false;
-                    })
+                    this.getSalesContacts();
                 }
             }
         },

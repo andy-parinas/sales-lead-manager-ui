@@ -10,7 +10,7 @@
                     :items="salesContacts"
                     :options.sync="options"
                     :headers="headers"
-                    :server-items-length="meta.total"
+                    :server-items-length="pagination.total"
                     :single-expand="true"
                     :loading="loading"
                     :footer-props="footerProps"
@@ -177,7 +177,7 @@
         computed: {
             ...mapState('salesContacts', {
                 salesContacts: state => state.salesContacts,
-                meta: state => state.meta
+                pagination: state => state.pagination
             }),
             isHeadOffice(){
               const userType = this.$store.state.auth.currentUser.userType;

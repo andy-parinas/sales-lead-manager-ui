@@ -6,7 +6,7 @@ export default {
 
     state: {
         salesContacts: [],
-        meta: {},
+        pagination: {},
         selectedContact: null
     },
     getters: {
@@ -21,8 +21,8 @@ export default {
         setSalesContacts(state, contacts ){
             state.salesContacts = contacts;
         },
-        setSalesContactMeta(state, meta){
-            state.meta = meta;
+        setSalesContactPagination(state, pagination){
+            state.pagination = Object.assign({}, pagination);
         },
         addSalesContact(state, contact){
             state.salesContacts.push(contact);
@@ -35,16 +35,10 @@ export default {
         async fetchSalesContacts({commit}, {options, searchOptions}){
             const response = await SalesContactAPI.getContacts(options, searchOptions);
             const contacts = response.data;
-
-            const meta = {
-                total: response.total,
-                currentPage: response.current_page,
-                lastPage: response.last_page,
-                perPage: response.per_page
-            }
+            console.log('Actions', response)
 
             commit('setSalesContacts', contacts);
-            commit('setSalesContactMeta', meta);
+            commit('setSalesContactPagination', response.pagination);
         },
         async updateSalesContact({commit, state}, updates){
             const newContact = await SalesContactAPI.update(updates);
