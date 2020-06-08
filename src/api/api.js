@@ -1,7 +1,9 @@
 import axios from 'axios';
 
+export const baseUrl ="http://homestead.test"
+
 const api = () => axios.create({
-        baseURL: "http://homestead.test",
+        baseURL: baseUrl,
         withCredentials: true
     })
 

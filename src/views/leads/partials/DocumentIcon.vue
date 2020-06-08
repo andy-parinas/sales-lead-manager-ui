@@ -13,15 +13,15 @@
         computed: {
             icon(){
                 switch (this.documentType) {
-                    case 'docx':
+                    case "application/vnd.openxmlformats-officedocument.wordprocessingml.document":
                         return {icon: 'mdi-microsoft-word', color: 'blue'};
                     case 'doc':
                         return {icon: 'mdi-microsoft-word', color: 'blue'};
-                    case 'xlsx':
+                    case "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet":
                         return {icon: 'mdi-microsoft-excel', color: 'green'};
                     case 'xls':
                         return {icon: 'mdi-microsoft-excel', color: 'green'};
-                    case 'pdf':
+                    case "application/pdf":
                         return {icon: 'mdi-file-pdf-box', color: 'red'};
                     case 'txt':
                         return {icon: 'mdi-note-text-outline', color: 'grey'};
