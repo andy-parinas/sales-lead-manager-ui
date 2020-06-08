@@ -22,7 +22,7 @@
                 <AppointmentPartial :data="lead.appointment" @success="onSuccess" />
             </v-tab-item>
             <v-tab-item>
-
+                <DocumentPartial :lead-id="lead.details.id" />
             </v-tab-item>
         </v-tabs>
         <v-snackbar v-model="showSnackbar"
@@ -39,6 +39,7 @@
     import LeadContactPartial from "./LeadContactPartial";
     import JobTypePartial from "./JobTypePartial";
     import AppointmentPartial from "./AppointmentPartial";
+    import DocumentPartial from "./DocumentPartial";
 
 
     export default {
@@ -47,7 +48,7 @@
             lead: {required: true, type: Object},
             title: {required: true, type: String}
         },
-        components: {LeadContactPartial, JobTypePartial, AppointmentPartial},
+        components: {DocumentPartial, LeadContactPartial, JobTypePartial, AppointmentPartial},
         data(){
             return {
                 showSnackbar: false
