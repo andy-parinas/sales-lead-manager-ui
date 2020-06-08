@@ -5,7 +5,7 @@
             <v-spacer></v-spacer>
             <slot name="action"></slot>
         </v-toolbar>
-        <v-tabs vertical>
+        <v-tabs show-arrows class="my-5">
 
             <v-tab> Lead Details </v-tab>
             <v-tab>  Job Type </v-tab>
@@ -13,25 +13,18 @@
             <v-tab> Documents </v-tab>
 
             <v-tab-item>
-                <LeadContactPartial :data="lead.details" @success="onSuccess" />
+                <LeadContactPartial :data="lead.details"  />
             </v-tab-item>
             <v-tab-item>
-                <JobTypePartial :data="lead.jobType" @success="onSuccess" />
+                <JobTypePartial :data="lead.jobType"  />
             </v-tab-item>
             <v-tab-item>
-                <AppointmentPartial :data="lead.appointment" @success="onSuccess" />
+                <AppointmentPartial :data="lead.appointment"  />
             </v-tab-item>
             <v-tab-item>
                 <DocumentPartial :lead-id="lead.details.id" />
             </v-tab-item>
         </v-tabs>
-        <v-snackbar v-model="showSnackbar"
-                    color="success"
-                    :timeout="0"
-                    :bottom="true" >
-            Lead Successfully Updated
-            <v-btn dark text @click="showSnackbar = false" > Close </v-btn>
-        </v-snackbar>
     </v-card>
 </template>
 
@@ -55,9 +48,6 @@
             }
         },
         methods: {
-            onSuccess(){
-                this.showSnackbar = true
-            }
         }
     }
 </script>

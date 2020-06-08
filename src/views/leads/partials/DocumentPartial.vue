@@ -10,7 +10,7 @@
             </v-card>
         </v-skeleton-loader>
 
-        <v-card flat class="mx-10 mt-10" outlined v-else>
+        <v-card flat class="mx-10 mt-5 mb-10" outlined v-else>
             <v-list >
                 <template v-for="(document, index) in documents">
                     <v-list-item  :key="document.id">
@@ -18,7 +18,8 @@
                         <span class="ml-2">{{ document.title }}</span>
                         <v-spacer></v-spacer>
                         <div class="d-flex">
-                            <v-btn  @click="$emit('remove')"
+                            <v-btn  v-if="currentUser.userType !== 'staff_user'"
+                                    @click="onFileDelete(document)"
                                     x-small fab text color="error" dark>
                                 <v-icon small>delete</v-icon>
                             </v-btn>
@@ -36,7 +37,9 @@
                 </template>
             </v-list>
         </v-card>
-        <v-row class="mx-10 mt-10 mb-5" align="center">
+        <v-divider></v-divider>
+        <v-row v-if="currentUser.userType !== 'staff_user'"
+                class="mx-10 mt-10 mb-5" align="center">
             <v-file-input v-model="fileForUpload"
                     show-size label="Lead Document"></v-file-input>
             <v-btn @click="uploadFile"
@@ -47,6 +50,21 @@
                 <v-icon small>mdi-upload</v-icon>
             </v-btn>
         </v-row>
+        <v-dialog v-model="showDeleteDialog" persistent max-width="350" class="px-2">
+            <v-card>
+                <v-card-title class="headline">Delete File?</v-card-title>
+                <v-card-text>
+                    <p>You won't be able to recover this Sales Contact once deleted.</p>
+                </v-card-text>
+                <v-card-actions>
+                    <v-spacer></v-spacer>
+                    <v-btn color="primary" class="text--white" small :disabled="deleting" @click="onCancelDelete">Cancel</v-btn>
+                    <v-btn color="error" small class="mr-3 text--white"  @click="deleteFile" :loading="deleting" >
+                        Delete
+                    </v-btn>
+                </v-card-actions>
+            </v-card>
+        </v-dialog>
     </div>
 </template>
 
@@ -54,7 +72,7 @@
 
     import DocumentAPI from "../../../api/DocumentAPI";
     import DocumentIcon from "./DocumentIcon";
-    import {mapActions} from 'vuex'
+    import {mapActions, mapState} from 'vuex'
     import ErrorHandlerMixins from "../../../mixins/ErrorHandler";
 
     export default {
@@ -69,11 +87,17 @@
                 documents: [],
                 fileForUpload: null,
                 uploading: false,
-                downloadingId: null
+                downloadingId: null,
+                showDeleteDialog: false,
+                deleting: false,
+                fileToDelete: null
 
             }
         },
         mixins: [ErrorHandlerMixins],
+        computed: {
+            ...mapState('auth', ['currentUser'])
+        },
         methods: {
             ...mapActions(['setSuccessMessage', 'setErrorMessage']),
             getDocuments(){
@@ -122,10 +146,33 @@
                 }).finally(() => {
                     this.downloadingId = null;
                 })
+            },
+            onFileDelete(doc){
+                this.fileToDelete = Object.assign({}, doc);
+                this.showDeleteDialog = true;
+            },
+            onCancelDelete(){
+                this.fileToDelete = null;
+                this.showDeleteDialog = false
+            },
+            deleteFile(){
+
+                this.deleting = true;
+                DocumentAPI.deleteFile(this.leadId, this.fileToDelete.id).then(() => {
+                    const updatedDocuments = this.documents.filter(doc => doc.id !== this.fileToDelete.id)
+                    this.documents = updatedDocuments;
+                    this.showDeleteDialog = false;
+                    this.setSuccessMessage("File successfully deleted");
+                    this.fileToDelete = null;
+                }).catch(error =>{
+                    this.handleError(error)
+                }).finally(() => {
+                    this.deleting = false;
+                })
+
             }
         },
         mounted() {
-            console.log('mounted')
             if(this.leadId){
                 this.getDocuments();
             }
