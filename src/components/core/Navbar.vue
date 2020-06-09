@@ -101,6 +101,7 @@
                         {icon: 'dashboard', text: 'Dashboard', route: '/'},
                         {icon: 'perm_contact_calendar', text: 'Contacts', route: '/sales-contact'},
                         {icon: 'mdi-account-group', text: 'Leads', route: '/lead'},
+                        {icon: 'mdi-briefcase', text: 'Sales Staff', route: '/sales-staff'}
                     ]
                 }
 
@@ -110,6 +111,7 @@
                         {icon: 'store', text: 'Franchise', route: '/franchise'},
                         {icon: 'perm_contact_calendar', text: 'Contacts', route: '/sales-contact'},
                         {icon: 'mdi-account-group', text: 'Leads', route: '/lead'},
+                        {icon: 'mdi-briefcase', text: 'Sales Staff', route: '/sales-staff'}
                     ]
                 }
 

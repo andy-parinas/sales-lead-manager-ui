@@ -66,9 +66,16 @@ const routes = [
             {
                 path: 'sales-contact',
                 name: 'sales-contact',
-                component: () => import(/* webpackChunkName: "dashboard" */ "@/views/PageSalesContact.vue"),
+                component: () => import(/* webpackChunkName: "ales-contact" */ "@/views/PageSalesContact.vue"),
                 meta: {requiresAuth: true}
         
+            },
+            {
+                path: 'sales-staff',
+                name: 'sales-staff',
+                component: () => import(/* webpackChunkName: "sales-staff" */ "@/views/sales-staff/SalesStaffListView.vue"),
+                meta: {requiresAuth: true}
+
             },
             {
                 path: 'admin',
