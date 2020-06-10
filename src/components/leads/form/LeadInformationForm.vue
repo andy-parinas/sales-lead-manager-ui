@@ -10,7 +10,8 @@
                     />
                 </v-col>
                 <v-col cols="12" sm="6">
-                    <FranchiseSelect  v-if="currentUser.userType === 'head_office'" @onValueChanged="onFranchiseSelectChanged"/>
+                    <FranchiseSelect  v-if="currentUser.userType === 'head_office'"
+                                      @onValueChanged="onFranchiseSelectChanged" :initial-data="initialSelectData"/>
                     <v-select v-else
                             @change="franchiseChange"
                             v-model="form.franchiseId"
@@ -154,6 +155,19 @@
             isOutsideFranchise(){
                 return this.form.postcodeStatus === 'outside_of_franchise';
             },
+            initialSelectData(){
+                if(this.initialData && this.initialData.franchiseId && this.initialData.franchiseNumber) {
+                    return {
+                        value: this.initialData.franchiseId,
+                        text: this.initialData.franchiseNumber
+                    }
+                }
+
+                return {
+                    value: '',
+                    text: ''
+                }
+            }
         },
         methods: {
             ...mapActions('franchises', ['getFranchises']),

@@ -25,6 +25,7 @@
 
     export default {
         name: "FranchiseSelect",
+        props: ['initialData'],
         data(){
             return {
                 loading: false,
@@ -79,6 +80,11 @@
         },
         mounted() {
             //this.getAllFranchises();
+            if(this.initialData){
+                console.log("mounted select", this.initialData)
+                this.franchise = Object.assign({}, this.initialData)
+                this.franchises.push(this.franchise)
+            }
         }
 
     }
