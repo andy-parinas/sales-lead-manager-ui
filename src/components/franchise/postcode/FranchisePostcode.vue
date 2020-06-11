@@ -1,5 +1,5 @@
 <template>
-    <v-card outlined :loading="loading">
+    <v-card outlined :loading="loading" min-height="300px">
         <div class="mx-3 mt-5">
             <h3 class="mb-3">Franchise Postcodes</h3>
             <div class="d-flex">
@@ -35,7 +35,8 @@
 
 <script>
     import PostcodeList from "./PostcodeList";
-    import {mapState, mapActions} from 'vuex';
+    //import {mapState, mapActions} from 'vuex';
+    import PostcodeAPI from "../../../api/PostcodeAPI";
 
     export default {
         name: "FranchisePostcode",
@@ -61,40 +62,39 @@
                 searchOptions: {
                     searchFor: '',
                 },
+                postcodes: [],
+                pagination: null
             }
         },
-        computed: {
-            ...mapState('postcodes',{
-                postcodes: state => state.franchisePostcodes,
-                pagination: state => state.franchisePostcodePagination
-            })
-        },
         methods: {
-            ...mapActions('postcodes', ['getFranchisePostcodes','clearFranchisePostcodes']),
-            getAllFranchisePostcodes(franchiseId, pageOptions,searchOptions ){
-               if(!this.loading){
-                   this.loading = true;
-                   this.getFranchisePostcodes({ franchiseId,  pageOptions, searchOptions }).then(() => {
+            getFranchisePostcodes(franchiseId, pageOptions,searchOptions){
+                if(!this.loading) {
+                    this.loading = true;
+                    PostcodeAPI.getFranchisePostcodes(franchiseId, pageOptions, searchOptions).then(response => {
+                        this.postcodes = response.data;
+                        this.pagination = response.pagination;
+                    }).finally(() => {
+                        this.loading = false
+                    })
+                }
 
-                   }).catch(error => {
-                       console.log(error)
-                   }).finally(() => {
-                       this.loading = false
-                   })
-               }
             },
             reset(){
-
+                if(!this.loading){
+                    this.searchOptions.searchFor = ''
+                    this.pageOptions = Object.assign({}, this.defaultPageOptions)
+                }
             }
         },
         watch: {
             franchise: {
                 handler(){
                     if(this.franchise){
-                        console.log('watch', this.pageOptions)
-                        this.getAllFranchisePostcodes(this.franchise.id, this.pageOptions, this.searchOptions);
+                        this.getFranchisePostcodes(this.franchise.id, this.pageOptions, this.searchOptions);
                     }else {
-                        this.clearFranchisePostcodes();
+                        this.postcodes = [];
+                        this.pagination = null;
+                        this.reset();
                     }
                 },
                 deep: true
@@ -102,7 +102,7 @@
         },
         mounted() {
             if(this.franchise){
-                this.getAllFranchisePostcodes(this.franchise.id, this.pageOptions, this.searchOptions);
+                this.getFranchisePostcodes(this.franchise.id, this.pageOptions, this.searchOptions);
             }
         }
     }

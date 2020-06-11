@@ -1,5 +1,5 @@
 <template>
-    <v-card outlined :loading="loading">
+    <v-card outlined :loading="loading" min-height="300px">
         <div class="mx-3 mt-5">
             <h3 class="mb-3">Available Postcodes</h3>
             <div class="d-flex">
@@ -34,12 +34,15 @@
 </template>
 
 <script>
-    import {mapState, mapActions} from 'vuex';
+    import PostcodeAPI from "../../../api/PostcodeAPI";
     import PostcodeList from "./PostcodeList";
 
     export default {
         name: "AllPostcode",
         components: {PostcodeList},
+        props: {
+            franchise: {required: true}
+        },
         data(){
             return {
                 loading: false,
@@ -57,25 +60,45 @@
                 },
                 searchOptions: {
                     searchFor: '',
-                }
+                },
+                postcodes: [],
+                pagination: null,
             }
         },
-        computed: {
-            ...mapState('postcodes', ['postcodes', 'pagination'])
-        },
         methods: {
-            ...mapActions('postcodes', ['getPostcodes']),
-            getAllPostcodes(){
-                if(!this.loading){
-                    this.loading = true;
-                    this.getPostcodes({pageOptions: this.pageOptions,
-                        searchOptions: this.searchOptions}).then(() => {
-                        console.log('Got Postcodes')
+            getAllAvailablePostcodes(pageOptions, searchOptions){
+                if(!this.loading) {
+                    this.loading = true
+                    PostcodeAPI.getAll(pageOptions, searchOptions).then(response => {
+                        this.postcodes = response.data;
+                        this.pagination = response.pagination;
                     }).catch(error => {
-                        console.log('error on postcodes', error);
+                        console.log(error)
                     }).finally(() => {
                         this.loading = false;
                     })
+                }
+            },
+            getParentPostcodes(parentId, pageOptions, searchOptions ){
+                if(!this.loading) {
+                    this.loading = true
+                    PostcodeAPI.getFranchisePostcodes(parentId, pageOptions, searchOptions).then(response => {
+                        this.postcodes = response.data;
+                        this.pagination = response.pagination;
+                    }).catch(error => {
+                        console.log(error)
+                    }).finally(() => {
+                        this.loading = false;
+                    })
+                }
+            },
+            getPostcodes(parentId, pageOptions, searchOptions ){
+                if(this.franchise && this.franchise.parentId === null){
+                    this.getAllAvailablePostcodes(pageOptions, searchOptions)
+                }
+
+                if(this.franchise && this.franchise.parentId !== null){
+                    this.getParentPostcodes(parentId, pageOptions, searchOptions);
                 }
             },
             reset(){
@@ -88,22 +111,35 @@
         watch: {
             pageOptions: {
                 handler(){
-                    this.getAllPostcodes();
+                    this.getPostcodes(this.franchise.parentId, this.pageOptions, this.searchOptions)
                 },
                 deep: true
             },
             searchOptions: {
                 handler(){
                     if(!this.loading && this.searchOptions.searchFor.length >= 2){
-                        this.getAllPostcodes();
+                        this.pageOptions = Object.assign({}, this.defaultPageOptions)
+                    }
+                },
+                deep: true
+            },
+            franchise: {
+                handler(){
+                    if(this.franchise){
+                        this.getPostcodes(this.franchise.parentId, this.pageOptions, this.searchOptions)
+                    }else {
+                        //this.clearFranchisePostcodes();
+                        this.postcodes = [];
+                        this.pagination = null;
+                        this.reset();
                     }
                 },
                 deep: true
             }
         },
         mounted() {
-            if(this.postcodes.length === 0){
-                this.getAllPostcodes();
+            if(this.franchise){
+                this.getPostcodes(this.franchise.parentId, this.pageOptions, this.searchOptions);
             }
         }
     }

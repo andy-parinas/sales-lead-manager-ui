@@ -6,6 +6,8 @@ export default {
     state:{
         postcodes: [],
         pagination: null,
+        availablePostcodes: [],
+        availablePostcodePagination: null,
         franchisePostcodes: [],
         franchisePostcodePagination: null
     },
@@ -19,12 +21,6 @@ export default {
         insertPostcode(state, postcode){
             state.postcodes.push(postcode);
         },
-        setFranchisePostcodes(state, postcodes){
-            state.franchisePostcodes = postcodes;
-        },
-        setFranchisePostcodePagination(state, pagination){
-            state.franchisePostcodePagination = pagination;
-        }
     },
     actions: {
         async getPostcodes({commit}, {pageOptions, searchOptions}){
@@ -43,16 +39,5 @@ export default {
                 commit('insertPostcode', postcode)
             }
         },
-        async getFranchisePostcodes({commit}, {franchiseId, pageOptions, searchOptions}){
-            const response = await PostcodeAPI.getFranchisePostcodes(franchiseId, pageOptions, searchOptions);
-
-            commit('setFranchisePostcodes', response.data);
-            commit('setFranchisePostcodePagination', response.pagination);
-        },
-
-        clearFranchisePostcodes({commit}){
-            commit('setFranchisePostcodes', []);
-            commit('setFranchisePostcodePagination', null);
-        }
     }
 }

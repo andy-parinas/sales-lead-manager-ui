@@ -10,7 +10,7 @@
         <v-card-text >
             <v-row class="d-flex align-start my-10">
                 <v-col cols="12" sm="6">
-                    <AllPostcode />
+                    <AllPostcode :franchise="selectedFranchise" />
                 </v-col>
                 <v-col cols="12" sm="6">
                     <FranchisePostcode :franchise="selectedFranchise" />
@@ -33,6 +33,11 @@
         methods: {
             closeDialog(){
                 this.$emit('close')
+            }
+        },
+        computed: {
+            isParent(){
+                return this.selectedFranchise && this.selectedFranchise.parentId === null;
             }
         },
         mounted() {
