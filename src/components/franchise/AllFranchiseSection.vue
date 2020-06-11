@@ -116,8 +116,8 @@
                 this.showEditDialog = true;
             },
             showPostcode(item){
-                console.log(item)
                 this.showPostcodeDialog = true;
+                this.selectedItem = Object.assign({}, item)
             },
             closeDialog(){
                 this.showPostcodeDialog = false;

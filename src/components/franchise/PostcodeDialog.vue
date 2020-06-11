@@ -13,6 +13,7 @@
                     <AllPostcode />
                 </v-col>
                 <v-col cols="12" sm="6">
+                    <FranchisePostcode :franchise="selectedFranchise" />
                 </v-col>
             </v-row>
         </v-card-text>
@@ -22,9 +23,10 @@
 <script>
     import DialogHeader from "../core/DialogHeader";
     import AllPostcode from "./postcode/AllPostcode";
+    import FranchisePostcode from "./postcode/FranchisePostcode";
     export default {
         name: "PostcodeDialog",
-        components: {AllPostcode, DialogHeader},
+        components: {FranchisePostcode, AllPostcode, DialogHeader},
         props: {
             selectedFranchise: {required: true}
         },

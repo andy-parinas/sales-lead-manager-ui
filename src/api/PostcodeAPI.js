@@ -25,8 +25,11 @@ const PostcodeAPI = {
     },
 
 
-    async getFranchisePostcodes(franchiseId){
-        const uri = `/api/franchises/${franchiseId}/postcodes`;
+    async getFranchisePostcodes(franchiseId, pageOptions, searchOptions){
+
+        console.log('PostcodeAPI', pageOptions, searchOptions)
+
+        const uri = URIBuilder.build(`/api/franchises/${franchiseId}/postcodes`, pageOptions, searchOptions);
 
         const response = await api().get(uri);
 
