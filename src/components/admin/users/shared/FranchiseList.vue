@@ -34,33 +34,7 @@
         components: {FranchiseListItem},
         data(){
             return {
-                franchises: [
-                    {
-                        franchiseNumber: 100,
-                        name: 'Franchise 100',
-                        description: "I'll be in your neighborhood doing errands this weekend. Do you want to hang out?",
-                    },
-                    {
-                        franchiseNumber: 200,
-                        name: 'Franchise 200',
-                        description: "Wish I could come, but I'm out of town this weekend.",
-                    },
-                    {
-                        franchiseNumber: 300,
-                        name: 'Franchise 300',
-                        description: 'Do you have Paris recommendations? Have you ever been?',
-                    },
-                    {
-                        franchiseNumber: 400,
-                        name: 'Franchise 400',
-                        description: 'Have any ideas about what we should get Heidi for her birthday?',
-                    },
-                    {
-                        franchiseNumber: 500,
-                        name: 'Franchise 500',
-                        description: 'We should eat this: Grate, Squash, Corn, and tomatillo Tacos.',
-                    },
-                ],
+                franchises: [],
             }
         }
     }

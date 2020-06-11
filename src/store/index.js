@@ -5,7 +5,7 @@ Vue.use(Vuex);
 
 import auth from "./modules/Auth";
 import salesContacts from './modules/SalesContacts';
-import postcodes from './modules/Postcodes';
+import PostcodeModule from './modules/PostcodeModule';
 import LeadModule from "./modules/LeadModule";
 import UserModule from "./modules/UserModule";
 import FranchiseModule from "./modules/FranchiseModule";
@@ -78,7 +78,7 @@ export default new Vuex.Store({
     modules: {
         auth,
         salesContacts,
-        postcodes,
+        postcodes: PostcodeModule,
         leads: LeadModule,
         users: UserModule,
         franchises: FranchiseModule

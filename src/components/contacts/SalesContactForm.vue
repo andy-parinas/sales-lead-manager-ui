@@ -1,5 +1,5 @@
 <template>
-    <v-card>
+    <v-card class="pb-3">
         <v-toolbar color="blue-grey darken-1" dark >
             <v-toolbar-title>{{ formTitle }}</v-toolbar-title>
         </v-toolbar>
@@ -92,8 +92,10 @@
                                 cache-items
                                 no-filter
                                 color="black"
-                                label="PostcodeAPI"
+                                label="Postcode"
                                 prepend-icon="mdi-mailbox"
+                                hint="Enter 3 characters to search"
+                                persistent-hint
                         ></v-autocomplete>
                     </v-col>
         <!--  End of State Sections-->
@@ -121,12 +123,12 @@
         <!--  Start of Contact status Sections-->
                 </v-row>
             </v-container>
-            <v-card-actions>
+            <v-card-actions class="mx-5">
                 <v-spacer />
                 <v-btn color="grey darken-1" dark
                         @click="closeForm"
                 >Cancel</v-btn>
-                <v-btn color="primary" dark :loading="saving" :disabled="!valid"
+                <v-btn color="primary" class="text--white" :loading="saving" :disabled="!valid"
                         @click="save"
                 >Save</v-btn>
             </v-card-actions>
@@ -137,8 +139,10 @@
 </template>
 
 <script>
-    import {mapActions, mapState} from 'vuex';
+    import {mapActions} from 'vuex';
     import ErrorHandlerMixins from "../../mixins/ErrorHandler";
+    import PostcodeAPI from "../../api/PostcodeAPI";
+
     export default {
         name: "SalesContactForm",
         props: {
@@ -212,15 +216,16 @@
                     suburb: '',
                     state: '',
                     postcode: '',
-                }
+                },
+                postcodes: []
 
             }
         },
-        computed: {
-          ...mapState('postcodes', {
-              postcodes: state => state.postcodes
-          })
-        },
+        // computed: {
+        //   ...mapState('postcodes', {
+        //       postcodes: state => state.postcodes
+        //   })
+        // },
         methods: {
             ...mapActions('postcodes', ['pushPostCode', 'findPostcodes']),
             ...mapActions('salesContacts', ['updateSalesContact', 'createSalesContact']),
@@ -282,13 +287,14 @@
 
                 if(this.postcodeLoading) return;
 
-                if(val && val.trim() !== ''){
+                if(val && val.trim() !== '' && val.length > 2){
                     this.postcodeLoading = true
-                    this.findPostcodes(val).then(() => {
-                        this.postcodeLoading = false;
+                    PostcodeAPI.search(val).then(response => {
+                        this.postcodes = response.data
                     }).catch(error => {
-                        this.postcodeLoading = false;
                         this.handleError(error)
+                    }).finally(() => {
+                        this.postcodeLoading = false;
                     })
                 }
             },

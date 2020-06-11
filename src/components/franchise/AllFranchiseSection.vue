@@ -22,6 +22,7 @@
 
             <FranchiseList :franchises="franchises"
                             :with-select="true"
+                           @onPostcodeClicked="showPostcode"
                            @onSelectedClicked="franchiseSelected"
                            @onEditClicked="editFranchise"
                            ref="franchiseList"
@@ -36,7 +37,11 @@
         <v-dialog v-model="showEditDialog" persistent width="650" class="px-2">
             <EditFranchiseDialog
                     :edited-item="selectedItem"
-                    @close="showEditDialog = false" />
+                    @close="closeDialog" />
+        </v-dialog>
+        <v-dialog v-model="showPostcodeDialog" persistent width="850" class="px-2">
+            <PostcodeDialog :selected-franchise="this.selectedItem"
+                    @close="closeDialog" />
         </v-dialog>
     </div>
 </template>
@@ -47,14 +52,16 @@
     import ErrorHandlerMixins from "../../mixins/ErrorHandler";
     import FranchiseList from "./shared/FranchiseList";
     import EditFranchiseDialog from "./EditFranchiseDialog";
+    import PostcodeDialog from "./PostcodeDialog";
     // import EditUserFranchise from "../admin/users/EditUserFranchise";
 
     export default {
         name: "AllFranchiseSection",
-        components: {EditFranchiseDialog, FranchiseList},
+        components: {PostcodeDialog, EditFranchiseDialog, FranchiseList},
         data(){
             return {
                 showEditDialog: false,
+                showPostcodeDialog: false,
                 loading: false,
                 pageOptions: {
                     page: 1,
@@ -108,6 +115,16 @@
                 this.selectedItem = Object.assign({}, item);
                 this.showEditDialog = true;
             },
+            showPostcode(item){
+                console.log(item)
+                this.showPostcodeDialog = true;
+            },
+            closeDialog(){
+                this.showPostcodeDialog = false;
+                this.showEditDialog = false
+                this.selectedItem = null;
+            },
+
 
 
         },
