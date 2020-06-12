@@ -11,20 +11,22 @@ export const URIBuilder = {
 
         let uri = `${requestURI}?`
 
-        if(options.itemsPerPage){
-            const size = options.itemsPerPage
-            uri = uri + `size=${size}&`
-        }
+        if(options){
+            if(options.itemsPerPage){
+                const size = options.itemsPerPage
+                uri = uri + `size=${size}&`
+            }
 
-        if (options.sortBy && options.sortBy.length > 0){
-            const field = Utils.camelToSnake(options.sortBy[0])
-            const direction = options.sortDesc[0] ? 'desc' : 'asc';
+            if (options.sortBy && options.sortBy.length > 0){
+                const field = Utils.camelToSnake(options.sortBy[0])
+                const direction = options.sortDesc[0] ? 'desc' : 'asc';
 
-            uri = uri + `sort=${field}&direction=${direction}&`
-        }
+                uri = uri + `sort=${field}&direction=${direction}&`
+            }
 
-        if (options.page){
-            uri = uri + `page=${options.page}&`
+            if (options.page){
+                uri = uri + `page=${options.page}&`
+            }
         }
 
         if (searchOptions && searchOptions.searchFor && searchOptions.searchIn){

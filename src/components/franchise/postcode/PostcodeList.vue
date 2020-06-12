@@ -1,15 +1,13 @@
 <template>
     <div>
         <v-list two-line>
-            <div style="height: 10px">
-                <v-progress-linear indeterminate color="primary" v-if="loading"></v-progress-linear>
-            </div>
             <v-divider></v-divider>
             <template v-for="(item, index) in items">
                 <PostcodeListItem  :key="index"
                                     :item="item"
                                     :add="add"
                                     :remove="remove"
+                                   :adding="adding"
                                     @add="$emit('onAddClicked', item)"
                                     @remove="$emit('onRemoveClicked', item)"/>
                 <v-divider :key="index  + 100"></v-divider>
@@ -29,7 +27,7 @@
         props: {
             add: {type: Boolean},
             remove: {type: Boolean},
-            loading: {type: Boolean},
+            adding: {type: Number},
             items: {required: true, type: Array}
         },
     }

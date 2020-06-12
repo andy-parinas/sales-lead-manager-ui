@@ -11,6 +11,7 @@
 
             <v-list-item-action>
                 <v-btn  v-if="add" @click="$emit('add', item)"
+                        :loading="adding === item.id"
                         x-small fab text color="primary" dark>
                     <v-icon>add</v-icon>
                 </v-btn>
@@ -29,7 +30,8 @@
         props: {
             item: {required: true, type:Object},
             add: { type: Boolean},
-            remove: {type: Boolean}
+            remove: {type: Boolean},
+            adding: {type: Number}
         },
 
     }

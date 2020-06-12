@@ -8,12 +8,24 @@
             </template>
         </DialogHeader>
         <v-card-text >
-            <v-row class="d-flex align-start my-10">
+            <v-row v-if="selectedFranchise" class="mt-5">
+                <v-col cols="12">
+                    <div>
+                        <span class="subtitle-2">Franchise Number: </span>
+                        <span class="subtitle-1 font-weight-black">{{ selectedFranchise.franchiseNumber }}</span>
+                    </div>
+                </v-col>
+            </v-row>
+            <v-row class="d-flex align-start mt-1 mb-10">
                 <v-col cols="12" sm="6">
-                    <AllPostcode :franchise="selectedFranchise" />
+                    <AllPostcode
+                            :franchise="selectedFranchise"
+                            @onPostcodeAdded="postcodeAdded"/>
                 </v-col>
                 <v-col cols="12" sm="6">
-                    <FranchisePostcode :franchise="selectedFranchise" />
+                    <FranchisePostcode
+                            :franchise="selectedFranchise"
+                            ref="franchisePostcode"/>
                 </v-col>
             </v-row>
         </v-card-text>
@@ -33,6 +45,9 @@
         methods: {
             closeDialog(){
                 this.$emit('close')
+            },
+            postcodeAdded(postcode){
+                this.$refs.franchisePostcode.updatePostcodes(postcode)
             }
         },
         computed: {

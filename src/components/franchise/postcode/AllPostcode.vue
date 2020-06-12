@@ -20,7 +20,11 @@
                 </v-btn>
             </div>
         </div>
-        <PostcodeList :items="postcodes" :add="true" >
+        <PostcodeList
+                :items="postcodes"
+                :add="true"
+                :adding="adding"
+            @onAddClicked="addPostcodeToFranchise">
             <template v-slot:pagination>
                 <v-pagination class="mt-2" v-if="pagination"
                               v-model="pageOptions.page"
@@ -36,6 +40,7 @@
 <script>
     import PostcodeAPI from "../../../api/PostcodeAPI";
     import PostcodeList from "./PostcodeList";
+    import ErrorHandlerMixins from "../../../mixins/ErrorHandler";
 
     export default {
         name: "AllPostcode",
@@ -63,8 +68,10 @@
                 },
                 postcodes: [],
                 pagination: null,
+                adding: 0
             }
         },
+        mixins: [ErrorHandlerMixins],
         methods: {
             getAllAvailablePostcodes(pageOptions, searchOptions){
                 if(!this.loading) {
@@ -106,12 +113,26 @@
                     this.searchOptions.searchFor = ''
                     this.pageOptions = Object.assign({}, this.defaultPageOptions)
                 }
+            },
+            addPostcodeToFranchise(postcode){
+                if(this.franchise && postcode){
+                    this.adding = postcode.id;
+                    PostcodeAPI.addPostcodeToFranchise(this.franchise.id, postcode.id).then(response => {
+                        this.$emit('onPostcodeAdded', response.data)
+                    }).catch(error => {
+                        this.handleError(error)
+                    }).finally(() => {
+                        this.adding = 0
+                    })
+                }
             }
         },
         watch: {
             pageOptions: {
                 handler(){
-                    this.getPostcodes(this.franchise.parentId, this.pageOptions, this.searchOptions)
+                    if(this.franchise) {
+                        this.getPostcodes(this.franchise.parentId, this.pageOptions, this.searchOptions)
+                    }
                 },
                 deep: true
             },

@@ -79,6 +79,9 @@
                 }
 
             },
+            updatePostcodes(postcode){
+                this.postcodes.push(postcode)
+            },
             reset(){
                 if(!this.loading){
                     this.searchOptions.searchFor = ''
