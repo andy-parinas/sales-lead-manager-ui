@@ -20,7 +20,9 @@
                 </v-btn>
             </div>
         </div>
-        <PostcodeList :items="postcodes" :remove="true" >
+        <PostcodeList :items="postcodes" :remove="true"
+                      :removing="removing"
+                      @onRemoveClicked="detachPostcode">
             <template v-slot:pagination>
                 <v-pagination class="mt-2" v-if="pagination"
                               v-model="pageOptions.page"
@@ -37,6 +39,7 @@
     import PostcodeList from "./PostcodeList";
     //import {mapState, mapActions} from 'vuex';
     import PostcodeAPI from "../../../api/PostcodeAPI";
+    import ErrorHandlerMixins from "../../../mixins/ErrorHandler";
 
     export default {
         name: "FranchisePostcode",
@@ -63,9 +66,11 @@
                     searchFor: '',
                 },
                 postcodes: [],
-                pagination: null
+                pagination: null,
+                removing: 0
             }
         },
+        mixins: [ErrorHandlerMixins],
         methods: {
             getFranchisePostcodes(franchiseId, pageOptions,searchOptions){
                 if(!this.loading) {
@@ -73,6 +78,8 @@
                     PostcodeAPI.getFranchisePostcodes(franchiseId, pageOptions, searchOptions).then(response => {
                         this.postcodes = response.data;
                         this.pagination = response.pagination;
+                    }).catch(error => {
+                        this.handleError(error);
                     }).finally(() => {
                         this.loading = false
                     })
@@ -82,6 +89,20 @@
             updatePostcodes(postcode){
                 this.postcodes.push(postcode)
             },
+            detachPostcode(postcode){
+                if(this.franchise && postcode){
+                    this.removing = postcode.id;
+                    PostcodeAPI.removePostcodeFromFranchise(this.franchise.id, postcode.id).then(response => {
+                        this.$emit('onPostcodeRemoved', response.data)
+                        const updatedPostcodes = this.postcodes.filter(pcode => pcode.id !== response.data.id)
+                        this.postcodes = updatedPostcodes;
+                    }).catch(error => {
+                        this.handleError(error)
+                    }).finally(() => {
+                        this.removing = 0
+                    })
+                }
+            },
             reset(){
                 if(!this.loading){
                     this.searchOptions.searchFor = ''
@@ -90,6 +111,22 @@
             }
         },
         watch: {
+            pageOptions: {
+                handler(){
+                    if(this.franchise) {
+                        this.getFranchisePostcodes(this.franchise.id, this.pageOptions, this.searchOptions)
+                    }
+                },
+                deep: true
+            },
+            searchOptions: {
+                handler(){
+                    if(!this.loading && this.searchOptions.searchFor.length >= 2){
+                        this.pageOptions = Object.assign({}, this.defaultPageOptions)
+                    }
+                },
+                deep: true
+            },
             franchise: {
                 handler(){
                     if(this.franchise){

@@ -8,6 +8,7 @@
                                     :add="add"
                                     :remove="remove"
                                    :adding="adding"
+                                   :removing="removing"
                                     @add="$emit('onAddClicked', item)"
                                     @remove="$emit('onRemoveClicked', item)"/>
                 <v-divider :key="index  + 100"></v-divider>
@@ -28,6 +29,7 @@
             add: {type: Boolean},
             remove: {type: Boolean},
             adding: {type: Number},
+            removing: {type: Number},
             items: {required: true, type: Array}
         },
     }

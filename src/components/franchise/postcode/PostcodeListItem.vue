@@ -16,6 +16,7 @@
                     <v-icon>add</v-icon>
                 </v-btn>
                 <v-btn  v-if="remove" @click="$emit('remove', item)"
+                        :loading="removing === item.id"
                         x-small fab text color="error" dark>
                     <v-icon small>remove</v-icon>
                 </v-btn>
@@ -31,7 +32,8 @@
             item: {required: true, type:Object},
             add: { type: Boolean},
             remove: {type: Boolean},
-            adding: {type: Number}
+            adding: {type: Number},
+            removing: {type: Number}
         },
 
     }

@@ -45,6 +45,18 @@ const PostcodeAPI = {
 
         return response.data;
 
+    },
+
+    async removePostcodeFromFranchise(franchiseId, postcodeId){
+
+        const uri = `/api/franchises/${franchiseId}/postcodes/${postcodeId}/detach`
+
+        await csrf.getCSRFCookie();
+
+        const response = await api().post(uri);
+
+        return response.data;
+
     }
 }
 

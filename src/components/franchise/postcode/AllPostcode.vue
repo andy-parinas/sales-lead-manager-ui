@@ -80,7 +80,7 @@
                         this.postcodes = response.data;
                         this.pagination = response.pagination;
                     }).catch(error => {
-                        console.log(error)
+                        this.handleError(error)
                     }).finally(() => {
                         this.loading = false;
                     })
@@ -93,7 +93,7 @@
                         this.postcodes = response.data;
                         this.pagination = response.pagination;
                     }).catch(error => {
-                        console.log(error)
+                        this.handleError(error)
                     }).finally(() => {
                         this.loading = false;
                     })
