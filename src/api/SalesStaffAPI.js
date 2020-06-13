@@ -12,6 +12,8 @@ const SalesStaffAPI = {
 
         const response = await api().get(uri);
 
+        console.log('SalesStaffAPi', response)
+
         return response.data;
 
 

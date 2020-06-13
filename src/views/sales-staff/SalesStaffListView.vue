@@ -12,9 +12,11 @@
 <script>
     import PageHeader from "../../components/core/PageHeader";
     import SalesStaffTable from "../../components/sales-staff/SalesStaffTable";
+
     export default {
         name: "SalesStaffListView",
-        components: {SalesStaffTable, PageHeader}
+        components: {SalesStaffTable, PageHeader},
+
     }
 </script>
 
