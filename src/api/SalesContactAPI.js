@@ -72,12 +72,12 @@ const SalesContactAPI = {
             email2: data.email2,
             contact_number: data.contactNumber,
             customer_type: data.customerType,
-            status: data.status
-            // street1: data.street1,
-            // street2: data.street2,
-            // suburb: data.suburb,
-            // state: data.state,
-            // postcode: data.postcode,
+            status: data.status,
+            street1: data.street1,
+            street2: data.street2,
+            suburb: data.suburb,
+            state: data.state,
+            postcode: data.postcode,
         }
 
 

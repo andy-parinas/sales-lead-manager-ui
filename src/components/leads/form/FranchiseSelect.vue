@@ -93,7 +93,6 @@
         mounted() {
 
             if(this.initialData){
-                console.log('Mounted with InitialData')
                 this.franchise = Object.assign({}, this.initialData)
                 this.franchises.push(this.franchise)
             }

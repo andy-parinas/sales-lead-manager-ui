@@ -53,7 +53,7 @@
         </v-card-text>
         <v-card-actions>
             <v-spacer></v-spacer>
-            <v-btn color="blue darken-1" class="mr-10 mb-5 white--text"
+            <v-btn color="blue darken-1" class="mr-5 mb-5 white--text"
                    @click="$emit('onSave', form)"
                    :loading="saving"
                    :disabled="!canSave">

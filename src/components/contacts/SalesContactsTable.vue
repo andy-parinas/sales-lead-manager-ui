@@ -29,7 +29,7 @@
                                 <v-icon small >mdi-trash-can-outline </v-icon>
                             </v-btn>
                             <v-btn x-small fab text dark color="accent" @click="editContact(item)" >
-                                <v-icon small> mdi-lead-pencil</v-icon>
+                                <v-icon small> mdi-pencil</v-icon>
                             </v-btn>
                             <v-btn x-small fab text dark color="success" class="ml-3" @click="convertToLead(item)">
                                 <v-icon small>mdi-fast-forward-outline</v-icon>
@@ -42,26 +42,30 @@
                 <template v-slot:expanded-item="{ headers, item }">
                     <SalesContactDetails :length="headers.length" :item="item" />
                 </template>]
-                <template v-slot:top>
-                    <v-dialog v-model="editDialog"  persistent width="800px">
-                        <SalesContactForm
-                                @closeForm="closeEditDialog"
-                                :item="editedItem"
-                                :formTitle="formTitle"
-                                :loading="formLoading"
-                                ref="salesContactForm"
-                        />
-                    </v-dialog>
-
-                    <v-dialog v-model="deleteDialog" persistent max-width="550" class="px-2">
-                        <SalesContactDeleteDialog :sales-contact="selectedItem"
-                            @close="closeDeleteDialog"/>
-                    </v-dialog>
-
-                </template>
+<!--                <template v-slot:top>-->
+<!--                    <v-dialog v-model="editDialog"  persistent width="800px">-->
+<!--                        <SalesContactForm-->
+<!--                                @closeForm="closeEditDialog"-->
+<!--                                :item="editedItem"-->
+<!--                                :formTitle="formTitle"-->
+<!--                                :loading="formLoading"-->
+<!--                                ref="salesContactForm"-->
+<!--                        />-->
+<!--                    </v-dialog>-->
+<!--                </template>-->
             </v-data-table>
 
         </v-card>
+
+        <v-dialog v-model="editDialog"  persistent width="850px">
+            <SalesContactEditDialog :sales-contact="selectedItem"
+                @close="closeEditDialog"/>
+        </v-dialog>
+
+        <v-dialog v-model="deleteDialog" persistent max-width="550" class="px-2">
+            <SalesContactDeleteDialog :sales-contact="selectedItem"
+                                      @close="closeDeleteDialog"/>
+        </v-dialog>
 
         <v-btn bottom color="pink" dark fab fixed right @click="newContact" >
             <v-icon  >add</v-icon>
@@ -72,15 +76,16 @@
 <script>
     import SalesContactDetails from "./SalesContactDetails";
     import {mapActions, mapState} from "vuex";
-    import SalesContactForm from "./SalesContactForm";
     import SalesContactSearchForm from "./SalesContactSearchForm";
     import ErrorHandlerMixins from "../../mixins/ErrorHandler";
     import SalesContactDeleteDialog from "./SalesContactDeleteDialog";
+    import SalesContactEditDialog from "./SalesContactEditDialog";
 
     export default {
         name: "SalesContactsTable",
         components: {
-            SalesContactDeleteDialog, SalesContactSearchForm, SalesContactDetails, SalesContactForm},
+            SalesContactEditDialog,
+            SalesContactDeleteDialog, SalesContactSearchForm, SalesContactDetails},
         props: {},
         data(){
             return {
@@ -179,15 +184,17 @@
                 this.editDialog = true;
             },
             editContact(item){
-                this.editedItemIndex = this.salesContacts.indexOf(item)
-                this.editedItem = Object.assign({}, item);
+                // this.editedItemIndex = this.salesContacts.indexOf(item)
+                // this.editedItem = Object.assign({}, item);
+                // this.editDialog = true;
+                //
+                // if(this.$refs.salesContactForm){
+                //     console.log('With SalesContactForm')
+                //     this.$refs.salesContactForm.assignPostcode(this.editedItem.postcode);
+                //     this.$refs.salesContactForm.copyPropsToState(this.editedItem);
+                // }
+                this.selectedItem = Object.assign({}, item);
                 this.editDialog = true;
-
-                if(this.$refs.salesContactForm){
-                    console.log('With SalesContactForm')
-                    this.$refs.salesContactForm.assignPostcode(this.editedItem.postcode);
-                    this.$refs.salesContactForm.copyPropsToState(this.editedItem);
-                }
             },
             deleteItem(item){
                 this.selectedItem = item;
@@ -203,8 +210,8 @@
             },
             closeEditDialog(){
                 setTimeout(() => {
-                    this.resetSelectedItem()
-                }, 500)
+                    this.selectedItem = null;
+                }, 100)
 
                 this.editDialog = false;
 
