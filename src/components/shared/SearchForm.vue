@@ -12,7 +12,7 @@
         <v-col cols="12" md="2" sm="12">
             <v-btn color="secondary" fab small elevation="3" class="mr-2 white--text"
                    :disabled="canSearch"
-                   @click="searchLeads">
+                   @click="search">
                 <v-icon>search</v-icon>
             </v-btn>
             <v-btn color="success" fab small elevation="3" class="mr-2 white--text"
@@ -42,7 +42,7 @@
             }
         },
         methods: {
-            searchLeads(){
+            search(){
                 this.$emit('search', {searchFor: this.searchFor, searchIn: this.searchIn})
             },
             resetSearch(){

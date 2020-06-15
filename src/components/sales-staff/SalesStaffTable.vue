@@ -4,7 +4,8 @@
             <v-card-title id="table-header" >
                 <SearchForm
                         :search-items="searchItems"
-                        @search="searchSalesStaffs"/>
+                        @search="searchSalesStaffs"
+                        @reset="reset"/>
             </v-card-title>
             <v-data-table
                     :items="salesStaffs"
@@ -13,8 +14,35 @@
                     :server-items-length="pagination.total"
                     :footer-props="footerProps"
                     :single-expand="true"
-                    :loading="loading"
-            ></v-data-table>
+                    :show-expand="true"
+                    :loading="loading">
+
+                <template v-slot:item.status="{item}">
+                    <v-chip small label :color="item.status === 'blocked' ? 'red' : 'green'" text-color="white">
+                        {{item.status | capitalize }}
+                    </v-chip>
+                </template>
+
+
+                <template v-slot:item.actions="{}">
+                    <v-container>
+                        <v-row class="justify-sm-start">
+                            <v-btn x-small fab text dark color="accent" >
+                                <v-icon small > mdi-pencil </v-icon>
+                            </v-btn>
+                            <v-btn x-small fab text dark color="error" class="mr-3">
+                                <v-icon small > mdi-trash-can-outline </v-icon>
+                            </v-btn>
+                        </v-row>
+                    </v-container>
+
+                </template>
+
+                <template v-slot:expanded-item="{ headers, item }">
+                    <SalesStaffDetails :length="headers.length" :item="item" />
+                </template>
+
+            </v-data-table>
         </v-card>
     </div>
 </template>
@@ -22,9 +50,10 @@
 <script>
     import SearchForm from "../shared/SearchForm";
     import {mapActions, mapState} from "vuex";
+    import SalesStaffDetails from "./SalesStaffDetails";
     export default {
         name: "SalesStaffTable",
-        components: {SearchForm},
+        components: {SalesStaffDetails, SearchForm},
         data(){
             return {
                 loading: false,
@@ -67,6 +96,10 @@
                     mustSort: false,
                     multiSort: false
                 },
+                searchOptions: {
+                    searchIn: '',
+                    searchFor: '',
+                }
             }
         },
         computed: {
@@ -87,7 +120,14 @@
                 }
             },
             searchSalesStaffs({searchFor, searchIn}){
-
+                this.searchOptions.searchIn = searchIn;
+                this.searchOptions.searchFor = searchFor;
+                this.pageOptions = Object.assign({}, this.defaultOptions);
+            },
+            reset(){
+                this.searchOptions.searchIn = '';
+                this.searchOptions.searchFor = '';
+                this.pageOptions = Object.assign({}, this.defaultOptions);
             }
         },
         watch: {
