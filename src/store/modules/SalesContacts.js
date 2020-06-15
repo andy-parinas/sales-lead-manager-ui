@@ -58,25 +58,25 @@ export default {
 
             const createdContact = await SalesContactAPI.create(newContact);
             const newMeta = {
-                ...state.meta,
-                total: state.meta.total + 1,
+                ...state.pagination,
+                total: state.pagination.total + 1,
             }
 
             commit('addSalesContact', createdContact);
-            commit('setSalesContactMeta', newMeta);
+            commit('setSalesContactPagination', newMeta);
 
         },
-        async deleteSalesContact({state, commit}, contact){
-            const deletedContact = await SalesContactAPI.delete(contact.id);
+        async deleteSalesContact({state, commit}, contactId){
+            const deletedContact = await SalesContactAPI.delete(contactId);
 
             const contacts = state.salesContacts.filter(contact => contact.id !== deletedContact.id);
             const newMeta = {
-                ...state.meta,
-                total: state.meta.total - 1,
+                ...state.pagination,
+                total: state.pagination.total - 1,
             }
 
             commit('setSalesContacts', contacts);
-            commit('setSalesContactMeta', newMeta);
+            commit('setSalesContactPagination', newMeta);
 
         },
         selectContact({commit}, contact){

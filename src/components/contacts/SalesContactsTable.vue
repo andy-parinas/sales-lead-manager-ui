@@ -52,27 +52,12 @@
                                 ref="salesContactForm"
                         />
                     </v-dialog>
-                    <v-dialog v-model="deleteDialog" persistent max-width="350" class="px-2">
-                        <v-card>
-                            <v-card-title class="headline">Delete Sales Contact?</v-card-title>
-                            <v-card-text>
-                                <p class="body-1 font-weight-medium red--text">{{ deletedItem.name }}</p>
-                                <p>You won't be able to recover this Sales Contact once deleted.</p>
-                            </v-card-text>
-                            <v-card-actions>
-                                <v-spacer></v-spacer>
-                                <v-btn color="grey darken-1" text :disabled="deleting" @click="cancelDelete">Cancel</v-btn>
-                                <v-btn color="red darken-1" class="mr-3" text @click="confirmDelete" :loading="deleting" >
-                                    Delete
-                                    <template v-slot:loader>
-                                       <v-row>
-                                           <span class="mr-1">Deleting...</span>
-                                       </v-row>
-                                    </template>
-                                </v-btn>
-                            </v-card-actions>
-                        </v-card>
+
+                    <v-dialog v-model="deleteDialog" persistent max-width="550" class="px-2">
+                        <SalesContactDeleteDialog :sales-contact="selectedItem"
+                            @close="closeDeleteDialog"/>
                     </v-dialog>
+
                 </template>
             </v-data-table>
 
@@ -90,10 +75,12 @@
     import SalesContactForm from "./SalesContactForm";
     import SalesContactSearchForm from "./SalesContactSearchForm";
     import ErrorHandlerMixins from "../../mixins/ErrorHandler";
+    import SalesContactDeleteDialog from "./SalesContactDeleteDialog";
 
     export default {
         name: "SalesContactsTable",
-        components: {SalesContactSearchForm, SalesContactDetails, SalesContactForm},
+        components: {
+            SalesContactDeleteDialog, SalesContactSearchForm, SalesContactDetails, SalesContactForm},
         props: {},
         data(){
             return {
@@ -141,10 +128,6 @@
                     disableItemsPerPage : false
                 },
                 editedItemIndex: -1,
-                deletedItem: {
-                    name: '',
-                    id: ''
-                },
                 editedItem: {
                     id: '',
                     firstName: '',
@@ -171,6 +154,7 @@
                     state: '',
                     postcode: '',
                 },
+                selectedItem: null,
             }
         },
         mixins: [ErrorHandlerMixins],
@@ -206,35 +190,12 @@
                 }
             },
             deleteItem(item){
-                this.deletedItem.name = `${item.firstName} ${item.lastName}`
-                this.deletedItem.id = item.id
+                this.selectedItem = item;
                 this.deleteDialog = true;
             },
-            confirmDelete(){
-                this.deleting = true;
-                this.deleteSalesContact(this.deletedItem).then(() => {
-                    console.log('successfully deleted')
-                    this.snackbar.message = "Contact Successfully Deleted"
-                    this.snackbar.show = true;
-                }).catch(error => {
-                    console.error(error.response);
-                    this.snackbar.show = true;
-                    this.snackbar.color = 'error';
-                    if(error.response && error.response.status && error.response.status === 409){
-                        this.snackbar.message = "Can't delete Sales Contact converted to Lead";
-                    }else {
-                        this.snackbar.message = "Error deleting Sales Contact. Please check with you Administrator";
-                    }
-                }).finally(() => {
-                    console.log('Finally')
-                    this.cancelDelete();
-                })
-            },
-            cancelDelete(){
-                this.deletedItem.name = '';
-                this.deletedItem.id = '';
+            closeDeleteDialog(){
+                this.selectedItem = null;
                 this.deleteDialog = false;
-                this.deleting = false;
             },
             resetSelectedItem(){
                 this.editedItem = Object.assign({}, this.defaultItem)
