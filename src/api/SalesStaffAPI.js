@@ -11,6 +11,8 @@ const SalesStaffAPI = {
 
         const uri = URIBuilder.build(requestUri, pageOptions, searchOptions);
 
+        console.log('api', uri)
+
         const response = await api().get(uri);
 
         return response.data;
@@ -38,6 +40,27 @@ const SalesStaffAPI = {
         return response.data;
 
 
+    },
+
+    async create(formData){
+        const uri = `/api/sales-staffs`
+
+        const data = {
+            first_name: formData.firstName,
+            last_name: formData.lastName,
+            email: formData.email,
+            contact_number: formData.contactNumber,
+            franchise_id: formData.franchiseId,
+            status: formData.status,
+        }
+
+        await csrf.getCSRFCookie();
+
+        const response = await api().post(uri, data);
+
+        console.log('api', response);
+
+        return response.data;
     }
 
 }

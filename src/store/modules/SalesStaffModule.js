@@ -27,6 +27,9 @@ export default {
             })
 
             state.salesStaffs = updatedStaffs;
+        },
+        insertSalesStaff(state, staff){
+            state.salesStaffs.push(staff);
         }
     },
     actions: {
@@ -43,6 +46,13 @@ export default {
 
             commit('updateSalesStaffs', response.data);
 
+        },
+
+        async createSalesStaff({commit}, formData){
+
+            const response = await SalesStaffAPI.create(formData);
+
+            commit('insertSalesStaff', response.data);
         }
 
     }

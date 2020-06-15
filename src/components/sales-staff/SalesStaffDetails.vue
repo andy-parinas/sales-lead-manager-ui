@@ -12,12 +12,12 @@
         </v-row>
         <v-row>
             <v-col cols="12" sm="4">
-                <v-icon small>mdi-store</v-icon>
-                <span class="ml-2">Franchise: {{ item.franchise }}</span>
+                <v-icon small>mdi-phone</v-icon>
+                <span class="ml-2"> {{ item.contactNumber | capitalize }}</span>
             </v-col>
             <v-col cols="12" sm="4">
-                <v-icon small>mdi-speedometer</v-icon>
-                <span class="ml-2">Status: {{ item.status | capitalize }}</span>
+                <v-icon small>mdi-store</v-icon>
+                <span class="ml-2">Franchise: {{ item.franchise }}</span>
             </v-col>
         </v-row>
     </td>

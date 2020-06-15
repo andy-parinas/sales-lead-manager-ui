@@ -67,7 +67,8 @@
                 searchItems: [
                     {text: 'First Name', value: 'first_name'},
                     {text: 'Last Name', value: 'last_name'},
-                    {text: 'Suburb', value: 'email'},
+                    {text: 'Email', value: 'email'},
+                    {text: 'Status', value: 'status'},
                 ],
                 headers: [
                     { text: 'First Name',value: 'firstName'},
@@ -87,7 +88,7 @@
                     page: 1,
                     itemsPerPage: 10,
                     sortBy: ['firstName'],
-                    sortDesc: [true],
+                    sortDesc: [false],
                     groupBy: [],
                     groupDesc: [],
                     mustSort: false,
@@ -97,7 +98,7 @@
                     page: 1,
                     itemsPerPage: 10,
                     sortBy: ['firstName'],
-                    sortDesc: [true],
+                    sortDesc: [false],
                     groupBy: [],
                     groupDesc: [],
                     mustSort: false,
