@@ -14,6 +14,7 @@
         cache-items
         clearable
         return-object
+        :rules="required? [v => !!v || 'This field is required'] : []"
     >
 
     </v-autocomplete>
@@ -25,7 +26,7 @@
 
     export default {
         name: "FranchiseSelect",
-        props: ['initialData'],
+        props: ['initialData', 'required'],
         data(){
             return {
                 loading: false,
@@ -46,7 +47,6 @@
                 this.loading = true;
                 FranchiseAPI.getAllFranchise(this.pageOptions,
                     this.searchOptions).then(response => {
-                        console.log('FranchiseSelect', response.data)
                         this.franchises = response.data.map(franchise => {
                             return {
                                 value: franchise.id,
@@ -78,10 +78,22 @@
                 this.$emit('onValueChanged', this.franchise)
             }
         },
+        watch: {
+            initialData: {
+                handler(){
+
+                    if(this.initialData){
+                        this.franchise = Object.assign({}, this.initialData)
+                        this.franchises.push(this.franchise)
+                    }
+                },
+                deep: true
+            }
+        },
         mounted() {
-            //this.getAllFranchises();
+
             if(this.initialData){
-                console.log("mounted select", this.initialData)
+                console.log('Mounted with InitialData')
                 this.franchise = Object.assign({}, this.initialData)
                 this.franchises.push(this.franchise)
             }

@@ -24,10 +24,10 @@
                 </template>
 
 
-                <template v-slot:item.actions="{}">
+                <template v-slot:item.actions="{item}">
                     <v-container>
                         <v-row class="justify-sm-start">
-                            <v-btn x-small fab text dark color="accent" >
+                            <v-btn x-small fab text dark color="accent" @click="edit(item)" >
                                 <v-icon small > mdi-pencil </v-icon>
                             </v-btn>
                             <v-btn x-small fab text dark color="error" class="mr-3">
@@ -44,6 +44,11 @@
 
             </v-data-table>
         </v-card>
+        <v-dialog v-model="showEditDialog" persistent width="850" class="px-2">
+            <SalesStaffEditDialog :initial-data="selectedItem"
+                                  ref="editDialog"
+                    @close="closeEditDialog" />
+        </v-dialog>
     </div>
 </template>
 
@@ -51,12 +56,14 @@
     import SearchForm from "../shared/SearchForm";
     import {mapActions, mapState} from "vuex";
     import SalesStaffDetails from "./SalesStaffDetails";
+    import SalesStaffEditDialog from "./SalesStaffEditDialog";
     export default {
         name: "SalesStaffTable",
-        components: {SalesStaffDetails, SearchForm},
+        components: {SalesStaffEditDialog, SalesStaffDetails, SearchForm},
         data(){
             return {
                 loading: false,
+                showEditDialog: false,
                 searchItems: [
                     {text: 'First Name', value: 'first_name'},
                     {text: 'Last Name', value: 'last_name'},
@@ -99,7 +106,8 @@
                 searchOptions: {
                     searchIn: '',
                     searchFor: '',
-                }
+                },
+                selectedItem: null
             }
         },
         computed: {
@@ -113,7 +121,7 @@
                     this.fetchAllSalesStaff({pageOptions, searchOptions}).then(() => {
 
                     }).catch(error => {
-                        console.log(error)
+                        console.log(error.response)
                     }).finally(() => {
                         this.loading = false;
                     })
@@ -128,6 +136,16 @@
                 this.searchOptions.searchIn = '';
                 this.searchOptions.searchFor = '';
                 this.pageOptions = Object.assign({}, this.defaultOptions);
+            },
+            edit(item){
+                this.selectedItem = item;
+                this.showEditDialog = true;
+            },
+            closeEditDialog(){
+                setTimeout(() => {
+                    this.selectedItem = null;
+                }, 100)
+                this.showEditDialog = false;
             }
         },
         watch: {

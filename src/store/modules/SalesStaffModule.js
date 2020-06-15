@@ -15,6 +15,18 @@ export default {
 
         setPagination(state, pagination){
             state.pagination = pagination
+        },
+
+        updateSalesStaffs(state, staff){
+            const updatedStaffs = state.salesStaffs.map(s => {
+                if(s.id === staff.id){
+                    return staff
+                }else {
+                    return s;
+                }
+            })
+
+            state.salesStaffs = updatedStaffs;
         }
     },
     actions: {
@@ -24,6 +36,13 @@ export default {
 
             commit('setSalesStaffs', response.data);
             commit('setPagination', response.pagination)
+        },
+
+        async updateSalesStaff({commit}, formData){
+            const response = await SalesStaffAPI.update(formData);
+
+            commit('updateSalesStaffs', response.data);
+
         }
 
     }
