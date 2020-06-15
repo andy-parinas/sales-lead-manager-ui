@@ -1,6 +1,6 @@
 <template>
-    <v-toolbar color="blue-grey darken-1" dark >
-        <v-toolbar-title><span>{{ title }}</span> </v-toolbar-title>
+    <v-toolbar dense color="blue-grey darken-1" dark flat >
+        <v-toolbar-title><span class="subtitle-1">{{ title }}</span> </v-toolbar-title>
         <v-spacer></v-spacer>
         <slot name="action"></slot>
     </v-toolbar>

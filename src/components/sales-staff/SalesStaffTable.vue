@@ -30,7 +30,7 @@
                             <v-btn x-small fab text dark color="accent" @click="edit(item)" >
                                 <v-icon small > mdi-pencil </v-icon>
                             </v-btn>
-                            <v-btn x-small fab text dark color="error" class="mr-3">
+                            <v-btn x-small fab text dark color="error" class="mr-3" @click="deleteItem(item)">
                                 <v-icon small > mdi-trash-can-outline </v-icon>
                             </v-btn>
                         </v-row>
@@ -49,6 +49,10 @@
                                   ref="editDialog"
                     @close="closeEditDialog" />
         </v-dialog>
+        <v-dialog v-model="showDeleteDialog" persistent width="550" class="px-2">
+            <SalesStaffDeleteDialog :sales-staff="selectedItem"
+                    @close="closeDeleteDialog" />
+        </v-dialog>
     </div>
 </template>
 
@@ -57,13 +61,15 @@
     import {mapActions, mapState} from "vuex";
     import SalesStaffDetails from "./SalesStaffDetails";
     import SalesStaffEditDialog from "./SalesStaffEditDialog";
+    import SalesStaffDeleteDialog from "./SalesStaffDeleteDialog";
     export default {
         name: "SalesStaffTable",
-        components: {SalesStaffEditDialog, SalesStaffDetails, SearchForm},
+        components: {SalesStaffDeleteDialog, SalesStaffEditDialog, SalesStaffDetails, SearchForm},
         data(){
             return {
                 loading: false,
                 showEditDialog: false,
+                showDeleteDialog: false,
                 searchItems: [
                     {text: 'First Name', value: 'first_name'},
                     {text: 'Last Name', value: 'last_name'},
@@ -142,11 +148,21 @@
                 this.selectedItem = item;
                 this.showEditDialog = true;
             },
+            deleteItem(item){
+                this.selectedItem = item;
+                this.showDeleteDialog = true;
+            },
             closeEditDialog(){
                 setTimeout(() => {
                     this.selectedItem = null;
                 }, 100)
                 this.showEditDialog = false;
+            },
+            closeDeleteDialog(){
+                setTimeout(() => {
+                    this.selectedItem = null;
+                }, 100)
+                this.showDeleteDialog = false;
             }
         },
         watch: {

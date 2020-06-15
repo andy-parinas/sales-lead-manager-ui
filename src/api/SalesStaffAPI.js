@@ -58,9 +58,18 @@ const SalesStaffAPI = {
 
         const response = await api().post(uri, data);
 
-        console.log('api', response);
+        return response.data;
+    },
+
+    async deleteStaff(staffId){
+        const uri = `/api/sales-staffs/${staffId}`
+
+        await csrf.getCSRFCookie();
+
+        const response = await api().delete(uri);
 
         return response.data;
+
     }
 
 }

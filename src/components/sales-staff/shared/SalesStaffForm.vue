@@ -21,7 +21,7 @@
                         <v-text-field v-model="form.email"
                                       prepend-icon="mdi-email"
                                       label="E-Mail"
-                                      :rules="rules.emailRules"
+                                      :rules="[rules.requiredField, rules.emailField]"
                         />
                     </v-col>
                     <v-col cols="12" sm="6">
@@ -78,7 +78,8 @@
                 loading: false,
                 edit: null,
                 rules: {
-                    requiredField: v => !!v || 'This field is required'
+                    requiredField: v => !!v || 'This field is required',
+                    emailField: v => /^\w+[+.\w-]*@([\w-]+\.)*\w+[\w-]*\.([a-z]{2,4})$/i.test(v) || 'E-mail must be valid',
                 },
                 form: {
                     firstName: '',

@@ -2,8 +2,8 @@
     <v-card>
         <DialogHeader title="Edit Sales Staff">
             <template v-slot:action>
-                <v-btn icon @click="closeDialog">
-                    <v-icon>mdi-close</v-icon>
+                <v-btn small icon @click="closeDialog">
+                    <v-icon small>mdi-close</v-icon>
                 </v-btn>
             </template>
         </DialogHeader>

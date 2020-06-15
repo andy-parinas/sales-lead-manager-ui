@@ -30,6 +30,12 @@ export default {
         },
         insertSalesStaff(state, staff){
             state.salesStaffs.push(staff);
+        },
+        deleteSalesStaff(state, staff){
+
+            const updatedStaffs = state.salesStaffs.filter(s => s.id !== staff.id);
+
+            state.salesStaffs = updatedStaffs;
         }
     },
     actions: {
@@ -53,6 +59,13 @@ export default {
             const response = await SalesStaffAPI.create(formData);
 
             commit('insertSalesStaff', response.data);
+        },
+
+        async deleteSalesStaff({commit}, salesStaffId){
+
+            const response = await SalesStaffAPI.deleteStaff(salesStaffId);
+
+            commit('deleteSalesStaff', response.data);
         }
 
     }
