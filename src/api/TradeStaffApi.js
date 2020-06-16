@@ -10,10 +10,16 @@ const TradeStaffAPI = {
 
         const response = await api().get(uri);
 
-        console.log('API', response);
-
         return response.data;
 
+    },
+
+    async getTradeTypes(){
+        const uri = '/api/trade-types';
+
+        const response = await api().get(uri);
+
+        return response.data;
     }
 
 }

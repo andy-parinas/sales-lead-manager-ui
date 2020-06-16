@@ -43,6 +43,11 @@
 
             </v-data-table>
         </v-card>
+        <v-dialog v-model="showEditDialog" persistent width="850" class="px-2">
+            <TradeStaffEditDialog :initial-data="selectedItem"
+                                  ref="editDialog"
+                                  @close="closeEditDialog" />
+        </v-dialog>
     </div>
 </template>
 
@@ -51,14 +56,16 @@
     import {mapState, mapActions} from 'vuex';
     import ErrorHandlerMixins from "../../mixins/ErrorHandler";
     import TradeStaffDetails from "./TradeStaffDetails";
+    import TradeStaffEditDialog from "./TradeStaffEditDialog";
 
 
     export default {
         name: "TradeStaffTable",
-        components: {TradeStaffDetails, SearchForm},
+        components: {TradeStaffEditDialog, TradeStaffDetails, SearchForm},
         data(){
             return {
                 loading: false,
+                showEditDialog: false,
                 searchItems: [
                     {text: 'First Name', value: 'first_name'},
                     {text: 'Last Name', value: 'last_name'},
@@ -140,12 +147,22 @@
                 this.searchOptions.searchFor = '';
                 this.pageOptions = Object.assign({}, this.defaultOptions);
             },
-            edit(){
-``
+            edit(item){
+               this.selectedItem = item;
+               this.showEditDialog = true;
             },
             deleteItem(){
 
+            },
+            closeEditDialog(){
+                setTimeout(() => {
+                    this.selectedItem = null;
+                }, 100)
+
+
+                this.showEditDialog = false;
             }
+
         },
         watch: {
             pageOptions: {
