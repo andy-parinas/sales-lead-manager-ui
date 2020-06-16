@@ -67,9 +67,6 @@
                                       @close="closeDeleteDialog"/>
         </v-dialog>
 
-        <v-btn bottom color="pink" dark fab fixed right @click="newContact" >
-            <v-icon  >add</v-icon>
-        </v-btn>
     </div>
 </template>
 
@@ -184,15 +181,6 @@
                 this.editDialog = true;
             },
             editContact(item){
-                // this.editedItemIndex = this.salesContacts.indexOf(item)
-                // this.editedItem = Object.assign({}, item);
-                // this.editDialog = true;
-                //
-                // if(this.$refs.salesContactForm){
-                //     console.log('With SalesContactForm')
-                //     this.$refs.salesContactForm.assignPostcode(this.editedItem.postcode);
-                //     this.$refs.salesContactForm.copyPropsToState(this.editedItem);
-                // }
                 this.selectedItem = Object.assign({}, item);
                 this.editDialog = true;
             },
@@ -203,10 +191,6 @@
             closeDeleteDialog(){
                 this.selectedItem = null;
                 this.deleteDialog = false;
-            },
-            resetSelectedItem(){
-                this.editedItem = Object.assign({}, this.defaultItem)
-                this.editedItemIndex = -1
             },
             closeEditDialog(){
                 setTimeout(() => {
