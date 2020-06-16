@@ -35,7 +35,10 @@
                             </v-btn>
                         </v-row>
                     </v-container>
+                </template>
 
+                <template v-slot:expanded-item="{ headers, item }">
+                    <TradeStaffDetails :length="headers.length" :item="item" />
                 </template>
 
             </v-data-table>
@@ -47,11 +50,12 @@
     import SearchForm from "../shared/SearchForm";
     import {mapState, mapActions} from 'vuex';
     import ErrorHandlerMixins from "../../mixins/ErrorHandler";
+    import TradeStaffDetails from "./TradeStaffDetails";
 
 
     export default {
         name: "TradeStaffTable",
-        components: {SearchForm},
+        components: {TradeStaffDetails, SearchForm},
         data(){
             return {
                 loading: false,
