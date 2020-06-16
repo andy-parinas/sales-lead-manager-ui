@@ -78,6 +78,13 @@ const routes = [
 
             },
             {
+                path: 'trade-staff',
+                name: 'trade-staff',
+                component: () => import(/* webpackChunkName: "trade-staff" */ "@/views/trade-staff/TradeStaffListView.vue"),
+                meta: {requiresAuth: true}
+
+            },
+            {
                 path: 'admin',
                 name: 'AdminPage',
                 component: () => import(/* webpackChunkName: "adminPage" */ "@/views/admin/AdminPage.vue"),

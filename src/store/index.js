@@ -10,6 +10,7 @@ import LeadModule from "./modules/LeadModule";
 import UserModule from "./modules/UserModule";
 import FranchiseModule from "./modules/FranchiseModule";
 import SalesStaffModule from "./modules/SalesStaffModule";
+import TradeStaffModule from "./modules/TradeStaffModule";
 
 export default new Vuex.Store({
     state: {
@@ -83,6 +84,7 @@ export default new Vuex.Store({
         leads: LeadModule,
         users: UserModule,
         franchises: FranchiseModule,
-        salesStaffs: SalesStaffModule
+        salesStaffs: SalesStaffModule,
+        tradeStaffs: TradeStaffModule
     }
 })
