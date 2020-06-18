@@ -177,6 +177,11 @@
                 }
                 console.log('Form', this.form)
             },
+            reset(){
+                this.form = Object.assign({}, this.defaultForm)
+                this.initialFranchise = null
+                this.$refs.form.resetValidation();
+            }
 
         },
         watch: {

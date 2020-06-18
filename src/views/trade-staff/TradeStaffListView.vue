@@ -6,10 +6,10 @@
                 <TradeStaffTable />
             </v-col>
         </v-row>
-<!--        <v-dialog v-model="showCreateDialog" persistent width="850" class="px-2">-->
-<!--            <SalesStaffCreateDialog-->
-<!--                    @close="showCreateDialog = false" />-->
-<!--        </v-dialog>-->
+        <v-dialog v-model="showCreateDialog" persistent width="850" class="px-2">
+            <TradeStaffCreateDialog
+                    @close="showCreateDialog = false" />
+        </v-dialog>
         <v-btn bottom color="pink" dark fab fixed right @click="showCreateDialog = true" >
             <v-icon>add</v-icon>
         </v-btn>
@@ -19,9 +19,15 @@
 <script>
     import PageHeader from "../../components/core/PageHeader";
     import TradeStaffTable from "../../components/trade-staff/TradeStaffTable";
+    import TradeStaffCreateDialog from "../../components/trade-staff/TradeStaffCreateDialog";
     export default {
         name: "TradeStaffListView",
-        components: {TradeStaffTable, PageHeader}
+        components: {TradeStaffCreateDialog, TradeStaffTable, PageHeader},
+        data(){
+            return {
+                showCreateDialog: false
+            }
+        }
     }
 </script>
 

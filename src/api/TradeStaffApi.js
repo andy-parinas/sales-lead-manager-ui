@@ -39,16 +39,39 @@ const TradeStaffAPI = {
             franchise_id: formData.franchiseId
         }
 
-        console.log('api', data);
 
         await csrf.getCSRFCookie();
 
         const response = await api().patch(uri, data);
 
-        console.log('api', response);
 
         return response.data;
 
+    },
+
+    async create(formData){
+
+        const uri = '/api/trade-staffs'
+
+        const data = {
+            first_name: formData.firstName,
+            last_name: formData.lastName,
+            email: formData.email,
+            contact_number: formData.contactNumber,
+            trade_type_id: formData.tradeTypeId,
+            company: formData.company,
+            abn: formData.abn,
+            builders_license: formData.buildersLicense,
+            status: formData.status,
+            franchise_id: formData.franchiseId
+        }
+
+        await csrf.getCSRFCookie();
+
+        const response = await api().post(uri, data);
+
+
+        return response.data;
     }
 
 }

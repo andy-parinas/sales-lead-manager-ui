@@ -26,6 +26,10 @@ export default {
             })
 
             state.tradeStaffs = updatedStaffs;
+        },
+
+        insertTradeStaff(state, staff){
+            state.tradeStaffs.push(staff);
         }
     },
     actions: {
@@ -43,6 +47,13 @@ export default {
             const response = await TradeStaffAPI.update(formData);
 
             commit('updateTradeStaff', response.data);
+        },
+
+        async createTradeStaff({commit}, formData){
+
+            const response = await TradeStaffAPI.create(formData);
+
+            commit('insertTradeStaff', response.data);
         }
 
     }
