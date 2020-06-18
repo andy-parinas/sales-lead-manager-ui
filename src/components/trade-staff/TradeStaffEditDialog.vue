@@ -18,6 +18,9 @@
 <script>
     import DialogHeader from "../core/DialogHeader";
     import TradeStaffForm from "./shared/TradeStaffForm";
+    import {mapActions} from 'vuex';
+    import ErrorHandlerMixins from "../../mixins/ErrorHandler";
+
     export default {
         name: "TradeStaffEditDialog",
         components: {TradeStaffForm, DialogHeader},
@@ -29,12 +32,24 @@
                 saving: false,
             }
         },
+        mixins: [ErrorHandlerMixins],
         methods: {
+            ...mapActions('tradeStaffs', ['updateTradeStaff']),
+            ...mapActions(['setSuccessMessage']),
             closeDialog(){
                 this.$emit('close');
             },
-            onTradeStaffUpdate(){
-
+            onTradeStaffUpdate(form){
+                console.log('Dialog', form)
+                this.saving = true;
+                this.updateTradeStaff(form).then(() => {
+                    this.setSuccessMessage('Trade Staff Successfully Updated');
+                    this.closeDialog();
+                }).catch(error => {
+                    this.handleError(error);
+                }).finally(() => {
+                    this.saving = false;
+                })
             }
         }
     }

@@ -169,11 +169,13 @@
                 })
             },
             franchiseChanged(franchise){
+                console.log('FranchiseChanged', franchise);
                 if(franchise){
                     this.$set(this.form, 'franchiseId', franchise.value)
                 }else {
                     this.$set(this.form, 'franchiseId', '')
                 }
+                console.log('Form', this.form)
             },
 
         },
@@ -194,6 +196,10 @@
         },
         mounted() {
             this.getTradeTypes();
+            if (this.initialData){
+                this.form = Object.assign({}, this.initialData)
+                this.initialFranchise = {value: this.initialData.franchiseId, text: this.initialData.franchise}
+            }
         }
     }
 </script>
