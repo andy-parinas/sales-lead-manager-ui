@@ -30,6 +30,12 @@ export default {
 
         insertTradeStaff(state, staff){
             state.tradeStaffs.push(staff);
+        },
+
+        removeTradeStaff(state, staff){
+            const updatedStaffs = state.tradeStaffs.filter(s => s.id !== staff.id);
+
+            return state.tradeStaffs = updatedStaffs;
         }
     },
     actions: {
@@ -54,6 +60,13 @@ export default {
             const response = await TradeStaffAPI.create(formData);
 
             commit('insertTradeStaff', response.data);
+        },
+
+        async deleteTradeStaff({commit}, tradeStaffId){
+
+            const response = await TradeStaffAPI.delete(tradeStaffId);
+
+            commit('removeTradeStaff', response.data);
         }
 
     }

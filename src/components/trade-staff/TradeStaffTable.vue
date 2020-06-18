@@ -48,6 +48,10 @@
                                   ref="editDialog"
                                   @close="closeEditDialog" />
         </v-dialog>
+        <v-dialog v-model="showDeleteDialog" persistent width="550" class="px-2">
+            <TradeStaffDeleteDialog :trade-staff="selectedItem"
+                                    @close="closeDeleteDialog" />
+        </v-dialog>
     </div>
 </template>
 
@@ -57,15 +61,17 @@
     import ErrorHandlerMixins from "../../mixins/ErrorHandler";
     import TradeStaffDetails from "./TradeStaffDetails";
     import TradeStaffEditDialog from "./TradeStaffEditDialog";
+    import TradeStaffDeleteDialog from "./TradeStaffDeleteDialog";
 
 
     export default {
         name: "TradeStaffTable",
-        components: {TradeStaffEditDialog, TradeStaffDetails, SearchForm},
+        components: {TradeStaffDeleteDialog, TradeStaffEditDialog, TradeStaffDetails, SearchForm},
         data(){
             return {
                 loading: false,
                 showEditDialog: false,
+                showDeleteDialog: false,
                 searchItems: [
                     {text: 'First Name', value: 'first_name'},
                     {text: 'Last Name', value: 'last_name'},
@@ -151,8 +157,9 @@
                this.selectedItem = item;
                this.showEditDialog = true;
             },
-            deleteItem(){
-
+            deleteItem(item){
+                this.selectedItem = item;
+                this.showDeleteDialog = true;
             },
             closeEditDialog(){
                 setTimeout(() => {
@@ -161,6 +168,14 @@
 
 
                 this.showEditDialog = false;
+            },
+            closeDeleteDialog(){
+                setTimeout(() => {
+                    this.selectedItem = null;
+                }, 100)
+
+
+                this.showDeleteDialog = false;
             }
 
         },

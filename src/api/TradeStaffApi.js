@@ -72,6 +72,17 @@ const TradeStaffAPI = {
 
 
         return response.data;
+    },
+
+    async delete(tradeStaffId){
+
+        const uri = `/api/trade-staffs/${tradeStaffId}`
+
+        await csrf.getCSRFCookie();
+
+        const response = await api().delete(uri);
+
+        return response.data;
     }
 
 }
