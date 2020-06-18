@@ -37,13 +37,27 @@
                     </v-list-item-icon>
                     <v-list-item-title>{{link.text}}</v-list-item-title>
                 </v-list-item>
-                <v-subheader v-if="currentUser && currentUser.userType === 'head_office'"
-                        class="mt-4 grey--text text--darken-1">ADMIN AND SETTINGS</v-subheader>
+                <v-divider></v-divider>
+                <v-list-group >
+                    <template v-slot:activator>
+                        <v-list-item-content>
+                            <v-list-item-title>
+                                Staffs
+                            </v-list-item-title>
+                        </v-list-item-content>
+                    </template>
+                    <v-list-item v-for="(staff, i) in staffs" :key="i" link router :to="staff.route" active-class="border">
+                        <v-list-item-icon> <v-icon v-text="staff.icon"></v-icon> </v-list-item-icon>
+                        <v-list-item-title v-text="staff.text"></v-list-item-title>
+                    </v-list-item>
+
+                </v-list-group>
+                <v-divider></v-divider>
+<!--                <v-subheader v-if="currentUser && currentUser.userType === 'head_office'"-->
+<!--                        class="mt-4 grey&#45;&#45;text text&#45;&#45;darken-1">ADMIN AND SETTINGS</v-subheader>-->
                 <v-list-group
                             v-if="currentUser && currentUser.userType === 'head_office'"
-                            v-model="adminMenu"
-                          :prepend-icon="adminMenu? 'mdi-chevron-up' : 'mdi-chevron-down'"
-                          append-icon="">
+                            v-model="adminMenu">
                     <template v-slot:activator>
                         <v-list-item-content>
                             <v-list-item-title>
@@ -77,6 +91,10 @@
                 {icon: 'mdi-cart', text: 'Product Admin', route: '/admin/products'},
                 {icon: 'mdi-hammer-screwdriver', text: 'Trade Type Admin', route: '/admin/trade-types'}
             ],
+            staffs: [
+                {icon: 'mdi-briefcase', text: 'Sales Staff', route: '/sales-staff'},
+                {icon: 'mdi-hammer-screwdriver', text: 'Trade Staff', route: '/trade-staff'}
+            ]
         }),
         methods: {
             ...mapActions('auth', ['logout']),
@@ -101,8 +119,6 @@
                         {icon: 'dashboard', text: 'Dashboard', route: '/'},
                         {icon: 'perm_contact_calendar', text: 'Contacts', route: '/sales-contact'},
                         {icon: 'mdi-account-group', text: 'Leads', route: '/lead'},
-                        {icon: 'mdi-briefcase', text: 'Sales Staff', route: '/sales-staff'},
-                        {icon: 'mdi-hammer-screwdriver', text: 'Trade Staff', route: '/trade-staff'}
                     ]
                 }
 
@@ -112,8 +128,6 @@
                         {icon: 'store', text: 'Franchise', route: '/franchise'},
                         {icon: 'perm_contact_calendar', text: 'Contacts', route: '/sales-contact'},
                         {icon: 'mdi-account-group', text: 'Leads', route: '/lead'},
-                        {icon: 'mdi-briefcase', text: 'Sales Staff', route: '/sales-staff'},
-                        {icon: 'mdi-hammer-screwdriver', text: 'Trade Staff', route: '/trade-staff'}
                     ]
                 }
 
@@ -123,8 +137,6 @@
                         {icon: 'store', text: 'Franchise', route: '/franchise'},
                         {icon: 'perm_contact_calendar', text: 'Contacts', route: '/sales-contact'},
                         {icon: 'mdi-account-group', text: 'Leads', route: '/lead'},
-                        {icon: 'mdi-briefcase', text: 'Sales Staff', route: '/sales-staff'},
-                        {icon: 'mdi-hammer-screwdriver', text: 'Trade Staff', route: '/trade-staff'}
                     ]
                 }
 
