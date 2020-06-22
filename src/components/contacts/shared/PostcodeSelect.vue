@@ -6,10 +6,10 @@
             :loading="loading"
             :rules="required? [v => !!v || 'This field is required'] : []"
             :disabled="edit"
-            cache-items
-            no-filter
             color="black"
             label="Postcode"
+            return-object
+            no-filter
             prepend-icon="mdi-mailbox"
             hint="Enter 3 characters to search"
             persistent-hint
@@ -43,7 +43,12 @@
                 if(!this.loading){
                     this.loading = true;
                     PostcodeAPI.search(this.search).then(response => {
-                        this.postcodes = response.data
+                        //this.postcodes = response.data
+                        const data = response.data.map(postcode => {
+                            return `${postcode.pcode}`
+                        })
+                        this.postcodes = data;
+
                     }).catch(error => {
                         this.handleError(error)
                     }).finally(() => {
@@ -60,7 +65,7 @@
 
                 // Do not listen for the Tab Key
                 if(event && !excludedKeys.includes(event.keyCode)){
-                    if(this.search && this.search >= 3 && this.search.trim() !== '' ){
+                    if(this.search && this.search.length >= 3 && this.search.trim() !== '' ){
                         this.onSearchPostcode()
                     }
                 }
