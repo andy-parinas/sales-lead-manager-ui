@@ -11,6 +11,7 @@
             <v-tab>  Job Type </v-tab>
             <v-tab>  Appointment </v-tab>
             <v-tab> Documents </v-tab>
+            <v-tab> Contract </v-tab>
 
             <v-tab-item>
                 <LeadContactPartial :data="lead.details"  />
@@ -24,6 +25,9 @@
             <v-tab-item>
                 <DocumentPartial :lead-id="lead.details.id" />
             </v-tab-item>
+            <v-tab-item>
+                <ContractPartial :lead-id="lead.details.id" />
+            </v-tab-item>
         </v-tabs>
     </v-card>
 </template>
@@ -33,6 +37,7 @@
     import JobTypePartial from "./JobTypePartial";
     import AppointmentPartial from "./AppointmentPartial";
     import DocumentPartial from "./DocumentPartial";
+    import ContractPartial from "./ContractPartial";
 
 
     export default {
@@ -41,7 +46,7 @@
             lead: {required: true, type: Object},
             title: {required: true, type: String}
         },
-        components: {DocumentPartial, LeadContactPartial, JobTypePartial, AppointmentPartial},
+        components: {ContractPartial, DocumentPartial, LeadContactPartial, JobTypePartial, AppointmentPartial},
         data(){
             return {
                 showSnackbar: false
