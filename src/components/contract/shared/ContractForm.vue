@@ -65,7 +65,7 @@
                                 <v-text-field
                                         prepend-icon="event"
                                         :value="computedDepositDateFormattedDatefns"
-                                        :rules="[rules.requiredField]"
+                                        :rules="form.depositAmount !== ''? [rules.requiredField] : []"
                                         label="Date Deposit Received"
                                         readonly
                                         :disabled="form.depositAmount === '' || form.depositAmount.trim() === ''"
@@ -101,14 +101,13 @@
                                 <v-text-field
                                         prepend-icon="event"
                                         :value="computedWarrantyDateFormattedDatefns"
-                                        :rules="[rules.requiredField]"
                                         label="Date Warranty Sent"
                                         readonly
                                         v-on="on"
                                 ></v-text-field>
                             </template>
                             <v-date-picker
-                                    v-model="form.dateWarrantyReceived"
+                                    v-model="form.dateWarrantySent"
                                     @input="warrantyDateMenu = false"
                             ></v-date-picker>
                         </v-menu>
@@ -120,7 +119,8 @@
             <v-spacer></v-spacer>
             <v-btn color="blue darken-1" class="mr-5 mb-5 white--text"
                    @click="$emit('onSave', form)"
-                   :loading="saving">
+                   :loading="saving"
+                    :disabled="!isFormValid">
                 Save
             </v-btn>
         </v-card-actions>
@@ -174,7 +174,7 @@
                     contractPrice: '',
                     dateDepositReceived: '',
                     warrantyRequired: '',
-                    dateWarrantyReceived: ''
+                    dateWarrantySent: ''
                 },
                 defaultForm: {
                     contractDate: '',
@@ -183,7 +183,7 @@
                     contractPrice: '',
                     dateDepositReceived: '',
                     warrantyRequired: '',
-                    dateWarrantyReceived: ''
+                    dateWarrantySent: ''
                 },
                 warrantyRequirements: [
                     { value: 'yes', text: 'Yes'},
@@ -199,11 +199,14 @@
                 return this.form.dateDepositReceived ? format(parseISO(this.form.dateDepositReceived), 'dd/MM/yyyy') : ''
             },
             computedWarrantyDateFormattedDatefns () {
-                return this.form.dateWarrantyReceived ? format(parseISO(this.form.dateWarrantyReceived), 'dd/MM/yyyy') : ''
+                return this.form.dateWarrantySent ? format(parseISO(this.form.dateWarrantySent), 'dd/MM/yyyy') : ''
             },
         },
         methods: {
-
+            reset(){
+                this.$refs.form.resetValidation();
+                this.form = Object.assign({}, this.defaultForm);
+            }
         }
     }
 </script>
