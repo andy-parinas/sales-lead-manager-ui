@@ -36,6 +36,29 @@ const ContractAPI = {
 
     },
 
+    async updateLeadContract(leadId, formData){
+
+        const uri =   `/api/leads/${leadId}/contracts/${formData.id}`;
+
+        const data = {
+
+            contract_date: formData.contractDate,
+            contract_number: formData.contractNumber,
+            contract_price: formData.contractPrice,
+            deposit_amount: formData.depositAmount,
+            date_deposit_received: formData.dateDepositReceived,
+            warranty_required: formData.warrantyRequired,
+            date_warranty_sent: formData.dateWarrantySent,
+        }
+
+        await csrf.getCSRFCookie();
+
+        const response = await api().patch(uri, data);
+
+        return response.data;
+
+    },
+
     async getContractVariations(contractId){
 
         const uri = `/api/contracts/${contractId}/contract-variations`;

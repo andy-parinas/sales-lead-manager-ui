@@ -71,7 +71,7 @@
                 isFormValid: false,
                 rules: {
                     requiredField: v => !!v || 'This field is required',
-                    numberField: v => /^(\d*\.)?\d+$/.test(v) || 'Field should only be numbers',
+                    numberField: v => /^-?(\d*\.)?\d+$/.test(v) || 'Field should only be numbers',
                 },
                 form: {
                     variationDate: '',

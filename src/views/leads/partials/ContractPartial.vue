@@ -74,6 +74,10 @@
                         <span class="ml-2 caption font-weight-bold"> Date Warranty Sent: </span> <span> {{ contract.dateWarrantySent }} </span>
                     </v-col>
                 </v-row>
+                <v-row>
+                    <v-spacer></v-spacer>
+                    <v-btn text small fab @click="showEditDialog = true"><v-icon>mdi-pencil</v-icon></v-btn>
+                </v-row>
                 <v-divider class="my-3"></v-divider>
                 <v-btn text small @click="showVariations = !showVariations">
                     {{ showVariations? 'Hide Variations' : 'Show Variations'}}
@@ -95,6 +99,14 @@
                             @close="showCreateDialog = false"
                             @success="$emit('success')"/>
                 </v-dialog>
+                <v-dialog v-model="showEditDialog" persistent max-width="800px">
+                    <ContractEditDialog
+                            :lead-id="leadId"
+                            :edited-item="contract"
+                            @onContractUpdated="updateContractObject"
+                            @close="showEditDialog = false"
+                            @success="$emit('success')"/>
+                </v-dialog>
             </v-row>
         </v-container>
     </div>
@@ -104,10 +116,11 @@
     import ContractAPI from "../../../api/ContractAPI";
     import ContractCreateDialog from "../../../components/contract/ContractCreateDialog";
     import VariationTable from "../../../components/contract/variations/VariationTable";
+    import ContractEditDialog from "../../../components/contract/ContractEditDialog";
 
     export default {
         name: "ContractPartial",
-        components: {VariationTable, ContractCreateDialog},
+        components: {ContractEditDialog, VariationTable, ContractCreateDialog},
         props: {
             leadId: {required: true}
         },
@@ -115,7 +128,9 @@
             return {
                 updatingValues: false,
                 loading: false,
+                editDialog: false,
                 showCreateDialog: false,
+                showEditDialog: false,
                 showVariations: false,
                 contract: null,
             }

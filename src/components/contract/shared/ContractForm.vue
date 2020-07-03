@@ -68,7 +68,7 @@
                                         :rules="form.depositAmount !== ''? [rules.requiredField] : []"
                                         label="Date Deposit Received"
                                         readonly
-                                        :disabled="form.depositAmount === '' || form.depositAmount.trim() === ''"
+                                        :disabled="form.depositAmount === '' "
                                         v-on="on"
                                 ></v-text-field>
                             </template>
@@ -206,6 +206,11 @@
             reset(){
                 this.$refs.form.resetValidation();
                 this.form = Object.assign({}, this.defaultForm);
+            }
+        },
+        mounted() {
+            if(this.initialData){
+                this.form = Object.assign({}, this.initialData)
             }
         }
     }
