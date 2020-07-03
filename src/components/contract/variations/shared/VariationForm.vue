@@ -64,7 +64,8 @@
     export default {
         name: "VariationForm",
         props: {
-            saving: {type: Boolean}
+            saving: {type: Boolean},
+            initialData: {type: [Object,null]}
         },
         data(){
             return {
@@ -95,6 +96,22 @@
             reset(){
                 this.form = Object.assign({}, this.defaultForm)
                 this.$refs.form.resetValidation();
+            }
+        },
+        watch: {
+            initialData: {
+                handler(){
+                    if(this.initialData){
+                        this.form = Object.assign({}, this.initialData)
+                    }
+                },
+                deep: true
+            }
+        },
+        mounted() {
+            console.log(this.initialData)
+            if(this.initialData){
+                this.form = Object.assign({}, this.initialData)
             }
         }
     }

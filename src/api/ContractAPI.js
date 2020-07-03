@@ -85,6 +85,24 @@ const ContractAPI = {
 
         return response.data;
 
+    },
+
+    async updateContractVariation(contractId, formData){
+
+        const uri = `/api/contracts/${contractId}/contract-variations/${formData.id}`;
+
+        const data = {
+            variation_date: formData.variationDate,
+            description: formData.description,
+            amount: formData.amount,
+        }
+
+        await csrf.getCSRFCookie();
+
+        const response = await api().patch(uri, data);
+
+        return response.data;
+
     }
 
 }

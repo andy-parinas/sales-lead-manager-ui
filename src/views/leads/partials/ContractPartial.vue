@@ -85,7 +85,9 @@
                 </v-btn>
                 <v-row v-if="showVariations" class="mt-1">
                     <v-col cols="12" sm="12">
-                       <VariationTable :contract-id="contract.id" @onVariationCreated="updateContractValues" />
+                       <VariationTable :contract-id="contract.id"
+                                       @onVariationCreated="updateContractValues"
+                                       @onVariationUpdated="updateContractValues" />
                     </v-col>
                 </v-row>
             </v-card-text>

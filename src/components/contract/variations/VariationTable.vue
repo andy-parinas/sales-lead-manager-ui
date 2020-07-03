@@ -8,6 +8,19 @@
                     hide-default-footer
             >
 
+                <template v-slot:item.actions="{ item }">
+                    <v-container>
+                        <v-row class="justify-sm-start">
+                            <v-btn x-small fab text dark color="error" class="mr-3"  v-if="isHeadOffice"  @click="deleteVariation(item)">
+                                <v-icon small >mdi-trash-can-outline </v-icon>
+                            </v-btn>
+                            <v-btn x-small fab text dark color="accent" @click="editVariation(item)" >
+                                <v-icon small> mdi-pencil</v-icon>
+                            </v-btn>
+                        </v-row>
+                    </v-container>
+                </template>
+
             </v-data-table>
             <v-divider></v-divider>
         </v-card>
@@ -21,6 +34,13 @@
                         @close="showCreateDialog = false"
                         @success="onVariationCreated"/>
             </v-dialog>
+            <v-dialog v-model="showEditDialog" persistent max-width="500px">
+                <VariationEditDialog
+                        :edited-item="selectedItem"
+                        :contract-id="contractId"
+                        @close="showEditDialog = false"
+                        @success="onVariationUpdated"/>
+            </v-dialog>
         </div>
     </div>
 </template>
@@ -28,10 +48,14 @@
 <script>
     import ContractAPI from "../../../api/ContractAPI";
     import VariationCreateDialog from "./VariationCreateDialog";
+    import VariationEditDialog from "./VariationEditDialog";
 
     export default {
         name: "VariationTable",
-        components: {VariationCreateDialog},
+        components: {
+            VariationCreateDialog,
+            VariationEditDialog
+        },
         props: {
             contractId: {required: true}
         },
@@ -39,13 +63,16 @@
             return {
                 loading: false,
                 showCreateDialog: false,
+                showEditDialog: false,
                 variations: [],
+                isHeadOffice: true,
                 headers: [
                     { text: 'Variation Date',value: 'variationDate'},
                     { text: 'Description', value: 'description' },
                     { text: 'Amount', value: 'amount' },
                     { text: 'Actions', value: 'actions', sortable: false },
                 ],
+                selectedItem: null
             }
         },
         methods: {
@@ -69,6 +96,18 @@
             onVariationCreated(){
                 this.getVariations();
                 this.$emit('onVariationCreated');
+            },
+            onVariationUpdated(){
+                this.getVariations();
+                this.$emit('onVariationUpdated');
+            },
+            editVariation(item){
+                console.log('item', item)
+                this.selectedItem = Object.assign({}, item)
+                this.showEditDialog = true
+            },
+            deleteVariation(){
+
             }
         },
         mounted() {
