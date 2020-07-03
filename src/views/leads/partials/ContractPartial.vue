@@ -31,7 +31,10 @@
                 </v-row>
                 <v-row>
                     <v-col cols="12" sm="6" md="4">
-                        <v-simple-table>
+                        <v-skeleton-loader v-if="updatingValues"
+                                type="list-item-three-line"
+                        ></v-skeleton-loader>
+                        <v-simple-table v-else>
                             <template v-slot:default>
                                 <tbody>
                                 <tr>
@@ -44,7 +47,7 @@
                                 </tr>
                                 <tr>
                                     <th> Total Variation</th>
-                                    <td class="text-right"> 0 </td>
+                                    <td class="text-right"> {{ contract.totalVariation }} </td>
                                 </tr>
                                 <tr>
                                     <th> Total Contract</th>
@@ -71,7 +74,16 @@
                         <span class="ml-2 caption font-weight-bold"> Date Warranty Sent: </span> <span> {{ contract.dateWarrantySent }} </span>
                     </v-col>
                 </v-row>
-                <v-divider></v-divider>
+                <v-divider class="my-3"></v-divider>
+                <v-btn text small @click="showVariations = !showVariations">
+                    {{ showVariations? 'Hide Variations' : 'Show Variations'}}
+                    <v-icon> {{ showVariations? 'mdi-chevron-down' : 'mdi-chevron-right'}}</v-icon>
+                </v-btn>
+                <v-row v-if="showVariations" class="mt-1">
+                    <v-col cols="12" sm="12">
+                       <VariationTable :contract-id="contract.id" @onVariationCreated="updateContractValues" />
+                    </v-col>
+                </v-row>
             </v-card-text>
         </v-card>
         <v-container>
@@ -91,18 +103,26 @@
 <script>
     import ContractAPI from "../../../api/ContractAPI";
     import ContractCreateDialog from "../../../components/contract/ContractCreateDialog";
+    import VariationTable from "../../../components/contract/variations/VariationTable";
 
     export default {
         name: "ContractPartial",
-        components: {ContractCreateDialog},
+        components: {VariationTable, ContractCreateDialog},
         props: {
             leadId: {required: true}
         },
         data(){
             return {
+                updatingValues: false,
                 loading: false,
                 showCreateDialog: false,
+                showVariations: false,
                 contract: null,
+            }
+        },
+        computed: {
+            variationButton(){
+                return this.showVariations? 'Hide Variation' : 'Show Variations'
             }
         },
         methods: {
@@ -119,15 +139,26 @@
                 })
             },
             updateContractObject(contract){
-                console.log('Contract', contract)
                 if(contract !== null){
                     this.contract = Object.assign({}, contract)
                 }
+            },
+            updateContractValues(){
+                this.updatingValues = true;
+                ContractAPI.getLeadContract(this.leadId).then(response => {
+                    if(response.status === 200){
+                        this.contract = Object.assign({}, response.data.data);
+                    }
+                }).catch(error => {
+                    console.log(error.response)
+                }).finally(() => {
+                    this.updatingValues  = false
+                })
             }
         },
         mounted() {
             console.log('LeadId', this.leadId)
-            this.getContract();
+            this.getContract(this.loading);
         }
     }
 </script>

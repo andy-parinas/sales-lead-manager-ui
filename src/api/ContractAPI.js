@@ -34,6 +34,34 @@ const ContractAPI = {
 
         return response.data;
 
+    },
+
+    async getContractVariations(contractId){
+
+        const uri = `/api/contracts/${contractId}/contract-variations`;
+
+        const response = await api().get(uri);
+
+        return response.data;
+
+    },
+
+    async createContractVariations(contractId, formData){
+
+        const uri = `/api/contracts/${contractId}/contract-variations`;
+
+        const data = {
+            variation_date: formData.variationDate,
+            description: formData.description,
+            amount: formData.amount,
+        }
+
+        await csrf.getCSRFCookie();
+
+        const response = await api().post(uri, data);
+
+        return response.data;
+
     }
 
 }
