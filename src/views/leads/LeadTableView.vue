@@ -23,6 +23,7 @@
     import LeadDetailView from "./LeadDetailView";
 
     import {mapActions, mapState} from 'vuex'
+    import ErrorHandlerMixins from "../../mixins/ErrorHandler";
 
     export default {
         name: 'LeadTableView',
@@ -33,6 +34,7 @@
                 isFormShown: false
             }
         },
+        mixins: [ErrorHandlerMixins],
         computed: {
              ...mapState('leads', ['lead'])
         },
@@ -47,8 +49,7 @@
                     this.isDetailShown = true;
                     //this.$store.dispatch('setAppLoadingState', false)
                 }).catch(error => {
-                    console.log(error)
-                    //this.$store.dispatch('setAppLoadingState', false)
+                    this.handleError(error)
                 }).finally(() => {
                     this.$refs.leadTable.stopLoading();
                 })

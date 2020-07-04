@@ -41,6 +41,13 @@
                         @close="showEditDialog = false"
                         @success="onVariationUpdated"/>
             </v-dialog>
+            <v-dialog v-model="showDeleteDialog" persistent max-width="500px">
+                <VariationDeleteDialog
+                        :variation="selectedItem"
+                        :contract-id="contractId"
+                        @close="showDeleteDialog = false"
+                        @success="onVariationUpdated"/>
+            </v-dialog>
         </div>
     </div>
 </template>
@@ -49,10 +56,12 @@
     import ContractAPI from "../../../api/ContractAPI";
     import VariationCreateDialog from "./VariationCreateDialog";
     import VariationEditDialog from "./VariationEditDialog";
+    import VariationDeleteDialog from "./VariationDeleteDialog";
 
     export default {
         name: "VariationTable",
         components: {
+            VariationDeleteDialog,
             VariationCreateDialog,
             VariationEditDialog
         },
@@ -64,6 +73,7 @@
                 loading: false,
                 showCreateDialog: false,
                 showEditDialog: false,
+                showDeleteDialog: false,
                 variations: [],
                 isHeadOffice: true,
                 headers: [
@@ -102,12 +112,12 @@
                 this.$emit('onVariationUpdated');
             },
             editVariation(item){
-                console.log('item', item)
                 this.selectedItem = Object.assign({}, item)
                 this.showEditDialog = true
             },
-            deleteVariation(){
-
+            deleteVariation(item){
+                this.selectedItem = Object.assign({}, item)
+                this.showDeleteDialog = true
             }
         },
         mounted() {

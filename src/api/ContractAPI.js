@@ -103,6 +103,20 @@ const ContractAPI = {
 
         return response.data;
 
+    },
+
+    async deleteContractVariation(contractId, variationId){
+
+        const uri = `/api/contracts/${contractId}/contract-variations/${variationId}`;
+
+
+        await csrf.getCSRFCookie();
+
+        const response = await api().delete(uri);
+
+
+        return response.data;
+
     }
 
 }
