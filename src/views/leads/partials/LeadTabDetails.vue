@@ -12,6 +12,7 @@
             <v-tab>  Appointment </v-tab>
             <v-tab> Documents </v-tab>
             <v-tab> Contract </v-tab>
+            <v-tab> Finance </v-tab>
 
             <v-tab-item>
                 <LeadContactPartial :data="lead.details"  />
@@ -28,6 +29,9 @@
             <v-tab-item>
                 <ContractPartial :lead-id="lead.details.id" />
             </v-tab-item>
+            <v-tab-item>
+                <FinancePartial :lead-id="lead.details.id" />
+            </v-tab-item>
         </v-tabs>
     </v-card>
 </template>
@@ -38,6 +42,7 @@
     import AppointmentPartial from "./AppointmentPartial";
     import DocumentPartial from "./DocumentPartial";
     import ContractPartial from "./ContractPartial";
+    import FinancePartial from "./FinancePartial";
 
 
     export default {
@@ -46,7 +51,9 @@
             lead: {required: true, type: Object},
             title: {required: true, type: String}
         },
-        components: {ContractPartial, DocumentPartial, LeadContactPartial, JobTypePartial, AppointmentPartial},
+        components: {
+            FinancePartial,
+            ContractPartial, DocumentPartial, LeadContactPartial, JobTypePartial, AppointmentPartial},
         data(){
             return {
                 showSnackbar: false
