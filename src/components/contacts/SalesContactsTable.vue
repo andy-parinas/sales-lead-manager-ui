@@ -41,18 +41,7 @@
                 </template>
                 <template v-slot:expanded-item="{ headers, item }">
                     <SalesContactDetails :length="headers.length" :item="item" />
-                </template>]
-<!--                <template v-slot:top>-->
-<!--                    <v-dialog v-model="editDialog"  persistent width="800px">-->
-<!--                        <SalesContactForm-->
-<!--                                @closeForm="closeEditDialog"-->
-<!--                                :item="editedItem"-->
-<!--                                :formTitle="formTitle"-->
-<!--                                :loading="formLoading"-->
-<!--                                ref="salesContactForm"-->
-<!--                        />-->
-<!--                    </v-dialog>-->
-<!--                </template>-->
+                </template>
             </v-data-table>
 
         </v-card>
