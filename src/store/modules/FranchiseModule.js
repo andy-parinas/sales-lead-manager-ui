@@ -6,7 +6,7 @@ export default {
 
     state: {
         franchises: [],
-        pagination: null,
+        pagination: {},
         selectedFranchise: null,
         relatedFranchises: [],
         relatedPagination: null

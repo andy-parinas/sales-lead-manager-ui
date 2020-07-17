@@ -36,9 +36,8 @@
                             </v-btn>
                         </v-row>
                     </v-container>
-
-
                 </template>
+
                 <template v-slot:expanded-item="{ headers, item }">
                     <SalesContactDetails :length="headers.length" :item="item" />
                 </template>

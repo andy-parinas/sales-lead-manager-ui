@@ -21,7 +21,7 @@
     import FranchiseListItem from "./FranchiseListItem";
 
     export default {
-        name: "FranchiseTable",
+        name: "FranchiseList",
         props: {
             franchises: {required: true, type: Array},
             withSelect: {type: Boolean},
