@@ -65,10 +65,11 @@
                             </v-list-item-title>
                         </v-list-item-content>
                     </template>
-                <v-list-item v-for="(admin, i) in admins" :key="i" link router :to="admin.route" active-class="border">
-                    <v-list-item-icon> <v-icon v-text="admin.icon"></v-icon> </v-list-item-icon>
-                    <v-list-item-title v-text="admin.text"></v-list-item-title>
-                </v-list-item>
+
+                    <v-list-item v-for="(admin, i) in admins" :key="i" link router :to="admin.route" active-class="border">
+                        <v-list-item-icon> <v-icon v-text="admin.icon"></v-icon> </v-list-item-icon>
+                        <v-list-item-title v-text="admin.text"></v-list-item-title>
+                    </v-list-item>
                 </v-list-group>
             </v-list>
         </v-navigation-drawer>

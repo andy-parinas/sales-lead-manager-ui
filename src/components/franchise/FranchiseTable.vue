@@ -9,6 +9,7 @@
             <v-data-table
                     :headers="headers"
                     :items="franchises"
+                    :options.sync="pageOptions"
                     :footer-props="footerProps"
                     :server-items-length="pagination.total"
                     :loading="loading"
@@ -37,8 +38,6 @@
                         </v-row>
                     </v-container>
                 </template>
-
-
             </v-data-table>
         </v-card>
     </div>
@@ -76,8 +75,7 @@
                 headers: [
                     { text: 'Franchise Number',value: 'franchiseNumber'},
                     { text: 'Franchise Name', value: 'name' },
-                    { text: 'Franchise Type', value: 'type' },
-                    { text: 'Parent Franchise', value: 'parent' },
+                    { text: 'Main Franchise', value: 'parent' },
                     { text: 'Actions', value: 'actions', sortable: false },
                 ],
                 footerProps: {
@@ -91,10 +89,10 @@
             ...mapState('franchises', ['franchises', 'pagination'])
         },
         methods: {
-            ...mapActions('franchises', ['getFranchises', 'setSelectedFranchise']),
+            ...mapActions('franchises', ['getFranchises', 'getSubFranchises','setSelectedFranchise']),
             getAllFranchises(pageOptions, searchOptions){
                 this.loading = true;
-                this.getFranchises({pageOptions,searchOptions}).then(() => {
+                this.getSubFranchises({pageOptions,searchOptions}).then(() => {
 
                 }).catch(error => {
                     this.handleError(error)
@@ -102,11 +100,21 @@
                     this.loading = false;
                 })
             },
-            searchFranchise(){
+            searchFranchise(searchOptions){
+                this.pageOptions = Object.assign({}, this.defaultOptions)
+                this.searchOptions = Object.assign({}, searchOptions);
+                this.getAllFranchises(this.pageOptions, this.searchOptions);
 
             },
             resetSearch(){
+                const resetOptions = {
+                    searchFor: '',
+                    searchIn: ''
+                }
 
+                this.searchOptions = Object.assign({}, resetOptions);
+                this.pageOptions = Object.assign({}, this.defaultOptions)
+                this.getAllFranchises(this.pageOptions, this.searchOptions);
             },
             deleteItem(){
 
@@ -118,14 +126,11 @@
 
             },
             onPageOptionChanged(){
-                if(this.searchIn.trim() !== '' && this.searchFor.trim() !== '')
+                if(this.searchOptions.searchIn.trim() !== '' && this.searchOptions.searchFor.trim() !== '')
                 {
-                    this.getAllFranchises(this.pageOptions, {
-                        searchFor: this.searchFor,
-                        searchIn: this.searchIn
-                    });
+                    this.getAllFranchises(this.pageOptions, this.searchOptions);
                 }else {
-                    this.getAllUsers(this.pageOptions);
+                    this.getAllFranchises(this.pageOptions);
                 }
             }
         },

@@ -64,6 +64,15 @@ export default {
 
         },
 
+        async getSubFranchises({commit}, {pageOptions, searchOptions}){
+
+            const response = await FranchiseAPI.getAllSubFranchises(pageOptions, searchOptions);
+
+            commit('setFranchises', response.data);
+            commit('setPagination', response.pagination);
+
+        },
+
         setSelectedFranchise({commit}, franchise){
 
             commit('setSelectedFranchise', franchise);

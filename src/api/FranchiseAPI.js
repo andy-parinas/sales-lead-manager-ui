@@ -17,6 +17,18 @@ const FranchiseAPI = {
 
     },
 
+    async getAllSubFranchises(pageOptions, searchOptions){
+
+        const requestUri = '/api/franchises/sub-franchises';
+
+        const uri = URIBuilder.build(requestUri, pageOptions, searchOptions);
+
+        const response = await api().get(uri)
+
+        return response.data;
+
+    },
+
     async attachUsersFranchise(userId, franchiseId){
 
         const uri = `/api/users/${userId}/franchises/${franchiseId}`;

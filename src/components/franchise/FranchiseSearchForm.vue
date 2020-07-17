@@ -33,6 +33,7 @@
                 searchItems: [
                     {text: 'Franchise Number', value: 'franchise_number'},
                     {text: 'Franchise Name', value: 'name'},
+                    {text: 'Main Franchise', value: 'parent'},
                 ]
             }
         },
