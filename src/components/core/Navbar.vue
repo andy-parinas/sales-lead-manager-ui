@@ -38,6 +38,24 @@
                     <v-list-item-title>{{link.text}}</v-list-item-title>
                 </v-list-item>
                 <v-divider></v-divider>
+
+                <v-list-group >
+                    <template v-slot:activator>
+                        <v-list-item-content>
+                            <v-list-item-title>
+                                Reports
+                            </v-list-item-title>
+                        </v-list-item-content>
+                    </template>
+                    <v-list-item v-for="(report, i) in reports" :key="i" link router :to="report.route" active-class="border">
+                        <v-list-item-icon> <v-icon v-text="report.icon"></v-icon> </v-list-item-icon>
+                        <v-list-item-title v-text="report.text"></v-list-item-title>
+                    </v-list-item>
+
+                </v-list-group>
+                
+                <v-divider></v-divider>
+
                 <v-list-group >
                     <template v-slot:activator>
                         <v-list-item-content>
@@ -95,6 +113,9 @@
             staffs: [
                 {icon: 'mdi-briefcase', text: 'Sales Staff', route: '/sales-staff'},
                 {icon: 'mdi-hammer-screwdriver', text: 'Trade Staff', route: '/trade-staff'}
+            ],
+            reports: [
+                {icon: 'mdi-chart-areaspline', text: 'Sales Summary', route: '/reports/sales-summary'},
             ]
         }),
         methods: {

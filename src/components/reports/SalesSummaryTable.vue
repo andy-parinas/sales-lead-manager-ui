@@ -1,73 +1,81 @@
 <template>
-    <v-card outlined>
-        <v-simple-table>
-            <template v-slot:default>
-                <thead>
-                <tr>
-                    <th class="text-left">Design Adivisor</th>
-                    <th class="text-left">Franchise</th>
-                    <th class="text-left"># Leads</th>
-                    <th class="text-left"># Sales</th>
-                    <th class="text-left">Total Contracts</th>
-                    <th class="text-left">Conversion Rate </th>
-                    <th class="text-left">Average Sales Price</th>
-                </tr>
-                </thead>
-                <tbody>
-                <tr v-for="item in desserts" :key="item.name">
-                    <td>{{ item.name }}</td>
-                    <td>{{ item.franchise }}</td>
-                    <td>{{ item.numberOfLeads }}</td>
-                    <td>{{ item.numberOfSales }}</td>
-                    <td>{{ item.totalContracts }}</td>
-                    <td>{{ item.conversionRate }}</td>
-                    <td>{{ item.averageSalesPrice }}</td>
-                </tr>
-                </tbody>
-            </template>
-        </v-simple-table>
-    </v-card>
+   <div>
+
+       <v-card outlined >
+
+           <div class="d-flex flex-column justify-center align-center my-12" v-if="loading">
+               <v-progress-circular class="mt-12"
+                                    :size="70"
+                                    :width="7"
+                                    color="primary"
+                                    indeterminate
+               ></v-progress-circular>
+               <span class="mt-5 subtitle-1">Loading reports </span>
+           </div>
+
+           <div class="d-flex flex-column justify-center align-center my-12" v-if="!loading && reports.length === 0">
+               <span class="mt-5 subtitle-1"> Please Generate The Report </span>
+           </div>
+
+           <v-simple-table v-if="!loading && reports.length > 0">
+               <template v-slot:default>
+                   <thead>
+                   <tr>
+                       <th class="text-left">Design Adivisor</th>
+                       <th class="text-left">Franchise</th>
+                       <th class="text-right"># Sales</th>
+                       <th class="text-right"># Leads</th>
+                       <th class="text-right">Total Contracts</th>
+                       <th class="text-right">Conversion Rate </th>
+                       <th class="text-right">Average Sales Price</th>
+                   </tr>
+                   </thead>
+                   <tbody>
+                   <tr v-for="(report, index) in reports" :key="index">
+                       <td>{{ report.salesStaff }}</td>
+                       <td>{{ report.franchiseNumber }}</td>
+                       <td class="text-right">{{ report.numberOfSales }}</td>
+                       <td class="text-right">{{ report.numberOfLeads }}</td>
+                       <td class="text-right">{{ report.totalContracts ? report.totalContracts : 0  }}</td>
+                       <td class="text-right">{{ `${ Math.round(report.conversionRate)} %` }}</td>
+                       <td class="text-right">{{ report.averageSalesPrice ? report.averageSalesPrice : 0 }}</td>
+                   </tr>
+                   </tbody>
+               </template>
+           </v-simple-table>
+       </v-card>
+   </div>
 </template>
 
 <script>
+    import EventBus from "../../helpers/EventBus";
+    import ReportAPI from "../../api/ReportAPI";
+
     export default {
         name: "SalesSummaryTable",
         data () {
             return {
-                desserts: [
-                    {
-                        name: 'Joe Blogs',
-                        franchise: 1234,
-                        numberOfLeads: 10,
-                        numberOfSales: 2,
-                        totalContracts: 50000,
-                        conversionRate: '20%',
-                        averageSalesPrice: 25000,
-                        calories: 159,
-                    },
-                    {
-                        name: 'Sam Smith',
-                        franchise: 4567,
-                        numberOfLeads: 20,
-                        numberOfSales: 5,
-                        totalContracts: 100000,
-                        conversionRate: '20%',
-                        averageSalesPrice: 20000,
-                        calories: 237,
-                    },
-                    {
-                        name: 'Graham Jones',
-                        franchise: 8965,
-                        numberOfLeads: 30,
-                        numberOfSales: 9,
-                        totalContracts: 200000,
-                        conversionRate: '20%',
-                        averageSalesPrice: 22000,
-                        calories: 262,
-                    },
-                ],
+                loading: false,
+                reports: [],
             }
         },
+        methods: {
+            generateReport({startDate, endDate}){
+                this.loading = true;
+                ReportAPI.getSalesSummary(startDate, endDate).then(response => {
+                    this.reports = response.data
+                }).catch(error => {
+                    console.log(error)
+                }).finally(() => {
+                    this.loading = false;
+                })
+                console.log(startDate, endDate)
+            },
+
+        },
+        mounted() {
+            EventBus.$on('GENERATE_REPORT', payload => this.generateReport(payload))
+        }
     }
 </script>
 

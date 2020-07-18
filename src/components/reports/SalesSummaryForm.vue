@@ -59,7 +59,7 @@
             </v-card-text>
             <v-card-actions class="px-5">
                 <v-btn small width="100%" color="blue darken-1" class="mb-5 white--text"
-                       @click="$emit('onSave', form)"
+                       @click="generateReport"
                        :disabled="!valid">
                     Generate Report
                 </v-btn>
@@ -70,6 +70,7 @@
 
 <script>
     import {format, parseISO} from "date-fns";
+    import EventBus from "../../helpers/EventBus";
 
     export default {
         name: "SalesSummaryForm",
@@ -98,6 +99,11 @@
                 return this.form.dateWarrantySent ? format(parseISO(this.form.dateWarrantySent), 'dd/MM/yyyy') : ''
             },
         },
+        methods: {
+            generateReport(){
+                EventBus.$emit('GENERATE_REPORT', {startDate: this.form.startDate, endDate: this.form.endDate})
+            }
+        }
     }
 </script>
 

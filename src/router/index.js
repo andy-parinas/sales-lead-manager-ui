@@ -64,6 +64,20 @@ const routes = [
                 ]
             },
             {
+                path: 'reports',
+                name: 'reports',
+                component: () => import(/* webpackChunkName: "leadMain" */ "@/views/reports/ReportMainPage.vue"),
+                meta: {requiresAuth: true},
+                children: [
+                    {
+                        path: 'sales-summary',
+                        name: 'SalesSummary',
+                        component: () => import(/* webpackChunkName: "sales-summary" */ "@/views/reports/SalesSummaryReport.vue"),
+                        meta: {requiresAuth: true},
+                    },
+                ]
+            },
+            {
                 path: 'sales-contact',
                 name: 'sales-contact',
                 component: () => import(/* webpackChunkName: "ales-contact" */ "@/views/sales-contact/SalesContactListView.vue"),

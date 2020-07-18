@@ -2,10 +2,10 @@
    <div>
        <PageHeader title="Sales Summary Report" />
        <v-row>
-           <v-col cols="12" sm="2">
+           <v-col cols="12" sm="3">
                <SalesSummaryForm />
            </v-col>
-           <v-col cols="12" sm="10">
+           <v-col cols="12" sm="9">
                <SalesSummaryTable />
            </v-col>
        </v-row>
