@@ -42,9 +42,27 @@
                            <td>{{ report.franchiseNumber }}</td>
                            <td class="text-right">{{ report.numberOfSales }}</td>
                            <td class="text-right">{{ report.numberOfLeads }}</td>
-                           <td class="text-right">{{ report.totalContracts ? report.totalContracts : 0  }}</td>
+                           <td class="text-right">{{ report.totalContracts | decimalFormat }}</td>
                            <td class="text-right">{{ `${ Math.round(report.conversionRate)} %` }}</td>
-                           <td class="text-right">{{ report.averageSalesPrice ? report.averageSalesPrice : 0 }}</td>
+                           <td class="text-right">{{ report.averageSalesPrice | decimalFormat }}</td>
+                       </tr>
+                       <tr>
+                           <td class="font-weight-bold">Total </td>
+                           <td>  </td>
+                           <td class="text-right font-weight-bold"> {{ total.totalNumberOfSales | decimalFormat }} </td>
+                           <td class="text-right font-weight-bold"> {{ total.totalNumberOfLeads | decimalFormat }} </td>
+                           <td class="text-right font-weight-bold"> {{ total.grandTotalContracts | decimalFormat }} </td>
+                           <td class="text-right font-weight-bold">  </td>
+                           <td class="text-right font-weight-bold">  </td>
+                       </tr>
+                       <tr>
+                           <td class="font-weight-bold">Average </td>
+                           <td>  </td>
+                           <td class="text-right font-weight-bold"> {{ total.averageNumberOfSales | decimalFormat }} </td>
+                           <td class="text-right font-weight-bold"> {{ total.averageNumberOfLeads | decimalFormat }} </td>
+                           <td class="text-right font-weight-bold"> {{ total.averageTotalContract | decimalFormat }} </td>
+                           <td class="text-right font-weight-bold"> {{ total.averageConversionRate | decimalFormat }} </td>
+                           <td class="text-right font-weight-bold"> {{ total.grandAveragePrice |decimalFormat }} </td>
                        </tr>
                        </tbody>
                    </template>
@@ -66,6 +84,17 @@
             return {
                 loading: false,
                 reports: [],
+                total: {
+                    totalNumberOfSales: '',
+                    totalNumberOfLeads: '',
+                    grandTotalContracts: '',
+                    averageNumberOfLeads: '',
+                    averageNumberOfSales: '',
+                    averageTotalContract: '',
+                    averageConversionRate: '',
+                    grandAveragePrice: ''
+
+                },
                 startDate: '',
                 endDate: ''
             }
@@ -76,7 +105,8 @@
                 ReportAPI.getSalesSummary(startDate, endDate).then(response => {
                     this.startDate = startDate;
                     this.endDate = endDate;
-                    this.reports = response.data
+                    this.reports = response.data.results
+                    this.total = Object.assign({}, response.data.total)
                 }).catch(error => {
                     console.log(error)
                 }).finally(() => {

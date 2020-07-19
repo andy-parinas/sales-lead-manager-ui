@@ -16,6 +16,7 @@
             return {
                 docDefinition: {
                     pageOrientation: 'landscape',
+                    pageSize: 'A4',
                     content: [
                         {
                             layout: 'lightHorizontalLines', // optional

@@ -50,3 +50,8 @@ Vue.filter('snakeCaseToRegular', function (value) {
 
 
 })
+
+Vue.filter('decimalFormat', function (value) {
+    const amt = Number(value)
+    return amt && amt.toLocaleString(undefined, {maximumFractionDigits:2}) || '0'
+})
