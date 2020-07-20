@@ -1,5 +1,5 @@
 <template>
-    <v-card>
+    <v-card class="pb-3">
         <DialogHeader title="Edit Sales Contact">
             <template v-slot:action>
                 <v-btn small icon @click="closeDialog">
@@ -18,6 +18,7 @@
     import DialogHeader from "../core/DialogHeader";
     import SalesContactForm from "./shared/SalesContactForm";
     import {mapActions} from 'vuex';
+    import ErrorHandlerMixins from "../../mixins/ErrorHandler";
     export default {
         name: "SalesContactCreateDialog",
         components: {SalesContactForm, DialogHeader},
@@ -26,6 +27,7 @@
                 saving: false,
             }
         },
+        mixins: [ErrorHandlerMixins],
         methods: {
             ...mapActions('salesContacts', ['createSalesContact']),
             ...mapActions(['setSuccessMessage']),

@@ -59,12 +59,12 @@
                     />
                 </v-col>
             </v-row>
-            <v-row>
+            <v-row class="mx-2">
                 <v-col cols="12" sm="12">
-                    <PostcodeSelect />
+                    <PostcodeSelect @onValueChanged="onPostcodeSelect" />
                 </v-col>
             </v-row>
-            <v-row>
+            <v-row class="mx-2">
                 <!--  Start of Contact status Sections-->
                 <v-col cols="12" sm="6">
                     <v-select
@@ -149,7 +149,7 @@
                     street2: '',
                     suburb: '',
                     state: '',
-                    postcode: '',
+                    postcodeId: '',
                 },
                 defaultForm: {
                     id: '',
@@ -162,7 +162,7 @@
                     street2: '',
                     suburb: '',
                     state: '',
-                    postcode: '',
+                    postcodeId: '',
                 },
                 postcodes: []
 
@@ -171,11 +171,11 @@
 
         methods: {
 
-            onPostcodeSelect(postcode){
-                if(postcode){
-                    this.$set(this.form, 'postcode', postcode)
+            onPostcodeSelect(postcodeId){
+                if(postcodeId){
+                    this.$set(this.form, 'postcodeId', postcodeId)
                 }else {
-                    this.$set(this.form, 'postcode', '')
+                    this.$set(this.form, 'postcodeId', '')
                 }
             },
             reset(){
@@ -185,7 +185,7 @@
         },
         computed: {
             canSave(){
-                return this.valid && this.form.postcode && this.form.postcode !== ''
+                return this.valid && this.form.postcodeId && this.form.postcodeId !== ''
             }
         },
         watch: {

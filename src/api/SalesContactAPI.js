@@ -14,7 +14,7 @@ const nomalizeData = (data) => {
         street2: data.street2,
         suburb: data.suburb,
         state: data.state,
-        postcode: data.postcode,
+        postcode_id: data.postcodeId,
         customer_type: data.customerType,
         status: data.status
     }
@@ -77,7 +77,7 @@ const SalesContactAPI = {
             street2: data.street2,
             suburb: data.suburb,
             state: data.state,
-            postcode: data.postcode,
+            postcode_id: data.postcodeId,
         }
 
 

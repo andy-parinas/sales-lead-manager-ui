@@ -1,6 +1,6 @@
 <template>
     <v-autocomplete
-            v-model="postcode"
+            v-model="postcodeId"
             :items="postcodes"
             :search-input.sync="search"
             :loading="loading"
@@ -35,7 +35,7 @@
                 loading: false,
                 postcodes: [],
                 search: '',
-                postcode: ''
+                postcodeId: ''
             }
         },
         mixins: [ErrorHandlerMixins],
@@ -68,8 +68,7 @@
 
             },
             postcodeValueChange(){
-                console.log('Selected', this.postcode)
-                this.$emit('onValueChanged', this.postcode)
+                this.$emit('onValueChanged', this.postcodeId)
             }
         },
         watch: {
