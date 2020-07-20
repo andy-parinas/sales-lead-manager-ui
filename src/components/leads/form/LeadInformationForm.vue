@@ -107,7 +107,7 @@
         components: {FranchiseSelect, PostcodeAlert},
         props: {
             initialData: {required: true, type: Object},
-            contactPostcode: {required: true, type: String}
+            contactPostcodeId: {required: true, type: [Number, String]}
         },
         data(){
             return {
@@ -157,15 +157,10 @@
             },
             initialSelectData(){
                 if(this.initialData && this.initialData.franchiseId && this.initialData.franchiseNumber) {
-                    return {
-                        value: this.initialData.franchiseId,
-                        text: this.initialData.franchiseNumber
-                    }
-                }
+                    return this.initialData.franchiseId
+                }else {
 
-                return {
-                    value: '',
-                    text: ''
+                    return null
                 }
             }
         },
@@ -173,34 +168,26 @@
             ...mapActions('franchises', ['getFranchises']),
             checkFranchisePostcode(){
 
-                console.log('Checking Postcode')
-
-                this.franchisePostcodes = [];
-                this.postcodeStatus = '';
                 this.franchiseChecking = true;
+                PostcodeAPI.checkFranchisePostcode(this.form.franchiseId,
+                    this.contactPostcodeId).then(response => {
 
-                PostcodeAPI.getFranchisePostcodes(this.form.franchiseId).then(response => {
+                    console.log('Check results: ', response)
 
-                    this.franchiseChecking = false;
-
-                    const postcodes = response.data;
-
-                    const filtered = postcodes.filter(postcode => {
-                        return postcode.postcode === this.contactPostcode
-                    })
-
-
-                    if(filtered.length === 0){
-                        this.$set(this.form, 'postcodeStatus', 'outside_of_franchise')
-
-                    }else{
+                    if(response){
                         this.$set(this.form, 'postcodeStatus', 'inside_of_franchise')
+                    }else {
+                        this.$set(this.form, 'postcodeStatus', 'outside_of_franchise')
                     }
 
                 }).catch(error => {
-                    this.franchiseChecking = false
-                    console.log('Error Encountered', error)
+
+                    console.log(error);
+
+                }).finally(() => {
+                    this.franchiseChecking = false;
                 })
+
             },
 
             leadSourceChange(){
@@ -226,15 +213,14 @@
             },
             onFranchiseSelectChanged(franchise){
                 if(franchise){
-                    this.form.franchiseId = franchise.value;
-                    this.form.franchiseNumber = franchise.text
+                    this.form.franchiseId = franchise.id;
+                    this.form.franchiseNumber = franchise.franchiseNumber
                     this.checkFranchisePostcode();
                 }else {
                     this.form.franchiseId = '';
                     this.form.franchiseNumber = '';
                 }
 
-                console.log('LeadInfoForm', this.form)
             }
         },
         watch: {

@@ -108,7 +108,8 @@
                         street2: '',
                         suburb: '',
                         state: '',
-                        postcode: ''
+                        postcode: '',
+                        postcodeId: ''
                     },
                     jobType: {
                         takenBy: '',

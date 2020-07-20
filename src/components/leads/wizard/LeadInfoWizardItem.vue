@@ -3,7 +3,7 @@
         <LeadInformationForm
                 @updateData="updateData"
                 :initialData="initialData"
-                :contactPostcode="contactPostcode"
+                :contactPostcodeId="contactPostcodeId"
                 ref="leadForm">
             <template v-slot:customer-type>
                 <v-text-field v-if="selectedContact"
@@ -70,7 +70,7 @@
 
     import LeadInformationForm from "../form/LeadInformationForm";
     import {mapState} from "vuex";
-    import PostcodeAPI from "../../../api/PostcodeAPI";
+    //import PostcodeAPI from "../../../api/PostcodeAPI";
 
     export default {
         name: "LeadInfoWizardItem",
@@ -81,7 +81,7 @@
                 valid: false,
                 franchisePostcodes: [],
                 franchiseChecking: false,
-                contactPostcode: '',
+                contactPostcodeId: '',
                 postcodeStatus: '',
                 form: {
                     leadNumber: '',
@@ -117,39 +117,29 @@
             updateData(form){
                 this.form = Object.assign({}, form)
             },
-            checkFranchisePostcode(){
-
-                this.franchisePostcodes = [];
-                this.postcodeStatus = '';
-                this.franchiseChecking = true;
-
-                PostcodeAPI.getFranchisePostcodes(this.form.franchiseId).then(response => {
-
-                    this.franchiseChecking = false;
-
-                    const postcodes = response.data;
-
-                    const filtered = postcodes.filter(postcode => {
-                        this.franchisePostcodes.push(postcode.postcode);
-
-                        return postcode.postcode === this.selectedContact.postcode
-                    })
-
-                    if(filtered.length === 0){
-                        this.postcodeStatus = 'OUTSIDE_FRANCHISE';
-                        this.form.postcodeStatus = 'outside_of_franchise'
-
-                    }else{
-                        this.postcodeStatus = 'INSIDE_FRANCHISE';
-                        this.form.postcodeStatus = 'inside_of_franchise'
-                    }
-
-                }).catch(error => {
-                    this.franchiseChecking = false
-                    console.log(error.response)
-                })
-            },
-
+            // checkFranchisePostcode(){
+            //     this.franchiseChecking = true;
+            //     PostcodeAPI.checkFranchisePostcode(this.form.franchiseId,
+            //         this.selectedContact.postcodeId).then(response => {
+            //
+            //             console.log('Check results: ', response.data)
+            //
+            //             if(response.data){
+            //                 this.postcodeStatus = 'INSIDE_FRANCHISE';
+            //                 this.form.postcodeStatus = 'inside_of_franchise'
+            //             }else {
+            //                 this.postcodeStatus = 'OUTSIDE_FRANCHISE';
+            //                 this.form.postcodeStatus = 'outside_of_franchise'
+            //             }
+            //
+            //     }).catch(error => {
+            //
+            //         console.log(error);
+            //
+            //     }).finally(() => {
+            //         this.franchiseChecking = false;
+            //     })
+            // },
 
         },
         computed: {
@@ -162,7 +152,7 @@
             selectedContact: {
                 handler(){
                     if(this.selectedContact){
-                        this.contactPostcode = this.selectedContact.postcode
+                        this.contactPostcodeId = this.selectedContact.postcodeId
                         if(this.form.franchiseId !== ''){
                             if(this.franchiseChecking) return;
                             this.$refs.leadForm.checkFranchisePostcode();
@@ -174,7 +164,7 @@
         },
         mounted() {
             if(this.selectedContact){
-                this.contactPostcode = this.selectedContact.postcode
+                this.contactPostcodeId = this.selectedContact.postcodeId
             }
         }
 

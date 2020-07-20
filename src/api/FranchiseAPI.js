@@ -22,8 +22,19 @@ const FranchiseAPI = {
         const requestUri = '/api/franchises/sub-franchises';
 
         const uri = URIBuilder.build(requestUri, pageOptions, searchOptions);
+        console.log('searchuri', uri);
 
         const response = await api().get(uri)
+
+        return response.data;
+
+    },
+
+    async getFranchiseById(franchiseId){
+
+        const uri = `/api/franchises/${franchiseId}`;
+
+        const response = await api().get(uri);
 
         return response.data;
 

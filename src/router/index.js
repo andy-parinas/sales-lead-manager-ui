@@ -58,7 +58,7 @@ const routes = [
                     {
                         path: 'create',
                         name: 'LeadCreate',
-                        component: () => import(/* webpackChunkName: "leadTable" */ "@/views/leads/LeadCreateView.vue"),
+                        component: () => import(/* webpackChunkName: "lead-create" */ "@/views/leads/LeadCreateView.vue"),
                         meta: {requiresAuth: true},
                     }
                 ]

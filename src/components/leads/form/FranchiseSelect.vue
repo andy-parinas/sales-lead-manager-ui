@@ -1,23 +1,24 @@
 <template>
-    <v-autocomplete
-        v-model="franchise"
-        :search-input.sync="searchOptions.searchFor"
-        :loading="loading"
-        :items="franchises"
-        hint="Enter 3 character of Franchise Number to Search"
-        persistent-hint
-        @keyup="searchOnKeyUp"
-        @change="franchiseValueChange"
-        label="Franchise Number"
-        prepend-icon="mdi-store"
-        no-filter
-        cache-items
-        clearable
-        return-object
-        :rules="required? [v => !!v || 'This field is required'] : []"
-    >
-
-    </v-autocomplete>
+    <div>
+        <v-autocomplete
+                v-model="franchiseId"
+                :items="franchises"
+                :search-input.sync="searchOptions.searchFor"
+                :loading="loading"
+                :rules="required? [v => !!v || 'This field is required'] : []"
+                item-value="id"
+                item-text="title"
+                color="black"
+                label="Franchise Number"
+                no-filter
+                prepend-icon="mdi-store"
+                hint="Enter 3 characters to search"
+                persistent-hint
+                @keyup="searchOnKeyUp"
+                @change="franchiseValueChange"
+                return-object
+        ></v-autocomplete>
+    </div>
 </template>
 
 <script>
@@ -31,33 +32,44 @@
             return {
                 loading: false,
                 pageOptions: {
-                    sortBy: ['franchiseNumber'],
+                    sortBy: ['franchise_number'],
                     sortDesc: [false],
+                    itemsPerPage: 50 //Will ensure to have enough items returned.
                 },
                 searchOptions: {
                     searchFor: '',
+                    searchIn: 'franchise_number'
                 },
                 search: '',
-                franchise: '',
+                franchiseId: '',
                 franchises: []
             }
         },
         methods: {
             getAllFranchises(){
                 this.loading = true;
-                FranchiseAPI.getAllFranchise(this.pageOptions,
+                FranchiseAPI.getAllSubFranchises(this.pageOptions,
                     this.searchOptions).then(response => {
-                        this.franchises = response.data.map(franchise => {
-                            return {
-                                value: franchise.id,
-                                text: `${franchise.franchiseNumber} - ${franchise.type}`
-                            }
-                        })
+                    this.franchises = response.data
                 }).catch(error => {
                     console.log(error.response)
                 }).finally(() => {
                     this.loading = false;
                 })
+
+            },
+
+            getFranchiseById(id){
+                this.loading = true;
+                FranchiseAPI.getFranchiseById(id).then(response => {
+                    this.franchises = [response.data];
+                    this.franchiseId = response.data.id
+                }).catch(error => {
+                    console.log(error)
+                }).finally(() => {
+                    this.loading = false;
+                })
+
             },
             searchOnKeyUp(event){
 
@@ -69,22 +81,25 @@
                 // Do not listen for the Tab Key
                 if(event && !excludedKeys.includes(event.keyCode)){
                     if(this.searchOptions.searchFor && this.searchOptions.searchFor.length >= 3 && this.searchOptions.searchFor.trim() !== '' ){
+                        console.log('SearchFor', this.searchOptions)
                         this.getAllFranchises()
                     }
                 }
 
             },
             franchiseValueChange(){
-                this.$emit('onValueChanged', this.franchise)
+                console.log("emit", this.franchiseId)
+                this.$emit('onValueChanged', this.franchiseId)
             }
         },
         watch: {
             initialData: {
                 handler(){
-
                     if(this.initialData){
-                        this.franchise = Object.assign({}, this.initialData)
-                        this.franchises.push(this.franchise)
+                        this.getFranchiseById(this.initialData)
+                    }else {
+                        this.franchises = [];
+                        this.franchiseId = ''
                     }
                 },
                 deep: true

@@ -46,6 +46,17 @@ const PostcodeAPI = {
         return response.data;
     },
 
+
+    async checkFranchisePostcode(franchiseId, postCodeId){
+
+        const uri =   `/api/franchises/${franchiseId}/postcodes/${postCodeId}/check`
+
+        const response = await api().get(uri);
+
+        return response.data;
+
+    },
+
     async addPostcodeToFranchise(franchiseId, postcodeId){
 
         const uri = `/api/franchises/${franchiseId}/postcodes/${postcodeId}/attach`

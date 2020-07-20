@@ -242,7 +242,6 @@
                 }
             },
             convertToLead(contact){
-                console.log('Contact to Convert', contact)
                 this.selectContact(contact)
                 this.$router.push({name: 'LeadCreate'})
             }
