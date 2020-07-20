@@ -6,9 +6,10 @@
             :loading="loading"
             :rules="required? [v => !!v || 'This field is required'] : []"
             :disabled="edit"
+            item-value="id"
+            item-text="title"
             color="black"
-            label="Postcode"
-            return-object
+            label="Suburb, Postcode, State"
             no-filter
             prepend-icon="mdi-mailbox"
             hint="Enter 3 characters to search"
@@ -43,12 +44,7 @@
                 if(!this.loading){
                     this.loading = true;
                     PostcodeAPI.search(this.search).then(response => {
-                        //this.postcodes = response.data
-                        const data = response.data.map(postcode => {
-                            return `${postcode.pcode}`
-                        })
-                        this.postcodes = data;
-
+                        this.postcodes = response.data.data;
                     }).catch(error => {
                         this.handleError(error)
                     }).finally(() => {
@@ -72,6 +68,7 @@
 
             },
             postcodeValueChange(){
+                console.log('Selected', this.postcode)
                 this.$emit('onValueChanged', this.postcode)
             }
         },

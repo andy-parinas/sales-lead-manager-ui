@@ -58,30 +58,13 @@
 
                     />
                 </v-col>
-                <v-col cols="12" sm="6">
-                    <v-text-field v-model="form.suburb"
-                                  prepend-icon="mdi-home-modern"
-                                  label="Suburb"
-                                  :rules="[rules.required]"
-
-                    />
+            </v-row>
+            <v-row>
+                <v-col cols="12" sm="12">
+                    <PostcodeSelect />
                 </v-col>
-                <!--  End of Street Sections-->
-                <!-- State Sections-->
-                <v-col cols="12" sm="6">
-                    <v-text-field v-model="form.state"
-                                  prepend-icon="mdi-map"
-                                  label="State"
-                                  :rules="[rules.required]"
-
-                    />
-                </v-col>
-                <v-col cols="12" sm="6">
-                    <PostcodeSelect :initial-data="form.postcode"
-                                    :edit="edit"
-                                    @onValueChanged="onPostcodeSelect"/>
-                </v-col>
-                <!--  End of State Sections-->
+            </v-row>
+            <v-row>
                 <!--  Start of Contact status Sections-->
                 <v-col cols="12" sm="6">
                     <v-select
