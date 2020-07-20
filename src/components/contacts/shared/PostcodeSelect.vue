@@ -1,33 +1,36 @@
 <template>
-    <v-autocomplete
-            v-model="postcodeId"
-            :items="postcodes"
-            :search-input.sync="search"
-            :loading="loading"
-            :rules="required? [v => !!v || 'This field is required'] : []"
-            :disabled="edit"
-            item-value="id"
-            item-text="title"
-            color="black"
-            label="Suburb, Postcode, State"
-            no-filter
-            prepend-icon="mdi-mailbox"
-            hint="Enter 3 characters to search"
-            persistent-hint
-            @keyup="searchOnKeyUp"
-            @change="postcodeValueChange"
-    ></v-autocomplete>
+    <div>
+        <v-autocomplete
+                v-model="postcodeId"
+                :items="postcodes"
+                :search-input.sync="search"
+                :loading="loading"
+                :rules="required? [v => !!v || 'This field is required'] : []"
+                :disabled="edit"
+                item-value="id"
+                item-text="title"
+                color="black"
+                label="Suburb, Postcode, State"
+                no-filter
+                prepend-icon="mdi-mailbox"
+                hint="Enter 3 characters to search"
+                persistent-hint
+                @keyup="searchOnKeyUp"
+                @change="postcodeValueChange"
+        ></v-autocomplete>
+    </div>
 </template>
 
 <script>
     import PostcodeAPI from "../../../api/PostcodeAPI";
     import ErrorHandlerMixins from "../../../mixins/ErrorHandler";
+    import {mapState} from 'vuex';
 
     export default {
         name: "PostcodeSelect",
         props: {
             required: {type: Boolean},
-            initialData: {type: [String, null]},
+            initialPostcodeId: {type: [String, null]},
             edit: {type: Boolean}
         },
         data(){
@@ -39,12 +42,30 @@
             }
         },
         mixins: [ErrorHandlerMixins],
+        computed: {
+            ...mapState('salesContacts', ['selectedContact']),
+        },
         methods: {
             onSearchPostcode(){
                 if(!this.loading){
                     this.loading = true;
                     PostcodeAPI.search(this.search).then(response => {
                         this.postcodes = response.data.data;
+                    }).catch(error => {
+                        this.handleError(error)
+                    }).finally(() => {
+                        this.loading = false;
+                    })
+                }
+            },
+            getPostcodeById(){
+                if(!this.loading){
+                    this.loading = true;
+                    PostcodeAPI.getPostcodeById(this.selectedContact.postcodeId).then(response => {
+
+                        this.postcodes = [response.data];
+                        this.postcodeId = response.data.id
+
                     }).catch(error => {
                         this.handleError(error)
                     }).finally(() => {
@@ -72,11 +93,13 @@
             }
         },
         watch: {
-            initialData: {
+            selectedContact: {
                 handler(){
-                    if(this.initialData){
-                        this.postcode = this.initialData
-                        this.postcodes.push(this.postcode)
+                    if(this.selectedContact && this.selectedContact.postcodeId){
+                        this.getPostcodeById();
+                    }else {
+                        this.postcodes = [];
+                        this.postcodeId = '';
                     }
                 },
                 deep: true
@@ -84,9 +107,8 @@
         },
         mounted() {
 
-            if(this.initialData){
-                this.postcode = this.initialData
-                this.postcodes.push(this.postcode)
+            if(this.selectedContact && this.selectedContact.postcodeId){
+                this.getPostcodeById();
             }
         }
     }

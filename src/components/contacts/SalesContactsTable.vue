@@ -32,7 +32,7 @@
                                 <v-icon small> mdi-pencil</v-icon>
                             </v-btn>
                             <v-btn x-small fab text dark color="success" class="ml-3" @click="convertToLead(item)">
-                                <v-icon small>mdi-fast-forward-outline</v-icon>
+                                <v-icon small>mdi-account-convert</v-icon>
                             </v-btn>
                         </v-row>
                     </v-container>
@@ -171,6 +171,7 @@
             editContact(item){
                 this.selectedItem = Object.assign({}, item);
                 this.editDialog = true;
+                this.selectContact(item)
             },
             deleteItem(item){
                 this.selectedItem = item;
@@ -183,6 +184,7 @@
             closeEditDialog(){
                 setTimeout(() => {
                     this.selectedItem = null;
+                    this.selectContact(null)
                 }, 100)
 
                 this.editDialog = false;

@@ -26,6 +26,16 @@ const PostcodeAPI = {
         return response.data;
     },
 
+    async getPostcodeById(postcodeId){
+
+        const uri = `/api/postcodes/${postcodeId}`;
+
+        const response = await api().get(uri);
+
+        return response.data;
+
+    },
+
 
     async getFranchisePostcodes(franchiseId, pageOptions, searchOptions){
 

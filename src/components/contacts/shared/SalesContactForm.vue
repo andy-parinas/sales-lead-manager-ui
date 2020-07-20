@@ -61,7 +61,8 @@
             </v-row>
             <v-row class="mx-2">
                 <v-col cols="12" sm="12">
-                    <PostcodeSelect @onValueChanged="onPostcodeSelect" />
+                    <PostcodeSelect @onValueChanged="onPostcodeSelect"
+                                     ref="postcodeSelect" />
                 </v-col>
             </v-row>
             <v-row class="mx-2">
@@ -100,7 +101,7 @@
 
     import ErrorHandlerMixins from "../../../mixins/ErrorHandler";
     import PostcodeSelect from "./PostcodeSelect";
-
+    import {mapState} from 'vuex';
 
     export default {
         name: "SalesContactForm",
@@ -178,21 +179,30 @@
                     this.$set(this.form, 'postcodeId', '')
                 }
             },
+
             reset(){
                 this.$refs.contactForm.resetValidation();
             }
 
         },
         computed: {
+            ...mapState('salesContacts', ['selectedContact']),
             canSave(){
                 return this.valid && this.form.postcodeId && this.form.postcodeId !== ''
+            },
+            initialPostcodeId(){
+                if(this.initialData && this.initialData.postcodeId){
+                    return this.initialData.postcodeId
+                }else {
+                    return null
+                }
             }
         },
         watch: {
-            initialData: {
+            selectedContact: {
                 handler(){
-                    if (this.initialData){
-                        this.form = Object.assign({}, this.initialData)
+                    if (this.selectedContact){
+                        this.form = Object.assign({}, this.selectedContact)
                     }else {
                         this.form = Object.assign({}, this.defaultForm)
                         this.reset();
@@ -202,8 +212,8 @@
             }
         },
         mounted() {
-            if (this.initialData){
-                this.form = Object.assign({}, this.initialData)
+            if (this.selectedContact){
+                this.form = Object.assign({}, this.selectedContact)
             }
         }
     }
