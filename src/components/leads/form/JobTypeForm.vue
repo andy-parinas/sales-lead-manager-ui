@@ -46,22 +46,7 @@
                     ></v-autocomplete>
                 </v-col>
                 <v-col cols="12" sm="6">
-                    <v-autocomplete
-                            v-model="form.designAssessorId"
-                            :items="designAssessors"
-                            :rules="rules.required"
-                            :loading="searchAssessorLoading"
-                            :search-input.sync="search"
-                            @keyup="searchOnKeyUp"
-                            @change="designAssessorChange"
-                            no-filter
-                            cache-items
-                            label="Design Advisor"
-                            prepend-icon="mdi-card-account-details"
-                            hint="Enter 3 character to Search"
-                            persistent-hint
-                            required
-                    ></v-autocomplete>
+                    <DesignAdvisorSelect @onValueChanged="designAssessorChange" />
                 </v-col>
                 <v-col cols="12" sm="6">
                     <v-textarea
@@ -86,11 +71,12 @@
 
 <script>
     import ProductAPI from "../../../api/ProductAPI";
-    import DesignAssessorAPI from "../../../api/DesignAssessorAPI";
     import {format, parseISO} from "date-fns";
+    import DesignAdvisorSelect from "./DesignAdvisorSelect";
 
     export default {
         name: "JobTypeForm",
+        components: {DesignAdvisorSelect},
         props: {
           initialData: { required: true, type: Object}
         },
@@ -101,7 +87,7 @@
                     dateAllocated: '',
                     productId: '',
                     product: '',
-                    designAssessorId: '',
+                    salesStaffId: '',
                     designAdvisor: '',
                     description: ''
                 },
@@ -143,44 +129,7 @@
                     this.productLoading = false;
                 })
             },
-            searchOnKeyUp(event){
 
-                const excludedKeys = [
-                    9,16,18,17, 112,113,114,115,116,117,118,119,120,121,122, 123,
-                    36,35,144,20,45,33,34,27,37,38,39,40,91,13
-                ]
-
-                // Do not listen for the Tab Key
-                if(event && !excludedKeys.includes(event.keyCode)){
-                    if(this.search && this.search.length >= 3 && this.search.trim() !== '' ){
-                        this.searchAssessor(this.search)
-                    }
-                }
-
-            },
-            searchAssessor(val){
-
-                if(this.searchAssessorLoading) return;
-
-                this.searchAssessorLoading = true;
-                DesignAssessorAPI.search(val).then(response => {
-
-                    this.designAssessors = response.data.map(assessor => {
-                        return {
-                            value: assessor.id,
-                            text: assessor.firstName + ' ' + assessor.lastName
-                        }
-                    })
-
-                }).catch(error => {
-                    console.log(error);
-
-                }).finally(() => {
-                    this.searchAssessorLoading = false;
-                })
-
-
-            },
             productChange(){
                 // if(this.product) {
                 //     this.form.productId = this.product.value;
@@ -194,19 +143,23 @@
                     if(product) this.form.product = product.text
                 }
             },
-            designAssessorChange(){
+            designAssessorChange(staff){
 
+                if(staff){
+                    this.form.salesStaffId = staff.id;
+                    this.form.designAssessor = staff.title
+                }
                 // if(this.designAssessor){
                 //     this.form.designAssessorId = this.designAssessor.value;
                 //     this.form.designAdvisor = this.designAssessor.text;
+                // // }
+                // if(this.designAssessors.length > 0){
+                //     const designAssessor = this.designAssessors.find(d => {
+                //         return d.value === this.form.designAssessorId
+                //     })
+                //
+                //     if(designAssessor) this.form.designAssessor = designAssessor.text
                 // }
-                if(this.designAssessors.length > 0){
-                    const designAssessor = this.designAssessors.find(d => {
-                        return d.value === this.form.designAssessorId
-                    })
-
-                    if(designAssessor) this.form.designAssessor = designAssessor.text
-                }
             }
 
         },

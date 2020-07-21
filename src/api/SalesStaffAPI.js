@@ -42,6 +42,17 @@ const SalesStaffAPI = {
 
     },
 
+
+    async search(search){
+
+        const uri = `/api/sales-staffs/search?search=${encodeURIComponent(search)}`;
+
+        const response = await api().get(uri);
+
+
+        return response.data;
+    },
+
     async create(formData){
         const uri = `/api/sales-staffs`
 

@@ -40,7 +40,7 @@ const LeadAPI = {
                 date_allocated: formData.jobType.dateAllocated,
                 description: formData.jobType.description,
                 product_id: formData.jobType.productId,
-                design_assessor_id: formData.jobType.designAssessorId
+                sales_Staff_id: formData.jobType.salesStaffId
             },
             appointment: {
                 appointment_date: `${formData.appointment.appointmentDate} ${formData.appointment.appointmentTime}`,

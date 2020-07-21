@@ -51,6 +51,7 @@
                 FranchiseAPI.getAllSubFranchises(this.pageOptions,
                     this.searchOptions).then(response => {
                     this.franchises = response.data
+                    console.log(response.data)
                 }).catch(error => {
                     console.log(error.response)
                 }).finally(() => {
@@ -81,14 +82,12 @@
                 // Do not listen for the Tab Key
                 if(event && !excludedKeys.includes(event.keyCode)){
                     if(this.searchOptions.searchFor && this.searchOptions.searchFor.length >= 3 && this.searchOptions.searchFor.trim() !== '' ){
-                        console.log('SearchFor', this.searchOptions)
                         this.getAllFranchises()
                     }
                 }
 
             },
             franchiseValueChange(){
-                console.log("emit", this.franchiseId)
                 this.$emit('onValueChanged', this.franchiseId)
             }
         },
