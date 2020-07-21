@@ -65,7 +65,6 @@
                 </v-card-actions>
             </v-card>
         </v-dialog>
-<!--        <pre>{{form}}</pre>-->
     </div>
 </template>
 
@@ -117,7 +116,7 @@
                         productId: '',
                         product: '',
                         description: '',
-                        designAdvisor: '',
+                        salesStaffId: '',
 
                     },
                     appointment: {

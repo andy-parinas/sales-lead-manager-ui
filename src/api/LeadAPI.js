@@ -40,7 +40,7 @@ const LeadAPI = {
                 date_allocated: formData.jobType.dateAllocated,
                 description: formData.jobType.description,
                 product_id: formData.jobType.productId,
-                sales_Staff_id: formData.jobType.salesStaffId
+                sales_staff_id: formData.jobType.salesStaffId
             },
             appointment: {
                 appointment_date: `${formData.appointment.appointmentDate} ${formData.appointment.appointmentTime}`,
@@ -51,6 +51,8 @@ const LeadAPI = {
             }
 
         }
+
+        console.log('FranchiseData', data);
 
         const uri = `/api/franchises/${formData.details.franchiseId}/leads`;
 

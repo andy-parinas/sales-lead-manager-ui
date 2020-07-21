@@ -31,7 +31,7 @@
                     productId: '',
                     product: '',
                     designAssessorId: '',
-                    designAdvisor: '',
+                    salesStaffId: '',
                     description: ''
                 },
                 initialData: {
@@ -40,7 +40,7 @@
                     productId: '',
                     product: '',
                     designAssessorId: '',
-                    designAdvisor: '',
+                    salesStaffId: '',
                     description: ''
                 },
 

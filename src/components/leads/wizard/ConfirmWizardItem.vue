@@ -2,7 +2,7 @@
     <v-container>
         <LeadTabDetails
                 title="Lead Create Summary"
-                :lead="summary"></LeadTabDetails>
+                :lead="summary" :summary="true"></LeadTabDetails>
 
         <v-row class="mt-10">
             <v-btn color="primary" class="mr-2" @click="$emit('moveBack')">Back</v-btn>

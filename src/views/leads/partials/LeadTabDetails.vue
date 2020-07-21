@@ -10,9 +10,9 @@
             <v-tab> Lead Details </v-tab>
             <v-tab>  Job Type </v-tab>
             <v-tab>  Appointment </v-tab>
-            <v-tab> Documents </v-tab>
-            <v-tab> Contract </v-tab>
-            <v-tab> Finance </v-tab>
+            <v-tab v-if="!summary"> Documents </v-tab>
+            <v-tab v-if="!summary" > Contract </v-tab>
+            <v-tab v-if="!summary"> Finance </v-tab>
 
             <v-tab-item>
                 <LeadContactPartial :data="lead.details"  />
@@ -23,13 +23,13 @@
             <v-tab-item>
                 <AppointmentPartial :data="lead.appointment"  />
             </v-tab-item>
-            <v-tab-item>
+            <v-tab-item v-if="!summary">
                 <DocumentPartial :lead-id="lead.details.id" />
             </v-tab-item>
-            <v-tab-item>
+            <v-tab-item v-if="!summary">
                 <ContractPartial :lead-id="lead.details.id" />
             </v-tab-item>
-            <v-tab-item>
+            <v-tab-item v-if="!summary">
                 <FinancePartial :lead-id="lead.details.id" />
             </v-tab-item>
         </v-tabs>
@@ -49,7 +49,8 @@
         name: "LeadTabDetails",
         props: {
             lead: {required: true, type: Object},
-            title: {required: true, type: String}
+            title: {required: true, type: String},
+            summary: {type:Boolean}
         },
         components: {
             FinancePartial,
