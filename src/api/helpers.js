@@ -39,6 +39,10 @@ export const URIBuilder = {
             }
         }
 
+        if(searchOptions && searchOptions.search && searchOptions.search.trim() !== ''){
+            uri = uri + `search=${encodeURIComponent(searchOptions.search)}`;
+        }
+
         return uri;
     }
 
