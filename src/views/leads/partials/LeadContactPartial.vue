@@ -73,7 +73,7 @@
                 <v-row>
                     <v-col cols="12" sm="12">
                         <v-icon small>mdi-map</v-icon>
-                        <span class="ml-2">{{data.suburb}}, {{data.state}}, {{data.postcode}}</span>
+                        <span class="ml-2">{{data.postcode.locality}}, {{data.postcode.state}}, {{data.postcode.pcode}}</span>
                     </v-col>
                 </v-row>
 

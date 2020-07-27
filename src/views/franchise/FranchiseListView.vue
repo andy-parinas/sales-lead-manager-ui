@@ -1,16 +1,14 @@
 <template>
     <div>
         <PageHeader title="Franchise" class="mb-1" />
-        <v-row class="mt-6" justify="center">
-<!--            <v-col cols="12" sm="12" md="6">-->
-<!--                <AllFranchiseSection />-->
-<!--            </v-col>-->
-<!--&lt;!&ndash;            <v-col cols="12" sm="12" md="1"></v-col>&ndash;&gt;-->
-<!--            <v-col cols="12" sm="12" md="6">-->
-<!--                <RelatedFranchiseSection />-->
-<!--            </v-col>-->
+        <v-row class="mt-6" justify="center" v-if="selectedFranchise">
             <v-col cols="12" sm="10">
-                <FranchiseTable />
+                <FranchiseDetails @goBack="hideFranchise" :franchise="selectedFranchise" />
+            </v-col>
+        </v-row>
+        <v-row class="mt-6" justify="center" v-show="!selectedFranchise">
+            <v-col cols="12" sm="10">
+                <FranchiseTable @showFranchise="showFranchise" />
             </v-col>
         </v-row>
         <v-dialog v-model="showCreateDialog" persistent width="650" class="px-2">
@@ -27,13 +25,23 @@
     import PageHeader from "../../components/core/PageHeader";
     import CreateFranchiseDialog from "../../components/franchise/CreateFranchiseDialog";
     import FranchiseTable from "../../components/franchise/FranchiseTable";
+    import FranchiseDetails from "../../components/franchise/FranchiseDetails";
 
     export default {
         name: "FranchiseListView",
-        components: {FranchiseTable, CreateFranchiseDialog, PageHeader},
+        components: {FranchiseDetails, FranchiseTable, CreateFranchiseDialog, PageHeader},
         data(){
             return {
-                showCreateDialog: false
+                showCreateDialog: false,
+                selectedFranchise: null
+            }
+        },
+        methods: {
+            showFranchise(franchise){
+                this.selectedFranchise = franchise;
+            },
+            hideFranchise(){
+                this.selectedFranchise = null;
             }
         }
     }

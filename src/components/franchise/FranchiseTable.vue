@@ -122,8 +122,8 @@
             editFranchise(){
 
             },
-            showFranchise(){
-
+            showFranchise(item){
+                this.$emit('showFranchise', item)
             },
             onPageOptionChanged(){
                 if(this.searchOptions.searchIn.trim() !== '' && this.searchOptions.searchFor.trim() !== '')
