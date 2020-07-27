@@ -34,7 +34,7 @@
                                small color="green darken-1" dark>
                             Refresh
                         </v-btn>
-                        <v-btn small color="primary" class="mr-3">
+                        <v-btn small color="primary" class="mr-3" @click="addPostcodeDialog = true">
                             Add Postcode
                         </v-btn>
                         <v-btn small color="error" :disabled="selected.length === 0" >
@@ -60,18 +60,25 @@
 
                 </v-data-table>
             </v-card-text>
+            <v-dialog v-model="addPostcodeDialog"  persistent width="950px">
+                <PostcodeAddDialog :franchise="franchise"
+                        @close="closeAddDialog"/>
+            </v-dialog>
         </v-card>
     </template>
 
     <script>
         import PostcodeAPI from "../../api/PostcodeAPI";
         import ErrorHandlerMixins from "../../mixins/ErrorHandler";
+        import PostcodeAddDialog from "./postcode/PostcodeAddDialog";
 
         export default {
             name: "FranchiseDetails",
+            components: {PostcodeAddDialog},
             props: ['franchise'],
             data(){
                 return {
+                    addPostcodeDialog: false,
                     headers: [
                         { text: 'Postcode',value: 'postcode'},
                         { text: 'Suburb', value: 'locality' },
@@ -126,6 +133,9 @@
                     this.searchOptions.search = '';
 
                     this.getFranchisePostcode();
+                },
+                closeAddDialog(){
+                    this.addPostcodeDialog = false;
                 }
             },
             watch: {
