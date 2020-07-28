@@ -69,6 +69,16 @@ const PostcodeAPI = {
 
     },
 
+    async addPostcodes(franchiseId, postcodes){
+
+        const uri = `/api/franchises/${franchiseId}/postcodes`;
+
+        const response = await api().post(uri, {postcodes: postcodes})
+
+        return response.data;
+
+    },
+
     async addPostcodeToFranchise(franchiseId, postcodeId){
 
         const uri = `/api/franchises/${franchiseId}/postcodes/${postcodeId}/attach`

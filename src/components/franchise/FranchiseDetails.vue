@@ -21,7 +21,7 @@
                 </v-row>
                 <v-divider class="my-5"></v-divider>
                 <v-row class="d-flex align-center justify-space-between mt-3 mb-2">
-                    <v-col cols="12" sm="8">
+                    <v-col cols="12" sm="7">
                         <v-text-field
                                 v-model="searchOptions.search"
                                 class="mr-1"
@@ -29,7 +29,7 @@
                                 prepend-inner-icon="search"
                         ></v-text-field>
                     </v-col>
-                    <v-col cols="12" sm="4" class="d-flex align-center justify-center">
+                    <v-col cols="12" sm="5" class="d-flex align-center justify-center">
                         <v-btn @click="reset" class="mr-3"
                                small color="green darken-1" dark>
                             Refresh
@@ -62,7 +62,8 @@
             </v-card-text>
             <v-dialog v-model="addPostcodeDialog"  persistent width="950px">
                 <PostcodeAddDialog :franchise="franchise"
-                        @close="closeAddDialog"/>
+                                   @success="addSuccessHandler"
+                                    @close="closeAddDialog"/>
             </v-dialog>
         </v-card>
     </template>
@@ -71,6 +72,7 @@
         import PostcodeAPI from "../../api/PostcodeAPI";
         import ErrorHandlerMixins from "../../mixins/ErrorHandler";
         import PostcodeAddDialog from "./postcode/PostcodeAddDialog";
+        import {mapActions} from 'vuex';
 
         export default {
             name: "FranchiseDetails",
@@ -112,6 +114,7 @@
             },
             mixins: [ErrorHandlerMixins],
             methods: {
+                ...mapActions(['setSuccessMessage']),
                 getFranchisePostcode(){
                     this.loading = true;
                     PostcodeAPI.getFranchisePostcodes(this.franchise.id, this.pageOptions, this.searchOptions).then(response => {
@@ -136,6 +139,13 @@
                 },
                 closeAddDialog(){
                     this.addPostcodeDialog = false;
+                },
+                addSuccessHandler(){
+                    this.selected = [];
+                    this.pageOptions = Object.assign({}, this.defaultOptions);
+                    this.searchOptions.search = '';
+                    this.getFranchisePostcode();
+                    this.setSuccessMessage("Postcodes Successfully added");
                 }
             },
             watch: {

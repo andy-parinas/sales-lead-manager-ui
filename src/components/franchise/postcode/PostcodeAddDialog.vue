@@ -19,6 +19,19 @@
                        small color="green darken-1" dark>
                     Refresh
                 </v-btn>
+                <v-btn @click="addPostcodes" class="mx-3"
+                       small color="primary" dark>
+                    <span v-if="adding">
+                        <v-progress-circular
+                                size="17"
+                                indeterminate
+                                color="white"
+                                class="mr-1"
+                        ></v-progress-circular>
+                        Adding
+                    </span>
+                    <Span v-else> Add </Span>
+                </v-btn>
             </div>
 
             <v-data-table
@@ -78,6 +91,7 @@
                 postcodes: [],
                 pagination: {},
                 loading: false,
+                adding: false,
                 selected: []
             }
         },
@@ -95,7 +109,30 @@
                     this.loading = false
                 })
 
+            },
+            addPostcodes(){
+                if(this.selected.length > 0){
 
+                    //convert selected to just ids,
+
+                    const postcodes = this.selected.map(postcode => {
+                        return postcode.id
+                    })
+                    console.log(postcodes)
+                    this.adding = true;
+                    PostcodeAPI.addPostcodes(this.franchise.id, postcodes).then(() => {
+
+                        this.$emit('success');
+                        this.$emit('close');
+
+                    }).catch(error => {
+                        console.log(error.response)
+
+                    }).finally(() => {
+                        this.adding = false;
+                    })
+
+                }
             },
             onPageOptionChanged(){
                 this.getAvailablePostcodes();

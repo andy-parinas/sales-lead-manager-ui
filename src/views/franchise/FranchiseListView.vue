@@ -2,12 +2,12 @@
     <div>
         <PageHeader title="Franchise" class="mb-1" />
         <v-row class="mt-6" justify="center" v-if="selectedFranchise">
-            <v-col cols="12" sm="10">
+            <v-col cols="12" sm="12">
                 <FranchiseDetails @goBack="hideFranchise" :franchise="selectedFranchise" />
             </v-col>
         </v-row>
         <v-row class="mt-6" justify="center" v-show="!selectedFranchise">
-            <v-col cols="12" sm="10">
+            <v-col cols="12" sm="12">
                 <FranchiseTable @showFranchise="showFranchise" />
             </v-col>
         </v-row>
