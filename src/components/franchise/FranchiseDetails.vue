@@ -37,7 +37,8 @@
                         <v-btn small color="primary" class="mr-3" @click="addPostcodeDialog = true">
                             Add Postcode
                         </v-btn>
-                        <v-btn small color="error" :disabled="selected.length === 0" >
+                        <v-btn small color="error" :disabled="selected.length === 0"
+                               @click="removePostcodeDialog = true">
                             Remove Postcode
                         </v-btn>
 
@@ -65,6 +66,12 @@
                                    @success="addSuccessHandler"
                                     @close="closeAddDialog"/>
             </v-dialog>
+            <v-dialog v-model="removePostcodeDialog"  persistent width="650px">
+                <PostcodeDeleteDialog :franchise="franchise"
+                                      :postcodes="selected"
+                                   @success="removeSuccessHandler"
+                                   @close="removePostcodeDialog = false"/>
+            </v-dialog>
         </v-card>
     </template>
 
@@ -73,14 +80,16 @@
         import ErrorHandlerMixins from "../../mixins/ErrorHandler";
         import PostcodeAddDialog from "./postcode/PostcodeAddDialog";
         import {mapActions} from 'vuex';
+        import PostcodeDeleteDialog from "./postcode/PostcodeDeleteDialog";
 
         export default {
             name: "FranchiseDetails",
-            components: {PostcodeAddDialog},
+            components: {PostcodeDeleteDialog, PostcodeAddDialog},
             props: ['franchise'],
             data(){
                 return {
                     addPostcodeDialog: false,
+                    removePostcodeDialog: false,
                     headers: [
                         { text: 'Postcode',value: 'postcode'},
                         { text: 'Suburb', value: 'locality' },
@@ -146,6 +155,14 @@
                     this.searchOptions.search = '';
                     this.getFranchisePostcode();
                     this.setSuccessMessage("Postcodes Successfully added");
+                },
+                removeSuccessHandler(){
+                    this.selected = [];
+                    this.pageOptions = Object.assign({}, this.defaultOptions);
+                    this.searchOptions.search = '';
+                    this.removePostcodeDialog = false;
+                    this.getFranchisePostcode();
+                    this.setSuccessMessage("Postcodes Successfully Removed");
                 }
             },
             watch: {

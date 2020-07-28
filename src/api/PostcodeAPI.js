@@ -79,6 +79,16 @@ const PostcodeAPI = {
 
     },
 
+    async removePostcodes(franchiseId, postcodes){
+
+        const uri = `/api/franchises/${franchiseId}/postcodes/detach`;
+
+        const response = await api().post(uri, {postcodes: postcodes})
+
+        return response.data;
+
+    },
+
     async addPostcodeToFranchise(franchiseId, postcodeId){
 
         const uri = `/api/franchises/${franchiseId}/postcodes/${postcodeId}/attach`
