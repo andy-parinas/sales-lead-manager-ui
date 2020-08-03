@@ -40,6 +40,15 @@
                 </template>
             </v-data-table>
         </v-card>
+
+        <v-dialog v-model="editDialog"  persistent width="850px">
+            <EditFranchiseDialog :edited-item="selectedItem"
+                                    @close="closeEditDialog"/>
+        </v-dialog>
+        <v-dialog v-model="deleteDialog" persistent max-width="550" class="px-2">
+            <DeleteFranchiseDialog :franchise="selectedItem"
+                                      @close="closeDeleteDialog"/>
+        </v-dialog>
     </div>
 </template>
 
@@ -47,13 +56,17 @@
     import FranchiseSearchForm from "./FranchiseSearchForm";
     import {mapState, mapActions} from 'vuex'
     import ChipFranchiseType from "./shared/ChipFranchiseType";
+    import EditFranchiseDialog from "./EditFranchiseDialog";
+    import DeleteFranchiseDialog from "./DeleteFranchiseDialog";
 
     export default {
         name: "FranchiseTable",
-        components: {ChipFranchiseType, FranchiseSearchForm},
+        components: {DeleteFranchiseDialog, EditFranchiseDialog, ChipFranchiseType, FranchiseSearchForm},
         data(){
             return{
                 loading: false,
+                editDialog: false,
+                deleteDialog: false,
                 pageOptions: {
                     page: 1,
                     itemsPerPage: 10,
@@ -83,6 +96,7 @@
                     disablePagination: false,
                     disableItemsPerPage : false
                 },
+                selectedItem: null
             }
         },
         computed: {
@@ -116,10 +130,23 @@
                 this.pageOptions = Object.assign({}, this.defaultOptions)
                 this.getAllFranchises(this.pageOptions, this.searchOptions);
             },
-            deleteItem(){
+            deleteItem(item){
+                this.selectedItem = item;
+                this.deleteDialog = true;
+            },
+            editFranchise(item){
+                this.editDialog = true;
+                this.selectedItem = item;
+            },
+            closeEditDialog(){
+                this.editDialog = false;
+                this.selectedItem = null;
 
             },
-            editFranchise(){
+            closeDeleteDialog()
+            {
+                this.deleteDialog = false;
+                this.selectedItem = null;
 
             },
             showFranchise(item){

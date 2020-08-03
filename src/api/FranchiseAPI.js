@@ -109,6 +109,18 @@ const FranchiseAPI = {
 
         return response.data;
 
+    },
+
+    async deleteFranchise(franchiseId){
+
+        const uri = `/api/franchises/${franchiseId}`;
+
+        await csrf.getCSRFCookie();
+
+        const response = await api().delete(uri);
+
+        return response.data;
+
     }
 
 }

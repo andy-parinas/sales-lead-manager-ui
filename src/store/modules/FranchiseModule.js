@@ -49,6 +49,11 @@ export default {
         insertNewFranchise(state, franchise){
 
             state.franchises.push(franchise);
+        },
+        removedFranchise(state, franchiseId){
+
+            state.franchises  = state.franchises.filter(f => f.id !== franchiseId);
+
         }
 
     },
@@ -99,6 +104,13 @@ export default {
             const response = await FranchiseAPI.createFranchise(data);
 
             commit('insertNewFranchise', response.data);
+        },
+
+        async deleteFranchise({commit}, franchiseId){
+
+            await FranchiseAPI.deleteFranchise(franchiseId);
+
+            commit('removedFranchise', franchiseId);
         }
 
     }
