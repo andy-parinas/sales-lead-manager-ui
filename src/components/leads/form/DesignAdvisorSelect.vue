@@ -4,7 +4,8 @@
             :items="salesStaffs"
             :search-input.sync="search"
             :loading="loading"
-            :rules="[v => !!v || 'This field is required']"
+            :rules="isRequired? [v => !!v || 'This field is required'] : []"
+            clearable
             item-value="id"
             item-text="title"
             color="black"
@@ -25,6 +26,7 @@
 
     export default {
         name: "DesignAdvisorSelect",
+        props: ['isRequired'],
         data(){
             return {
                 salesStaff: '',

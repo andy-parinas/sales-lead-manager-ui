@@ -55,6 +55,15 @@
                             ></v-date-picker>
                         </v-menu>
                     </v-col>
+                    <v-col cols="12">
+                        <ProductSelect @onValueChanged="productSelected" />
+                    </v-col>
+                    <v-col cols="12">
+                        <DesignAdvisorSelect @onValueChanged="designAdvisorSelected" />
+                    </v-col>
+                    <v-col cols="12">
+                        <FranchiseDropDown @onValueChanged="franchiseSelected" />
+                    </v-col>
                 </v-row>
             </v-card-text>
             <v-card-actions class="px-5">
@@ -65,15 +74,20 @@
                 </v-btn>
             </v-card-actions>
         </v-form>
+        <pre>{{ form }}</pre>
     </v-card>
 </template>
 
 <script>
     import {format, parseISO} from "date-fns";
     import EventBus from "../../helpers/EventBus";
+    import ProductSelect from "./shared/ProductSelect";
+    import DesignAdvisorSelect from "../leads/form/DesignAdvisorSelect";
+    import FranchiseDropDown from "../leads/form/FranchiseDropDown";
 
     export default {
         name: "SalesSummaryForm",
+        components: {FranchiseDropDown, DesignAdvisorSelect, ProductSelect},
         data(){
             return {
                 valid: false,
@@ -84,7 +98,10 @@
                 },
                 form: {
                     startDate: '',
-                    endDate: ''
+                    endDate: '',
+                    franchiseId: '',
+                    productId: '',
+                    designAdvisorId: ''
                 }
             }
         },
@@ -101,7 +118,29 @@
         },
         methods: {
             generateReport(){
-                EventBus.$emit('GENERATE_REPORT', {startDate: this.form.startDate, endDate: this.form.endDate})
+                EventBus.$emit('GENERATE_REPORT', this.form)
+            },
+            franchiseSelected(franchise){
+                if(franchise){
+                    this.form.franchiseId = franchise.id
+                }else {
+                    this.form.franchiseId = ''
+                }
+            },
+            productSelected(productId){
+                if(productId){
+                    this.form.productId = productId
+                }else {
+                    this.form.productId = ''
+                }
+            },
+            designAdvisorSelected(designAdvisor){
+                console.log(designAdvisor)
+                if(designAdvisor){
+                    this.form.designAdvisorId = designAdvisor.id
+                }else {
+                    this.form.designAdvisorId = ''
+                }
             }
         }
     }

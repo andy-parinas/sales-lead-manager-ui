@@ -121,20 +121,19 @@
             }
         },
         methods: {
-            generateReport({startDate, endDate}){
+            generateReport(formData){
+                console.log('Generate', formData)
                 this.loading = true;
-                ReportAPI.getSalesSummary(startDate, endDate).then(response => {
-                    this.startDate = startDate;
-                    this.endDate = endDate;
+                ReportAPI.getSalesSummary(formData).then(response => {
+                    this.startDate = formData.startDate;
+                    this.endDate = formData.endDate;
                     this.reports = response.data.results
                     this.total = Object.assign({}, response.data.total)
-                    console.log(response.data.total);
                 }).catch(error => {
                     console.log(error)
                 }).finally(() => {
                     this.loading = false;
                 })
-                console.log(startDate, endDate)
             },
 
             formatDate(value) {

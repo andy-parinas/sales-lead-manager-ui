@@ -6,6 +6,7 @@
                 :search-input.sync="searchOptions.searchFor"
                 :loading="loading"
                 :rules="required? [v => !!v || 'This field is required'] : []"
+                clearable
                 item-value="id"
                 item-text="title"
                 color="black"

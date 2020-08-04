@@ -27,6 +27,10 @@ export const URIBuilder = {
             if (options.page){
                 uri = uri + `page=${options.page}&`
             }
+
+            if(options.all){
+                uri = uri + `all=${options.all}`
+            }
         }
 
         if (searchOptions && searchOptions.searchFor && searchOptions.searchIn){
