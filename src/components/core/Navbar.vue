@@ -116,6 +116,7 @@
             ],
             reports: [
                 {icon: 'mdi-chart-areaspline', text: 'Sales Summary', route: '/reports/sales-summary'},
+                {icon: 'mdi-chart-areaspline', text: 'Sales Summary Product', route: '/reports/product-sales-summary'},
             ]
         }),
         methods: {

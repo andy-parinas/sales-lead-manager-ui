@@ -13,10 +13,6 @@ const ReportAPI = {
             params = params + `&franchise_id=${formData.franchiseId}`
         }
 
-        if(formData.productId && formData.productId !== ""){
-            params = params + `&product_id=${formData.productId}`
-        }
-
         if(formData.designAdvisorId && formData.designAdvisorId !== ""){
             params = params + `&sales_staff_id=${formData.designAdvisorId}`
         }
