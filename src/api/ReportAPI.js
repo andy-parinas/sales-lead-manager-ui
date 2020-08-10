@@ -29,6 +29,10 @@ const ReportAPI = {
 
         let params = `start_date=${encodeURIComponent(formData.startDate)}&end_date=${encodeURIComponent(formData.endDate)}`
 
+        if(formData.productId && formData.productId !== ""){
+            params = params + `&product_id=${formData.productId}`
+        }
+
         const uri = `/api/reports/product-sales-summary?${params}`;
 
         const response = await api().get(uri);
