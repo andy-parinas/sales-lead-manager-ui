@@ -1,6 +1,5 @@
 <template>
    <div>
-
        <v-card outlined >
 
            <div class="d-flex flex-column justify-center align-center my-12" v-if="loading">
@@ -80,6 +79,7 @@
     import EventBus from "../../helpers/EventBus";
     import ReportAPI from "../../api/ReportAPI";
     import SalesSummaryPdfDownload from "./shared/SalesSummaryPdfDownload";
+    import ErrorHandlerMixins from "../../mixins/ErrorHandler";
 
     export default {
         name: "SalesSummaryTable",
@@ -112,6 +112,7 @@
                 endDate: ''
             }
         },
+        mixins: [ErrorHandlerMixins],
         computed: {
             title(){
                 return `Sales Summary Report From ${this.formatDate(this.startDate)} To ${this.formatDate(this.endDate)}`
@@ -122,7 +123,6 @@
         },
         methods: {
             generateReport(formData){
-                console.log('Generate', formData)
                 this.loading = true;
                 ReportAPI.getSalesSummary(formData).then(response => {
                     this.startDate = formData.startDate;
@@ -130,7 +130,7 @@
                     this.reports = response.data.results
                     this.total = Object.assign({}, response.data.total)
                 }).catch(error => {
-                    console.log(error)
+                    this.handleError(error)
                 }).finally(() => {
                     this.loading = false;
                 })

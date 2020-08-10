@@ -28,6 +28,7 @@
 <script>
     import DateSelect from "./shared/DateSelect";
     import ProductSelect from "./shared/ProductSelect";
+    import EventBus from "../../helpers/EventBus";
     export default {
         name: "ProductSalesSummaryForm",
         components: {ProductSelect, DateSelect},
@@ -57,6 +58,8 @@
                 this.form.productId = productId
             },
             generateReport(){
+
+                EventBus.$emit('GENERATE_PRODUCT_SALES_REPORT', this.form)
 
             }
         }

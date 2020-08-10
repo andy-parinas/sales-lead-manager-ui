@@ -5,7 +5,6 @@ const ReportAPI = {
 
     async getSalesSummary(formData){
 
-        console.log('GetReport', formData)
 
         let params = `start_date=${encodeURIComponent(formData.startDate)}&end_date=${encodeURIComponent(formData.endDate)}`
 
@@ -19,12 +18,22 @@ const ReportAPI = {
 
         const uri = `/api/reports/sales-summary?${params}`;
 
-        console.log('URI', uri)
 
         const response = await api().get(uri);
 
         return response.data;
 
+    },
+
+    async getProductSalesSummary(formData){
+
+        let params = `start_date=${encodeURIComponent(formData.startDate)}&end_date=${encodeURIComponent(formData.endDate)}`
+
+        const uri = `/api/reports/product-sales-summary?${params}`;
+
+        const response = await api().get(uri);
+
+        return response.data;
     }
 
 
