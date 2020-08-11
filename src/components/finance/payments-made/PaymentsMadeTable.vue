@@ -25,12 +25,13 @@
 
 <script>
     import PaymentCreateDialog from "./PaymentCreateDialog";
+    import FinanceAPI from "../../../api/FinanceAPI";
+    import ErrorHandlerMixins from "../../../mixins/ErrorHandler";
     export default {
         name: "PaymentsMadeTable",
         components: {PaymentCreateDialog},
         props: ['financeId'],
         data(){
-
             return {
                 loading: false,
                 showCreateDialog: false,
@@ -47,9 +48,25 @@
                 selectedItem: null
             }
         },
+        mixins: [ErrorHandlerMixins],
         methods: {
             onPaymentAdded(){
-
+                this.getPaymentsMade(this.financeId)
+            },
+            getPaymentsMade(financeId){
+                this.loading = true;
+                FinanceAPI.getPaymentsMade(financeId).then(response => {
+                    this.payments = response
+                }).catch(error => {
+                    this.handleError(error)
+                }).finally(() => {
+                    this.loading = false;
+                })
+            }
+        },
+        mounted() {
+            if(this.financeId){
+                this.getPaymentsMade(this.financeId)
             }
         }
     }

@@ -60,6 +60,12 @@
                 if(date){
                     this.form.paymentDate = date
                 }
+            },
+            reset(){
+                this.$refs.form.resetValidation();
+                this.form.paymentDate = '';
+                this.form.description = '';
+                this.form.amount = ''
             }
         }
     }

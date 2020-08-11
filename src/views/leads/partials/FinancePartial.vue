@@ -83,7 +83,7 @@
                 </v-btn>
                 <v-row v-if="showPaymentMade" class="mt-1">
                     <v-col cols="12" sm="12">
-                        <PaymentsMadeTable />
+                        <PaymentsMadeTable :finance-id="finance.id" />
                     </v-col>
                 </v-row>
                 <v-divider class="mt-10 mb-3"></v-divider>
