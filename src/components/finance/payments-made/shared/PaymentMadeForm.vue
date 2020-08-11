@@ -1,0 +1,70 @@
+<template>
+    <v-form v-model="isFormValid" ref="form">
+        <v-card-text>
+            <v-container>
+                <v-row class="mx-2">
+                    <v-col cols="12" sm="12">
+                        <DateSelect label="Payment Date" :required="true" @onDateSelected="dateSelectedHandler" />
+                    </v-col>
+                    <v-col cols="12" sm="12">
+                        <v-text-field v-model="form.description"
+                                      prepend-icon="mdi-file-document-edit"
+                                      label="Description"
+                                      :rules="[rules.requiredField]"
+                        />
+                    </v-col>
+                    <v-col cols="12" sm="12">
+                        <v-text-field v-model="form.amount"
+                                      prepend-icon="mdi-cash"
+                                      label="Amount"
+                                      :rules="[rules.requiredField, rules.numberField]"
+                        />
+                    </v-col>
+                </v-row>
+            </v-container>
+        </v-card-text>
+        <v-card-actions>
+            <v-spacer></v-spacer>
+            <v-btn color="blue darken-1" class="mr-5 mb-5 white--text"
+                   @click="$emit('onSave', form)"
+                   :loading="saving"
+                   :disabled="!isFormValid">
+                Save
+            </v-btn>
+        </v-card-actions>
+    </v-form>
+</template>
+
+<script>
+    import DateSelect from "../../../reports/shared/DateSelect";
+    export default {
+        name: "PaymentMadeForm",
+        props: ['saving'],
+        components: {DateSelect},
+        data(){
+            return {
+                isFormValid: false,
+                form: {
+                    paymentDate: '',
+                    description: '',
+                    amount: ''
+                },
+                rules: {
+                    requiredField: v => !!v || 'This field is required',
+                    numberField: v => /^-?(\d*\.)?\d+$/.test(v) || 'Field should only be numbers',
+                },
+            }
+        },
+        methods: {
+            dateSelectedHandler(date){
+                if(date){
+                    this.form.paymentDate = date
+                }
+            }
+        }
+    }
+</script>
+
+<style scoped>
+
+</style>

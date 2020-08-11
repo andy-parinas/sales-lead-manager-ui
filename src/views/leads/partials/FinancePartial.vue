@@ -81,6 +81,11 @@
                     {{ showPaymentMade? 'Hide Payments' : 'Show Payments'}}
                     <v-icon> {{ showPaymentMade? 'mdi-chevron-down' : 'mdi-chevron-right'}}</v-icon>
                 </v-btn>
+                <v-row v-if="showPaymentMade" class="mt-1">
+                    <v-col cols="12" sm="12">
+                        <PaymentsMadeTable />
+                    </v-col>
+                </v-row>
                 <v-divider class="mt-10 mb-3"></v-divider>
                 <v-btn text small @click="showPaymentSchedule = !showPaymentSchedule">
                     {{ showPaymentSchedule? 'Hide Payment Schedule' : 'Show Payment Schedule'}}
@@ -93,9 +98,11 @@
 
 <script>
     import FinanceAPI from "../../../api/FinanceAPI";
+    import PaymentsMadeTable from "../../../components/finance/payments-made/PaymentsMadeTable";
 
     export default {
         name: "FinancePartial",
+        components: {PaymentsMadeTable},
         props: {
             leadId: {required: true}
         },
