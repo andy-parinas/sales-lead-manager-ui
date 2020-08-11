@@ -7,6 +7,19 @@
                     :loading="loading"
                     hide-default-footer
             >
+                <template v-slot:item.actions="{ item }">
+                    <v-container>
+                        <v-row class="justify-sm-start">
+                            <v-btn x-small fab text dark color="error" class="mr-3"  v-if="isHeadOffice"  @click="deletePayment(item)">
+                                <v-icon small >mdi-trash-can-outline </v-icon>
+                            </v-btn>
+                            <v-btn x-small fab text dark color="accent" @click="editPayment(item)" >
+                                <v-icon small> mdi-pencil</v-icon>
+                            </v-btn>
+                        </v-row>
+                    </v-container>
+                </template>
+
             </v-data-table>
             <div class="mt-5">
                 <v-btn small @click="showCreateDialog = true">Add Payment</v-btn>
@@ -62,6 +75,12 @@
                 }).finally(() => {
                     this.loading = false;
                 })
+            },
+            deletePayment(){
+
+            },
+            editPayment(){
+
             }
         },
         mounted() {
