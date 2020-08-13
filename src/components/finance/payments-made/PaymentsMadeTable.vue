@@ -31,6 +31,13 @@
                             @close="showCreateDialog = false"
                             @success="onPaymentAdded"/>
                 </v-dialog>
+                <v-dialog v-model="showEditDialog" persistent max-width="500px">
+                    <PaymentEditDialog
+                            :payment="selectedItem"
+                            :finance-id="financeId"
+                            @close="closeEditDialog"
+                            @success="onPaymentUpdated"/>
+                </v-dialog>
             </div>
         </v-card>
     </div>
@@ -40,9 +47,11 @@
     import PaymentCreateDialog from "./PaymentCreateDialog";
     import FinanceAPI from "../../../api/FinanceAPI";
     import ErrorHandlerMixins from "../../../mixins/ErrorHandler";
+    import PaymentEditDialog from "./PaymentEditDialog";
+    import EventBus from "../../../helpers/EventBus";
     export default {
         name: "PaymentsMadeTable",
-        components: {PaymentCreateDialog},
+        components: {PaymentEditDialog, PaymentCreateDialog},
         props: ['financeId'],
         data(){
             return {
@@ -66,6 +75,9 @@
             onPaymentAdded(){
                 this.getPaymentsMade(this.financeId)
             },
+            onPaymentUpdated(){
+                this.getPaymentsMade(this.financeId)
+            },
             getPaymentsMade(financeId){
                 this.loading = true;
                 FinanceAPI.getPaymentsMade(financeId).then(response => {
@@ -79,14 +91,22 @@
             deletePayment(){
 
             },
-            editPayment(){
-
+            editPayment(payment){
+                this.selectedItem = payment
+                this.showEditDialog = true
+            },
+            closeEditDialog(){
+                this.showEditDialog = false
+                this.selectedItem = null
             }
         },
         mounted() {
             if(this.financeId){
                 this.getPaymentsMade(this.financeId)
             }
+
+            EventBus.$on('PAYMENT_MADE_UPDATED', () => this.getPaymentsMade(this.financeId))
+            EventBus.$on('PAYMENT_MADE_CREATED', () => this.getPaymentsMade(this.financeId))
         }
     }
 </script>

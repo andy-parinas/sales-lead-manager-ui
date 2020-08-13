@@ -31,7 +31,7 @@
 
     export default {
         name: "DateSelectField",
-        props: ['required', 'label'],
+        props: ['required', 'label', 'initialDate'],
         data(){
             return {
                 startDateMenu: false,
@@ -46,6 +46,18 @@
         methods: {
             dateSelected(){
                 this.$emit('onDateSelected', this.formDate)
+            }
+        },
+        watch: {
+            initialDate(){
+                if(this.initialDate){
+                    this.formDate = this.initialDate
+                }
+            }
+        },
+        mounted() {
+            if(this.initialDate){
+                this.formDate = this.initialDate
             }
         }
     }

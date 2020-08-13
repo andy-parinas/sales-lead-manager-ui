@@ -74,7 +74,8 @@
                 </v-row>
                 <v-row>
                     <v-spacer></v-spacer>
-                    <v-btn text small fab @click="getFinance"><v-icon>mdi-refresh</v-icon></v-btn>
+                    <v-btn :loading="refreshing"
+                            text small fab @click="getFinance"><v-icon>mdi-refresh</v-icon></v-btn>
                 </v-row>
                 <v-divider class="mt-10 mb-3"></v-divider>
                 <v-btn text small @click="showPaymentMade = !showPaymentMade">
@@ -99,6 +100,7 @@
 <script>
     import FinanceAPI from "../../../api/FinanceAPI";
     import PaymentsMadeTable from "../../../components/finance/payments-made/PaymentsMadeTable";
+    import EventBus from "../../../helpers/EventBus";
 
     export default {
         name: "FinancePartial",
@@ -111,12 +113,18 @@
                 showPaymentMade: false,
                 showPaymentSchedule: false,
                 loading: false,
+                refreshing: false,
                 finance: null
             }
         },
         methods: {
             getFinance(){
-                this.loading = true;
+                if(!this.finance){
+                    this.loading = true;
+                }else {
+                    this.refreshing = true
+                }
+
                 FinanceAPI.getLeadFinance(this.leadId).then(response => {
                     if(response.status === 200){
                         this.finance = Object.assign({}, response.data.data);
@@ -124,7 +132,8 @@
                 }).catch(error => {
                     console.log(error.response)
                 }).finally(() => {
-                    this.loading = false
+                    this.loading = false;
+                    this.refreshing = false;
                 })
             }
         },
@@ -132,6 +141,9 @@
             if(this.leadId){
                 this.getFinance();
             }
+
+            EventBus.$on('PAYMENT_MADE_UPDATED', () => this.getFinance())
+            EventBus.$on('PAYMENT_MADE_CREATED', () => this.getFinance())
         }
     }
 </script>

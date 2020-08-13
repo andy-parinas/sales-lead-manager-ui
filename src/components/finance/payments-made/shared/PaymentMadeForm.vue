@@ -4,7 +4,10 @@
             <v-container>
                 <v-row class="mx-2">
                     <v-col cols="12" sm="12">
-                        <DateSelect label="Payment Date" :required="true" @onDateSelected="dateSelectedHandler" />
+                        <DateSelectField label="Payment Date"
+                                         :initial-date="initialData? initialData.paymentDate : ''"
+                                         :required="true"
+                                         @onDateSelected="dateSelectedHandler" />
                     </v-col>
                     <v-col cols="12" sm="12">
                         <v-text-field v-model="form.description"
@@ -36,11 +39,12 @@
 </template>
 
 <script>
-    import DateSelect from "../../../reports/shared/DateSelect";
+
+    import DateSelectField from "../../../shared/DateSelectField";
     export default {
         name: "PaymentMadeForm",
-        props: ['saving'],
-        components: {DateSelect},
+        props: ['saving', 'initialData'],
+        components: {DateSelectField},
         data(){
             return {
                 isFormValid: false,
@@ -66,6 +70,20 @@
                 this.form.paymentDate = '';
                 this.form.description = '';
                 this.form.amount = ''
+            }
+        },
+        watch: {
+            initialData: {
+                handler(){
+                    if(this.initialData){
+                        this.form = Object.assign({}, this.initialData)
+                    }
+                }
+            }
+        },
+        mounted() {
+            if(this.initialData){
+                this.form = Object.assign({}, this.initialData)
             }
         }
     }

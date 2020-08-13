@@ -16,6 +16,7 @@
     import PaymentMadeForm from "./shared/PaymentMadeForm";
     import FinanceAPI from "../../../api/FinanceAPI";
     import {mapActions} from 'vuex';
+    import EventBus from "../../../helpers/EventBus";
 
     export default {
         name: "PaymentCreateDialog",
@@ -38,7 +39,7 @@
                     this.saving = true;
                     FinanceAPI.addPayment(this.financeId,formData).then(() => {
                         this.setSuccessMessage("Payment Successfully added");
-                        this.$emit('success');
+                        EventBus.$emit("PAYMENT_MADE_CREATED")
                         this.closeDialog();
                     }).catch(error => {
                         console.log(error.response)

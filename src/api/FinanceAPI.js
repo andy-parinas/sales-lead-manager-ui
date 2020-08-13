@@ -40,6 +40,25 @@ const FinanceAPI = {
 
         return response.data;
 
+    },
+
+    async updatePayment(financeId, paymentId, formData){
+
+        const uri = `api/finances/${financeId}/payments-made/${paymentId}`
+
+        const data = {
+            payment_date: formData.paymentDate,
+            description: formData.description,
+            amount: formData.amount
+        }
+
+        await csrf.getCSRFCookie();
+
+        const response = await api().patch(uri, data);
+
+        return response.data;
+
+
     }
 
 }
