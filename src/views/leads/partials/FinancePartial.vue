@@ -92,6 +92,11 @@
                     {{ showPaymentSchedule? 'Hide Payment Schedule' : 'Show Payment Schedule'}}
                     <v-icon> {{ showPaymentSchedule? 'mdi-chevron-down' : 'mdi-chevron-right'}}</v-icon>
                 </v-btn>
+                <v-row v-if="showPaymentSchedule" class="mt-1">
+                    <v-col cols="12" sm="12">
+                        <PaymentsScheduleTable :finance-id="finance.id" />
+                    </v-col>
+                </v-row>
             </v-card-text>
         </v-card>
     </div>
@@ -101,10 +106,11 @@
     import FinanceAPI from "../../../api/FinanceAPI";
     import PaymentsMadeTable from "../../../components/finance/payments-made/PaymentsMadeTable";
     import EventBus from "../../../helpers/EventBus";
+    import PaymentsScheduleTable from "../../../components/finance/payments-schedule/PaymentsScheduleTable";
 
     export default {
         name: "FinancePartial",
-        components: {PaymentsMadeTable},
+        components: {PaymentsScheduleTable, PaymentsMadeTable},
         props: {
             leadId: {required: true}
         },
