@@ -59,6 +59,18 @@ const FinanceAPI = {
         return response.data;
 
 
+    },
+
+    async deletePayment(financeId, paymentId){
+
+        const uri = `api/finances/${financeId}/payments-made/${paymentId}`;
+
+        await csrf.getCSRFCookie();
+
+        const response = await api().delete(uri);
+
+        return response.data;
+
     }
 
 }

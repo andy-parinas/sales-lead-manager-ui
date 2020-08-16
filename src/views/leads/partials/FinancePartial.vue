@@ -144,6 +144,7 @@
 
             EventBus.$on('PAYMENT_MADE_UPDATED', () => this.getFinance())
             EventBus.$on('PAYMENT_MADE_CREATED', () => this.getFinance())
+            EventBus.$on('PAYMENT_MADE_DELETED', () => this.getFinance())
         }
     }
 </script>

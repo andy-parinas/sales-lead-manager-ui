@@ -10,7 +10,8 @@
                 <template v-slot:item.actions="{ item }">
                     <v-container>
                         <v-row class="justify-sm-start">
-                            <v-btn x-small fab text dark color="error" class="mr-3"  v-if="isHeadOffice"  @click="deletePayment(item)">
+                            <v-btn x-small fab text dark color="error" class="mr-3"
+                                   v-if="isHeadOffice"  @click="deletePayment(item)">
                                 <v-icon small >mdi-trash-can-outline </v-icon>
                             </v-btn>
                             <v-btn x-small fab text dark color="accent" @click="editPayment(item)" >
@@ -38,6 +39,12 @@
                             @close="closeEditDialog"
                             @success="onPaymentUpdated"/>
                 </v-dialog>
+                <v-dialog v-model="showDeleteDialog" persistent max-width="500px">
+                    <PaymentDeleteDialog
+                            :payment="selectedItem"
+                            :finance-id="financeId"
+                            @close="closeDeleteDialog"/>
+                </v-dialog>
             </div>
         </v-card>
     </div>
@@ -49,9 +56,10 @@
     import ErrorHandlerMixins from "../../../mixins/ErrorHandler";
     import PaymentEditDialog from "./PaymentEditDialog";
     import EventBus from "../../../helpers/EventBus";
+    import PaymentDeleteDialog from "./PaymentDeleteDialog";
     export default {
         name: "PaymentsMadeTable",
-        components: {PaymentEditDialog, PaymentCreateDialog},
+        components: {PaymentDeleteDialog, PaymentEditDialog, PaymentCreateDialog},
         props: ['financeId'],
         data(){
             return {
@@ -88,8 +96,9 @@
                     this.loading = false;
                 })
             },
-            deletePayment(){
-
+            deletePayment(item){
+                this.showDeleteDialog = true
+                this.selectedItem = item
             },
             editPayment(payment){
                 this.selectedItem = payment
@@ -97,6 +106,10 @@
             },
             closeEditDialog(){
                 this.showEditDialog = false
+                this.selectedItem = null
+            },
+            closeDeleteDialog(){
+                this.showDeleteDialog = false
                 this.selectedItem = null
             }
         },
@@ -107,6 +120,7 @@
 
             EventBus.$on('PAYMENT_MADE_UPDATED', () => this.getPaymentsMade(this.financeId))
             EventBus.$on('PAYMENT_MADE_CREATED', () => this.getPaymentsMade(this.financeId))
+            EventBus.$on('PAYMENT_MADE_DELETED', () => this.getPaymentsMade(this.financeId))
         }
     }
 </script>
