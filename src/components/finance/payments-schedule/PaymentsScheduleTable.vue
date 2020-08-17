@@ -23,11 +23,11 @@
 
             </v-data-table>
             <div class="mt-5">
-                <v-btn small @click="showCreateDialog = true">Add Payment</v-btn>
+                <v-btn small @click="showCreateDialog = true">Add Payment Schedule</v-btn>
             </div>
             <div>
                 <v-dialog v-model="showCreateDialog" persistent max-width="500px">
-                    <PaymentScheduleCreateDialog @close="showCreateDialog = false" />
+                    <PaymentScheduleCreateDialog @close="showCreateDialog = false" :finance-id="financeId" />
                 </v-dialog>
                 <v-dialog v-model="showEditDialog" persistent max-width="500px">
 
@@ -42,17 +42,21 @@
 
 <script>
     import PaymentScheduleCreateDialog from "./PaymentScheduleCreateDialog";
+    import FinanceAPI from "../../../api/FinanceAPI";
+    import ErrorHandlerMixins from "../../../mixins/ErrorHandler";
+    import EventBus from "../../../helpers/EventBus";
     export default {
         name: "PaymentsScheduleTable",
         components: {PaymentScheduleCreateDialog},
-        props: [],
+        props: ['financeId'],
         data(){
             return {
                 showCreateDialog: false,
                 showEditDialog: false,
                 showDeleteDialog: false,
+                loading: false,
                 headers: [
-                    { text: 'Payment Date',value: 'paymentDate'},
+                    { text: 'Due Date',value: 'dueDate'},
                     { text: 'Description', value: 'description' },
                     { text: 'Amount', value: 'amount' },
                     { text: 'Status', value: 'status' },
@@ -61,13 +65,31 @@
                 payments: []
             }
         },
+        mixins: [ErrorHandlerMixins],
         methods: {
+            getPayments(financeId){
+                this.loading = true;
+                FinanceAPI.getPaymentsSchedule(financeId).then(response => {
+                    this.payments = response.data
+                }).catch(error => {
+                    this.handleError(error);
+                }).finally(() => {
+                    this.loading = false;
+                })
+            },
             deletePayment(){
 
             },
             editPayment(){
 
             }
+        },
+        mounted() {
+            if(this.financeId){
+                this.getPayments(this.financeId);
+            }
+
+            EventBus.$on('PAYMENT_SCHEDULE_UPDATE', () => this.getPayments(this.financeId))
         }
     }
 </script>

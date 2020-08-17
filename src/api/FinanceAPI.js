@@ -71,6 +71,34 @@ const FinanceAPI = {
 
         return response.data;
 
+    },
+
+    async getPaymentsSchedule($financeId){
+
+        const uri = `api/finances/${$financeId}/payment-schedules`;
+
+        const response = await api().get(uri);
+
+        return response.data;
+
+    },
+
+    async addPaymentSchedule($financeId, formData){
+
+        const uri = `api/finances/${$financeId}/payment-schedules`
+
+        const data = {
+            due_date: formData.dueDate,
+            description: formData.description,
+            amount: formData.amount
+        }
+
+        await csrf.getCSRFCookie();
+
+        const response = await api().post(uri, data);
+
+        return response.data;
+
     }
 
 }
