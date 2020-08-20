@@ -5,7 +5,7 @@
                 <v-row class="mx-2">
                     <v-col cols="12" sm="12">
                         <DateSelectField label="Due Date"
-                                         :initial-date="initialData? initialData.paymentDate : ''"
+                                         :initial-date="initialData? initialData.dueDate : ''"
                                          :required="true"
                                          @onDateSelected="dateSelectedHandler" />
                     </v-col>
@@ -69,6 +69,20 @@
                 this.form.dueDate = '';
                 this.form.description = '';
                 this.form.amount = ''
+            }
+        },
+        watch: {
+            initialData: {
+                handler(){
+                    if(this.initialData){
+                        this.form = Object.assign({}, this.initialData)
+                    }
+                }
+            }
+        },
+        mounted() {
+            if(this.initialData){
+                this.form = Object.assign({}, this.initialData)
             }
         }
     }
