@@ -119,6 +119,18 @@ const FinanceAPI = {
 
         return response.data;
 
+    },
+
+    async deletePaymentSchedule(financeId, paymentId){
+
+        const uri = `api/finances/${financeId}/payment-schedules/${paymentId}`;
+
+        await csrf.getCSRFCookie();
+
+        const response = await api().delete(uri);
+
+        return response.data;
+
     }
 
 }

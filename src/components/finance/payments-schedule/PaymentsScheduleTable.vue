@@ -34,7 +34,7 @@
                                                :payment="selectedItem" :finance-id="financeId" />
                 </v-dialog>
                 <v-dialog v-model="showDeleteDialog" persistent max-width="500px">
-
+                    <PaymentScheduleDeleteDialog @close="showDeleteDialog = false" :payment="selectedItem" :finance-id="financeId" />
                 </v-dialog>
             </div>
         </v-card>
@@ -47,9 +47,10 @@
     import ErrorHandlerMixins from "../../../mixins/ErrorHandler";
     import EventBus from "../../../helpers/EventBus";
     import PaymentScheduleEditDialog from "./PaymentScheduleEditDialog";
+    import PaymentScheduleDeleteDialog from "./PaymentScheduleDeleteDialog";
     export default {
         name: "PaymentsScheduleTable",
-        components: {PaymentScheduleEditDialog, PaymentScheduleCreateDialog},
+        components: {PaymentScheduleDeleteDialog, PaymentScheduleEditDialog, PaymentScheduleCreateDialog},
         props: ['financeId'],
         data(){
             return {
@@ -80,8 +81,9 @@
                     this.loading = false;
                 })
             },
-            deletePayment(){
-
+            deletePayment(item){
+                this.selectedItem = item;
+                this.showDeleteDialog = true;
             },
             editPayment(item){
                 this.selectedItem = item;
