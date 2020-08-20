@@ -119,8 +119,6 @@
             }
 
             EventBus.$on('PAYMENT_MADE_UPDATED', () => this.getPaymentsMade(this.financeId))
-            EventBus.$on('PAYMENT_MADE_CREATED', () => this.getPaymentsMade(this.financeId))
-            EventBus.$on('PAYMENT_MADE_DELETED', () => this.getPaymentsMade(this.financeId))
         }
     }
 </script>

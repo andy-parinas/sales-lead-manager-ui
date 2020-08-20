@@ -39,7 +39,7 @@
                     this.saving = true;
                     FinanceAPI.addPayment(this.financeId,formData).then(() => {
                         this.setSuccessMessage("Payment Successfully added");
-                        EventBus.$emit("PAYMENT_MADE_CREATED")
+                        EventBus.$emit("PAYMENT_MADE_UPDATED")
                         this.closeDialog();
                     }).catch(error => {
                         console.log(error.response)

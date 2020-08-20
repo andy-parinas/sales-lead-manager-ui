@@ -131,6 +131,18 @@ const FinanceAPI = {
 
         return response.data;
 
+    },
+
+    async convertPaymentSchedule(financeId, paymentId){
+
+        const uri = `api/finances/${financeId}/payment-schedules/${paymentId}/convert`;
+
+        await csrf.getCSRFCookie();
+
+        const response = await api().post(uri);
+
+        return response.data;
+
     }
 
 }

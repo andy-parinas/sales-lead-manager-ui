@@ -52,7 +52,7 @@
                 this.deleting = true;
                 FinanceAPI.deletePayment(this.financeId, this.payment.id).then(() => {
                     this.setSuccessMessage("Payment Successfully Deleted")
-                    EventBus.$emit("PAYMENT_MADE_DELETED")
+                    EventBus.$emit("PAYMENT_MADE_UPDATED")
                     this.closeDialog();
                 }).catch(error => {
                     this.handleError(error)

@@ -14,9 +14,17 @@
                                     @click="deletePayment(item)">
                                 <v-icon small >mdi-trash-can-outline </v-icon>
                             </v-btn>
-                            <v-btn x-small fab text dark color="accent" @click="editPayment(item)" >
+                            <v-btn x-small fab text dark color="accent"
+                                   :disabled="item.status === 'paid'"
+                                   @click="editPayment(item)" >
                                 <v-icon small> mdi-pencil</v-icon>
                             </v-btn>
+                            <v-btn x-small fab text dark color="green"
+                                   :disabled="item.status === 'paid'"
+                                   @click="convertToPayment(item)" >
+                                <v-icon small> mdi-cash</v-icon>
+                            </v-btn>
+
                         </v-row>
                     </v-container>
                 </template>
@@ -36,6 +44,11 @@
                 <v-dialog v-model="showDeleteDialog" persistent max-width="500px">
                     <PaymentScheduleDeleteDialog @close="showDeleteDialog = false" :payment="selectedItem" :finance-id="financeId" />
                 </v-dialog>
+                <v-dialog v-model="showConvertDialog" persistent max-width="500px">
+                    <PaymentScheduleConvertDialog @close="showConvertDialog = false"
+                                                  :payment="selectedItem"
+                                                  :finance-id="financeId" />
+                </v-dialog>
             </div>
         </v-card>
     </div>
@@ -48,15 +61,19 @@
     import EventBus from "../../../helpers/EventBus";
     import PaymentScheduleEditDialog from "./PaymentScheduleEditDialog";
     import PaymentScheduleDeleteDialog from "./PaymentScheduleDeleteDialog";
+    import PaymentScheduleConvertDialog from "./PaymentScheduleConvertDialog";
     export default {
         name: "PaymentsScheduleTable",
-        components: {PaymentScheduleDeleteDialog, PaymentScheduleEditDialog, PaymentScheduleCreateDialog},
+        components: {
+            PaymentScheduleConvertDialog,
+            PaymentScheduleDeleteDialog, PaymentScheduleEditDialog, PaymentScheduleCreateDialog},
         props: ['financeId'],
         data(){
             return {
                 showCreateDialog: false,
                 showEditDialog: false,
                 showDeleteDialog: false,
+                showConvertDialog: false,
                 loading: false,
                 headers: [
                     { text: 'Due Date',value: 'dueDate'},
@@ -80,6 +97,10 @@
                 }).finally(() => {
                     this.loading = false;
                 })
+            },
+            convertToPayment(item){
+                this.selectedItem = item
+                this.showConvertDialog = true
             },
             deletePayment(item){
                 this.selectedItem = item;
