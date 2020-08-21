@@ -16,6 +16,10 @@ const ReportAPI = {
             params = params + `&sales_staff_id=${formData.designAdvisorId}`
         }
 
+        if(formData.productId && formData.productId !== ""){
+            params = params + `&product_id=${formData.productId}`
+        }
+
         const uri = `/api/reports/sales-summary?${params}`;
 
 

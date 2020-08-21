@@ -32,6 +32,7 @@
                        <tr>
                            <th class="text-left">Design Adivisor</th>
                            <th class="text-left">Franchise</th>
+                           <th class="text-left">ProductName</th>
                            <th class="text-right"># Sales</th>
                            <th class="text-right"># Leads</th>
                            <th class="text-right">Total Contracts</th>
@@ -43,6 +44,7 @@
                        <tr v-for="(report, index) in reports" :key="index">
                            <td>{{ report.salesStaff }}</td>
                            <td>{{ report.franchiseNumber }}</td>
+                           <td>{{ report.productName }}</td>
                            <td class="text-right">{{ report.numberOfSales }}</td>
                            <td class="text-right">{{ report.numberOfLeads }}</td>
                            <td class="text-right">{{ report.totalContracts | decimalFormat }}</td>
@@ -52,6 +54,7 @@
                        <tr>
                            <td class="font-weight-bold">Total </td>
                            <td>  </td>
+                           <td>  </td>
                            <td class="text-right font-weight-bold"> {{ total.totalNumberOfSales | decimalFormat }} </td>
                            <td class="text-right font-weight-bold"> {{ total.totalNumberOfLeads | decimalFormat }} </td>
                            <td class="text-right font-weight-bold"> {{ total.grandTotalContracts | decimalFormat }} </td>
@@ -60,6 +63,7 @@
                        </tr>
                        <tr>
                            <td class="font-weight-bold">Average </td>
+                           <td>  </td>
                            <td>  </td>
                            <td class="text-right font-weight-bold"> {{ total.averageNumberOfSales | decimalFormat }} </td>
                            <td class="text-right font-weight-bold"> {{ total.averageNumberOfLeads | decimalFormat }} </td>
@@ -91,6 +95,7 @@
                 header: [
                     {title: 'Sales Staff',  name: 'salesStaff', type: 'string' },
                     {title: 'Franchise Number',  name: 'franchiseNumber', type: 'string' },
+                    {title: 'Product Number',  name: 'productName', type: 'string' },
                     {title: '# Sales',  name: 'numberOfSales', type: 'integer' },
                     {title: '# Leads',  name: 'numberOfLeads', type: 'integer' },
                     {title: 'Total Contracts',  name: 'totalContracts', type: 'currency' },

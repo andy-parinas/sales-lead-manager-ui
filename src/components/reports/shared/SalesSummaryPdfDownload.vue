@@ -37,6 +37,7 @@
                     const total = [
                         {text: 'Total', bold: true},
                         '--',
+                        '--',
                         {text: this.decimalFormat(this.total.totalNumberOfSales), alignment: 'right', bold: true},
                         {text: this.decimalFormat(this.total.totalNumberOfLeads), alignment: 'right', bold: true},
                         {text: this.decimalFormat(this.total.grandTotalContracts), alignment: 'right', bold: true},
@@ -47,6 +48,7 @@
 
                     const average = [
                         {text:'Average', bold: true},
+                        '--',
                         '--',
                         {text: this.decimalFormat(this.total.averageNumberOfSales), alignment: 'right', bold: true},
                         {text: this.decimalFormat(this.total.averageNumberOfLeads), alignment: 'right', bold: true},
@@ -66,7 +68,7 @@
                                 layout: 'lightHorizontalLines', // optional
                                 table: {
                                     headerRows: 1,
-                                    widths: [ '*', 'auto', 'auto', 'auto', 'auto', 'auto', 'auto' ],
+                                    widths: [ '*', 'auto','auto', 'auto', 'auto', 'auto', 'auto', 'auto' ],
                                     body: body
                                 }
                             }
