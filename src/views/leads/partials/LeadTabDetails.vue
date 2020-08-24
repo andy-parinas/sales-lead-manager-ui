@@ -13,6 +13,7 @@
             <v-tab v-if="!summary"> Documents </v-tab>
             <v-tab v-if="!summary" > Contract </v-tab>
             <v-tab v-if="!summary"> Finance </v-tab>
+            <v-tab v-if="!summary"> Constructions </v-tab>
 
             <v-tab-item>
                 <LeadContactPartial :data="lead.details"  />
@@ -32,6 +33,9 @@
             <v-tab-item v-if="!summary">
                 <FinancePartial :lead-id="lead.details.id" />
             </v-tab-item>
+            <v-tab-item v-if="!summary">
+                <ConstructionPartial :lead-id="lead.details.id" />
+            </v-tab-item>
         </v-tabs>
     </v-card>
 </template>
@@ -43,6 +47,7 @@
     import DocumentPartial from "./DocumentPartial";
     import ContractPartial from "./ContractPartial";
     import FinancePartial from "./FinancePartial";
+    import ConstructionPartial from "./ConstructionPartial";
 
 
     export default {
@@ -53,6 +58,7 @@
             summary: {type:Boolean}
         },
         components: {
+            ConstructionPartial,
             FinancePartial,
             ContractPartial, DocumentPartial, LeadContactPartial, JobTypePartial, AppointmentPartial},
         data(){
