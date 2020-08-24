@@ -119,20 +119,28 @@
                 </v-row>
             </v-card-text>
         </v-card>
+        <v-dialog v-model="showCreateDialog" persistent max-width="800px">
+            <ConstructionCreateDialog
+                    :lead-id="leadId"
+                    @close="showCreateDialog = false" />
+        </v-dialog>
     </div>
 </template>
 
 <script>
     import ConstructionAPI from "../../../api/ConstructionAPI";
     import ErrorHandlerMixins from "../../../mixins/ErrorHandler";
+    import ConstructionCreateDialog from "../../../components/constructions/ConstructionCreateDialog";
 
     export default {
         name: "ConstructionPartial",
+        components: {ConstructionCreateDialog},
         props: ['leadId'],
         data(){
             return {
                 construction: null,
-                loading: false
+                loading: false,
+                showCreateDialog: false
             }
         },
         mixins: [ErrorHandlerMixins],
