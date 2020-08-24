@@ -1,16 +1,33 @@
 <template>
     <div>
-        <v-card flat class="mx-10">
+        <v-skeleton-loader v-if="loading"
+                           :loading="loading"
+                           height="94"
+                           type="list-item-two-line">
+            <v-card>
+                <v-card-title>Title</v-card-title>
+                <v-card-text>Card Text</v-card-text>
+            </v-card>
+        </v-skeleton-loader>
+        <v-card flat class="mx-10" v-if="construction === null && !loading">
+            <v-row >
+                <v-col cols="12" sm="6">
+                    <span class="ml-2  heading-6 font-weight-medium grey--text"> No Construction Details Available </span>
+                    <v-btn text color="primary" class="mr-2" @click="showCreateDialog =true">Click Here to Create</v-btn>
+                </v-col>
+            </v-row>
+        </v-card>
+        <v-card flat class="mx-10" v-if="construction && !loading">
             <v-card-text>
                 <span class="font-weight-medium caption" >Site Address</span>
                 <v-row>
                     <v-col cols="12" sm="6" md="4">
                         <v-icon small>mdi-home</v-icon>
-                        <span class="ml-2"> Street Address </span>
+                        <span class="ml-2"> {{ construction.siteAddress }} </span>
                     </v-col>
                     <v-col cols="12" sm="6">
                         <v-icon small>mdi-map</v-icon>
-                        <span class="ml-2"> Suburb, State, Postcode</span>
+                        <span class="ml-2"> {{ construction.postcode.suburb }}, {{ construction.postcode.state}}, {{ construction.postcode.postcode }}</span>
                     </v-col>
                 </v-row>
                 <v-divider class="my-3"></v-divider>
@@ -19,18 +36,19 @@
                     <v-col cols="12" sm="12" md="12">
                         <v-icon small>mdi-clipboard-list</v-icon>
                         <span class="ml-2 font-weight-medium caption"> Material List:  </span>
+                        <span> {{ construction.materialList }}</span>
                     </v-col>
                 </v-row>
                 <v-row>
                     <v-col cols="12" sm="6" md="6">
                         <v-icon small>mdi-calendar-month</v-icon>
                         <span class="ml-2 font-weight-medium caption"> Date Materials Received:</span>
-                        <span> 24/08/2020 </span>
+                        <span> {{ construction.dateAnticipatedDelivery }} </span>
                     </v-col>
                     <v-col cols="12" sm="6" md="6">
                         <v-icon small>mdi-calendar-month</v-icon>
-                        <span class="ml-2 font-weight-medium caption"> Date Assemby Completed:</span>
-                        <span> 24/08/2020 </span>
+                        <span class="ml-2 font-weight-medium caption"> Date Assembly Completed:</span>
+                        <span> {{ construction.dateAssemblyCompleted }} </span>
                     </v-col>
                 </v-row>
                 <v-divider class="my-3"></v-divider>
@@ -39,17 +57,17 @@
                     <v-col cols="12" sm="6" md="6">
                         <v-icon small>mdi-calendar-month</v-icon>
                         <span class="ml-2 font-weight-medium caption"> Anticipated Delivery Date:</span>
-                        <span> 24/08/2020 </span>
+                        <span> {{ construction.dateAnticipatedDelivery }} </span>
                     </v-col>
                     <v-col cols="12" sm="6" md="6">
                         <v-icon small>mdi-calendar-month</v-icon>
                         <span class="ml-2 font-weight-medium caption"> Finished Product Delivery Date:</span>
-                        <span> 24/08/2020 </span>
+                        <span> {{ construction.dateFinishedProductDelivery }} </span>
                     </v-col>
                     <v-col cols="12" sm="6" md="6">
                         <v-icon small>mdi-clipboard-list</v-icon>
                         <span class="ml-2 font-weight-medium caption"> Coil Number:</span>
-                        <span>  </span>
+                        <span> {{ construction.coilNumber }} </span>
                     </v-col>
                 </v-row>
                 <v-divider class="my-3"></v-divider>
@@ -58,32 +76,32 @@
                     <v-col cols="12" sm="12" md="12">
                         <v-icon small>mdi-tools</v-icon>
                         <span class="ml-2 font-weight-medium caption"> Builders Name:</span>
-                        <span> John Doe </span>
+                        <span> {{ construction.tradeStaff.name }} </span>
                     </v-col>
                     <v-col cols="12" sm="6" md="6">
                         <v-icon small>mdi-calendar-month</v-icon>
                         <span class="ml-2 font-weight-medium caption"> Anticipated Construction Start:</span>
-                        <span> 24/08/2020 </span>
+                        <span> {{ construction.anticipatedConstructionStart }} </span>
                     </v-col>
                     <v-col cols="12" sm="6" md="6">
                         <v-icon small>mdi-calendar-month</v-icon>
                         <span class="ml-2 font-weight-medium caption"> Actual Construction Start:</span>
-                        <span> 24/08/2020 </span>
+                        <span> {{ construction.actualConstructionStart }} </span>
                     </v-col>
                     <v-col cols="12" sm="6" md="6">
                         <v-icon small>mdi-calendar-month</v-icon>
                         <span class="ml-2 font-weight-medium caption"> Anticipated Completion Date:</span>
-                        <span> 24/08/2020 </span>
+                        <span> {{ construction.anticipatedConstructionComplete }} </span>
                     </v-col>
                     <v-col cols="12" sm="6" md="6">
                         <v-icon small>mdi-calendar-month</v-icon>
                         <span class="ml-2 font-weight-medium caption"> Actual Completion Date:</span>
-                        <span> 24/08/2020 </span>
+                        <span> {{ construction.actualConstructionComplete}} </span>
                     </v-col>
                     <v-col cols="12" sm="12" md="12">
                         <v-icon small>mdi-comment</v-icon>
                         <span class="ml-2 font-weight-medium caption"> Comments:</span>
-                        <span> Lorem Ipsum </span>
+                        <span> {{ construction.comments }} </span>
                     </v-col>
                 </v-row>
                 <v-divider class="my-3"></v-divider>
@@ -92,7 +110,7 @@
                     <v-col cols="12" sm="6" md="6">
                         <v-icon small>mdi-calendar-month</v-icon>
                         <span class="ml-2 font-weight-medium caption"> Final Inspection Date:</span>
-                        <span> 24/08/2020 </span>
+                        <span> {{ construction.finalInspectionDate }}</span>
                     </v-col>
                 </v-row>
                 <v-row>
@@ -105,8 +123,39 @@
 </template>
 
 <script>
+    import ConstructionAPI from "../../../api/ConstructionAPI";
+    import ErrorHandlerMixins from "../../../mixins/ErrorHandler";
+
     export default {
-        name: "ConstructionPartial"
+        name: "ConstructionPartial",
+        props: ['leadId'],
+        data(){
+            return {
+                construction: null,
+                loading: false
+            }
+        },
+        mixins: [ErrorHandlerMixins],
+        methods: {
+            getConstruction(leadId){
+                this.loading = true
+                ConstructionAPI.getConstruction(leadId).then(response => {
+                    if(response && response.status === 200){
+                        this.construction = Object.assign({}, response.data.data)
+                        console.log(this.construction)
+                    }
+                }).catch(error => {
+                    this.handleError(error)
+                }).finally(() => {
+                    this.loading = false;
+                })
+            }
+        },
+        mounted() {
+            if(this.leadId){
+                this.getConstruction(this.leadId)
+            }
+        }
     }
 </script>
 
