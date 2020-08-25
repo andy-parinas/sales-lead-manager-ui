@@ -83,6 +83,16 @@ const TradeStaffAPI = {
         const response = await api().delete(uri);
 
         return response.data;
+    },
+
+    async search(searchFor){
+
+        const uri = `/api/trade-staffs/search?search=${encodeURIComponent(searchFor)}`
+
+        const response = await api().get(uri);
+
+        return response.data;
+
     }
 
 }

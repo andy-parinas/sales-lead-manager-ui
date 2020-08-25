@@ -1,7 +1,8 @@
 <template>
-    <div> <v-autocomplete
-            v-model="salesStaff"
-            :items="salesStaffs"
+    <div>
+        <v-autocomplete
+            v-model="tradeStaff"
+            :items="tradeStaffs"
             :search-input.sync="search"
             :loading="loading"
             :rules="isRequired? [v => !!v || 'This field is required'] : []"
@@ -9,28 +10,27 @@
             item-value="id"
             item-text="title"
             color="black"
-            label="Design Advisor"
+            label="Trade Staff"
             no-filter
-            prepend-icon="mdi-card-account-details"
-            hint="Enter 3 characters to search"
+            prepend-icon="mdi-tools"
             persistent-hint
             @keyup="searchOnKeyUp"
-            @change="salesStaffValueChange"
-            return-object
-    ></v-autocomplete>
+            @change="tradeStaffValueChange"
+            return-object>
+        </v-autocomplete>
     </div>
 </template>
 
 <script>
-    import SalesStaffAPI from "../../../api/SalesStaffAPI";
+    import TradeStaffAPI from "../../api/TradeStaffApi";
 
     export default {
-        name: "DesignAdvisorSelect",
+        name: "TradeStaffSelectField",
         props: ['isRequired'],
         data(){
             return {
-                salesStaff: '',
-                salesStaffs: [],
+                tradeStaff: '',
+                tradeStaffs: [],
                 loading: false,
                 search: '',
 
@@ -38,21 +38,17 @@
             }
         },
         methods: {
+            searchTradeStaff(search){
+                this.loading = true
+                TradeStaffAPI.search(search).then(response => {
+                    this.tradeStaffs = response.data.data
+                }).catch(error => {
+                    console.log(error)
+                }).finally(() => {
+                    this.loading = false;
+                })
 
-            searchSalesStaff(){
-               if(!this.loading){
-                   this.loading = true;
-                   SalesStaffAPI.search(this.search).then(response => {
-                       this.salesStaffs = response.data;
-                   }).catch(error => {
-                       console.log(error.response)
-                   }).finally(() => {
-                       this.loading = false;
-                   })
-               }
             },
-
-
             searchOnKeyUp(event){
 
                 const excludedKeys = [
@@ -62,13 +58,12 @@
 
                 if(event && !excludedKeys.includes(event.keyCode)){
                     if(this.search && this.search.length >= 3 && this.search.trim() !== '' ){
-                        this.searchSalesStaff()
+                        this.searchTradeStaff(this.search)
                     }
                 }
-
             },
-            salesStaffValueChange(){
-                this.$emit('onValueChanged', this.salesStaff)
+            tradeStaffValueChange(){
+                this.$emit('onValueChanged', this.tradeStaff)
             }
         }
     }

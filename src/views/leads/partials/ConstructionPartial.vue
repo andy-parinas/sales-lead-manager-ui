@@ -131,6 +131,7 @@
     import ConstructionAPI from "../../../api/ConstructionAPI";
     import ErrorHandlerMixins from "../../../mixins/ErrorHandler";
     import ConstructionCreateDialog from "../../../components/constructions/ConstructionCreateDialog";
+    import EventBus from "../../../helpers/EventBus";
 
     export default {
         name: "ConstructionPartial",
@@ -163,6 +164,8 @@
             if(this.leadId){
                 this.getConstruction(this.leadId)
             }
+
+            EventBus.$on('LEAD_CONSTRUCTION_UPDATE', () => this.getConstruction(this.leadId))
         }
     }
 </script>

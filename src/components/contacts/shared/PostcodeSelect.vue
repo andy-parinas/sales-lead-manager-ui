@@ -13,7 +13,6 @@
                 label="Suburb, Postcode, State"
                 no-filter
                 prepend-icon="mdi-mailbox"
-                hint="Enter 3 characters to search"
                 persistent-hint
                 @keyup="searchOnKeyUp"
                 @change="postcodeValueChange"
