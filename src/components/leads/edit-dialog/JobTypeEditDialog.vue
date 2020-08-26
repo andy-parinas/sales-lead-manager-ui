@@ -1,38 +1,20 @@
 <template>
     <v-card>
-        <v-toolbar color="blue-grey darken-1" dark >
-            <v-toolbar-title>Edit Lead - JobType</v-toolbar-title>
-        </v-toolbar>
-        <div style="height: 10px">
-            <v-progress-linear indeterminate color="green" v-if="loading" />
-        </div>
+      <DialogHeader title="Edit Lead">
+        <template v-slot:action>
+          <v-btn icon @click="closeDialog">
+            <v-icon>mdi-close</v-icon>
+          </v-btn>
+        </template>
+      </DialogHeader>
         <v-card-text>
             <JobTypeForm
                     @updateData="updateData"
                     :initial-data="lead.jobType" />
-
-            <v-alert v-if="error"
-                     text
-                     prominent
-                     type="error"
-                     icon="mdi-alert">
-                <v-row align="center">
-                    <v-col class="grow">{{ errorMessage }}</v-col>
-                    <v-col class="shrink">
-                        <v-btn @click="clearError"
-                               text fab small color="red">
-                            <v-icon>mdi-close</v-icon>
-                        </v-btn>
-                    </v-col>
-                </v-row>
-            </v-alert>
-
         </v-card-text>
-
         <v-card-actions>
             <v-spacer></v-spacer>
-            <v-btn color="blue darken-1" text @click="closeDialog" >Close</v-btn>
-            <v-btn color="blue darken-1" text @click="save" :disabled="isFormEmpty" >Save</v-btn>
+            <v-btn  color="blue darken-1" class="mr-5 mb-5 white--text" :loading="loading" @click="save" :disabled="isFormEmpty" >Save</v-btn>
         </v-card-actions>
     </v-card>
 </template>
@@ -40,11 +22,12 @@
 <script>
     import JobTypeForm from "../form/JobTypeForm";
     import {mapState, mapActions} from 'vuex';
-    import ErrorHandler from "../../../helpers/ErrorHandler";
+    import DialogHeader from "@/components/core/DialogHeader";
+    import ErrorHandlerMixins from "@/mixins/ErrorHandler";
 
     export default {
         name: "JobTypeEditDialog",
-        components: {JobTypeForm},
+        components: {DialogHeader, JobTypeForm},
         data(){
             return {
                 loading: false,
@@ -53,6 +36,7 @@
                 errorMessage: ''
             }
         },
+        mixins: [ErrorHandlerMixins],
         computed: {
             ...mapState('leads', ['lead']),
             isFormEmpty(){
@@ -75,17 +59,7 @@
                         this.$emit('success');
                         this.$emit('close');
                     }).catch(error => {
-                        if(error.response && error.response.status){
-                            console.error(error.response)
-                            ErrorHandler.handlerError(error.response.status, (message) => {
-                                this.error = true;
-                                this.errorMessage = message;
-                            })
-                        }else {
-                            this.error = true;
-                            this.errorMessage = "Something went wrong. Please try again or contact support"
-                            console.error(error)
-                        }
+                       this.handleError(error)
                     }).finally(() => {
                         this.loading = false;
                     })

@@ -11,12 +11,20 @@ const SalesStaffAPI = {
 
         const uri = URIBuilder.build(requestUri, pageOptions, searchOptions);
 
-        console.log('api', uri)
-
         const response = await api().get(uri);
 
         return response.data;
 
+
+    },
+
+    async findSalesStaffById(salesStaffId){
+
+        const uri = `/api/sales-staffs/${salesStaffId}`
+
+        const response = await api().get(uri);
+
+        return response.data
 
     },
 

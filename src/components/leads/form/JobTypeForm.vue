@@ -46,17 +46,17 @@
                     ></v-autocomplete>
                 </v-col>
                 <v-col cols="12" sm="6">
-                    <DesignAdvisorSelect @onValueChanged="designAssessorChange" />
+                    <DesignAdvisorSelect
+                        :design-advisor="initialData? {id: initialData.designAssessorId, title: initialData.designAssessor }: null"
+                        @onValueChanged="designAssessorChange" />
                 </v-col>
-                <v-col cols="12" sm="6">
+                <v-col cols="12" sm="12">
                     <v-textarea
                             v-model="form.description"
                             label="Description"
                             auto-grow
-                            outlined
-                            rows="3"
+                            rows="1"
                             row-height="25"
-                            shaped
                     ></v-textarea>
                 </v-col>
             </v-row>

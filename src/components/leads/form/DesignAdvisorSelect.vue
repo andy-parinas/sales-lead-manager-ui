@@ -23,10 +23,11 @@
 
 <script>
     import SalesStaffAPI from "../../../api/SalesStaffAPI";
+    import ErrorHandlerMixins from "@/mixins/ErrorHandler";
 
     export default {
         name: "DesignAdvisorSelect",
-        props: ['isRequired'],
+        props: ['isRequired', 'designAdvisor'],
         data(){
             return {
                 salesStaff: '',
@@ -37,6 +38,7 @@
 
             }
         },
+        mixins: [ErrorHandlerMixins],
         methods: {
 
             searchSalesStaff(){
@@ -45,11 +47,23 @@
                    SalesStaffAPI.search(this.search).then(response => {
                        this.salesStaffs = response.data;
                    }).catch(error => {
-                       console.log(error.response)
+                       this.handleError(error)
                    }).finally(() => {
                        this.loading = false;
                    })
                }
+            },
+
+            findSalesStaffById(salesStaffId){
+                this.loading = true;
+                SalesStaffAPI.findSalesStaffById(salesStaffId).then(response => {
+                    this.salesStaffs = [response.data];
+                    this.salesStaff = response.data.id;
+                }).catch(error => {
+                    this.handleError(error);
+                }).finally(() => {
+                    this.loading = false;
+                })
             },
 
 
@@ -70,7 +84,16 @@
             salesStaffValueChange(){
                 this.$emit('onValueChanged', this.salesStaff)
             }
+        },
+
+        mounted() {
+            if (this.designAdvisor){
+                //this.findSalesStaffById(this.designAdvisorId);
+                this.salesStaffs = [this.designAdvisor]
+                this.salesStaff = this.designAdvisor.id
+            }
         }
+
     }
 </script>
 
