@@ -112,6 +112,24 @@ export default {
 
         updateLeadsArray({state, commit}, lead){
 
+            /**
+             *
+             'leads.id as leadId',
+             'leads.lead_number as leadNumber',
+             'franchises.franchise_number as franchiseNumber',
+             'leads.lead_date as leadDate',
+             'leads.created_at as created_at',
+             'lead_sources.name as source',
+             'sales_contacts.first_name as firstName',
+             'sales_contacts.last_name as lastName',
+             'sales_contacts.email as email',
+             'sales_contacts.contact_number as contactNumber',
+             'postcodes.locality as suburb',
+             'postcodes.state',
+             'postcodes.pcode as postcode',
+             'appointments.outcome as outcome'
+             */
+
             const leadObject = {
                 contactNumber: lead.details.contactNumber,
                 created_at: lead.details.created_at,
@@ -123,10 +141,10 @@ export default {
                 leadId: lead.details.id,
                 leadNumber: lead.details.leadNumber,
                 outcome: lead.appointment.outcome,
-                postcode: lead.details.postcode,
+                postcode: lead.details.postcode.pcode,
                 source: lead.details.leadSource,
-                state: lead.details.state,
-                suburb: lead.details.suburb,
+                state: lead.details.postcode.state,
+                suburb: lead.details.postcode.locality,
                 postcodeStatus: lead.details.postcodeStatus
             }
 

@@ -1,16 +1,17 @@
 <template>
     <v-card>
-        <v-toolbar color="blue-grey darken-1" dark >
-            <v-toolbar-title>Edit Lead</v-toolbar-title>
-        </v-toolbar>
-        <div style="height: 10px">
-            <v-progress-linear indeterminate color="green" v-if="loading" />
-        </div>
+      <DialogHeader title="Edit Lead">
+        <template v-slot:action>
+          <v-btn icon @click="closeDialog">
+            <v-icon>mdi-close</v-icon>
+          </v-btn>
+        </template>
+      </DialogHeader>
         <v-card-text>
             <LeadInformationForm
                     @updateData="updateData"
                     :initial-data="lead.details"
-                    :contact-postcode="lead.details.postcode"/>
+                    :contact-postcode-id="lead.details.postcode.id"/>
             <v-alert v-if="error"
                     text
                     prominent
@@ -29,8 +30,7 @@
         </v-card-text>
         <v-card-actions>
             <v-spacer></v-spacer>
-            <v-btn color="blue darken-1" text @click="closeDialog">Close</v-btn>
-            <v-btn color="blue darken-1" text @click="updateLead" >Save</v-btn>
+            <v-btn color="blue darken-1" class="mr-5 mb-5 white--text" :loading="loading" @click="updateLead" >Save</v-btn>
         </v-card-actions>
     </v-card>
 </template>
@@ -39,10 +39,11 @@
     import LeadInformationForm from "../form/LeadInformationForm";
     import {mapState, mapActions} from 'vuex';
     import ErrorHandler from "../../../helpers/ErrorHandler";
+    import DialogHeader from "@/components/core/DialogHeader";
 
     export default {
         name: "LeadInfoEditDialog",
-        components: {LeadInformationForm},
+        components: {DialogHeader, LeadInformationForm},
         data(){
             return {
                 form: {},
