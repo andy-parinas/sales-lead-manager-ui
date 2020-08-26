@@ -159,7 +159,6 @@
                 if(this.initialData && this.initialData.franchiseId && this.initialData.franchiseNumber) {
                     return this.initialData.franchiseId
                 }else {
-
                     return null
                 }
             }

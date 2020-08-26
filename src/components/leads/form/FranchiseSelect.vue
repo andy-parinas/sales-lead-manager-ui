@@ -108,8 +108,11 @@
         mounted() {
 
             if(this.initialData){
-                this.franchise = Object.assign({}, this.initialData)
-                this.franchises.push(this.franchise)
+                // console.log('Mounted Franchise Select', this.initialData)
+                // this.franchise = Object.assign({}, this.initialData)
+                // this.franchises.push(this.franchise)
+              this.getFranchiseById(this.initialData)
+              this.franchiseId = this.initialData
             }
         }
 
