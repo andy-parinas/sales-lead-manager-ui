@@ -66,6 +66,7 @@
                            type="article"
                            class="mx-auto"
         ></v-skeleton-loader>
+      <pre>{{form}}</pre>
     </v-form>
 </template>
 
@@ -146,20 +147,9 @@
             designAssessorChange(staff){
 
                 if(staff){
-                    this.form.salesStaffId = staff.id;
+                    this.form.designAssessorId = staff.id;
                     this.form.designAssessor = staff.title
                 }
-                // if(this.designAssessor){
-                //     this.form.designAssessorId = this.designAssessor.value;
-                //     this.form.designAdvisor = this.designAssessor.text;
-                // // }
-                // if(this.designAssessors.length > 0){
-                //     const designAssessor = this.designAssessors.find(d => {
-                //         return d.value === this.form.designAssessorId
-                //     })
-                //
-                //     if(designAssessor) this.form.designAssessor = designAssessor.text
-                // }
             }
 
         },

@@ -91,7 +91,7 @@ const LeadAPI = {
             taken_by: formData.takenBy,
             date_allocated: formData.dateAllocated,
             product_id: formData.productId,
-            design_assessor_id: formData.designAssessorId,
+            sales_staff_id: formData.designAssessorId,
             description: formData.description
         }
 
