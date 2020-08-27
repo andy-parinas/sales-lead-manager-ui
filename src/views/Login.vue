@@ -4,9 +4,13 @@
             <v-container class="fill-height" fluid>
                 <v-row align="center" justify="center" >
                     <v-col cols="12" sm="8" md="4">
-                        <v-alert dense dismissible type="error" v-if="error">
-                            {{ error }}
-                        </v-alert>
+<!--                        <v-alert dense dismissible type="error" v-if="error">-->
+<!--                            {{ error }}-->
+<!--                        </v-alert>-->
+                      <v-snackbar v-model="showErrorMessage" color="error" :timeout="0" :top="true" >
+                        {{ message }}
+                        <v-btn dark small fab text @click="showErrorMessage = false" > <v-icon small>mdi-close</v-icon> </v-btn>
+                      </v-snackbar>
                         <v-card class="elevation-12" >
                             <v-toolbar color="primary" dark flat>
                                 <v-toolbar-title>
@@ -15,7 +19,7 @@
                                     <span class="ml-1 font-weight-medium">CRM</span>
                                 </v-toolbar-title>
                             </v-toolbar>
-                            <v-progress-linear indeterminate color="green" v-if="loading"></v-progress-linear>
+<!--                            <v-progress-linear indeterminate color="green" v-if="loading"></v-progress-linear>-->
                             <v-card-text>
                                 <v-form>
                                     <v-text-field
@@ -33,7 +37,7 @@
                             </v-card-text>
                             <v-card-actions>
                                 <v-spacer />
-                                <v-btn color="primary" @click="loginToApp">Login</v-btn>
+                                <v-btn :loading="loading" color="primary" @click="loginToApp">Login</v-btn>
                             </v-card-actions>
                         </v-card>
                     </v-col>
@@ -55,6 +59,8 @@
                 password: '',
                 loading: false,
                 error: '',
+                showErrorMessage: false,
+                message: ''
             }
         },
         methods: {
@@ -70,10 +76,11 @@
                 }).catch(error => {
                     this.loading = false;
                     if(error.response && error.response.status && (error.response.status === 401 || error.response.status === 422)){
-                        this.error = 'Invalid Username or Password'
+                        this.message = 'Invalid Username or Password'
+                        this.showErrorMessage = true;
                         this.password = ''
                     }else {
-                        this.error = 'Unexpected Error. Please try again'
+                        this.message = 'Unexpected Error. Please try again'
                         console.log(error.response);
                     }
                 })
