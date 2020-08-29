@@ -1,6 +1,6 @@
 <template>
     <div>
-        <PageHeader title="Sales Summary Report" />
+        <PageHeader title="Sales Staff - Product Report" />
         <v-row>
             <v-col cols="12" sm="3">
                 <SalesStaffProductSummaryForm />

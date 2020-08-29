@@ -29,6 +29,27 @@ const ReportAPI = {
 
     },
 
+    async getSalesStaffSummary(formData){
+
+        let params = `start_date=${encodeURIComponent(formData.startDate)}&end_date=${encodeURIComponent(formData.endDate)}`
+
+        if(formData.franchiseId && formData.franchiseId !== ""){
+            params = params + `&franchise_id=${formData.franchiseId}`
+        }
+
+        if(formData.designAdvisorId && formData.designAdvisorId !== ""){
+            params = params + `&sales_staff_id=${formData.designAdvisorId}`
+        }
+
+        const uri = `/api/reports/sales-summary?${params}`;
+
+
+        const response = await api().get(uri);
+
+        return response.data;
+
+    },
+
     async getProductSalesSummary(formData){
 
         let params = `start_date=${encodeURIComponent(formData.startDate)}&end_date=${encodeURIComponent(formData.endDate)}`

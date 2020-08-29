@@ -72,7 +72,7 @@ const routes = [
                     {
                         path: 'sales-summary',
                         name: 'SalesSummary',
-                        component: () => import(/* webpackChunkName: "sales-summary" */ "@/views/reports/SalesSummaryReport.vue"),
+                        component: () => import(/* webpackChunkName: "sales-summary" */ "@/views/reports/SalesStaffSummary.vue"),
                         meta: {requiresAuth: true},
                     },
                     {
