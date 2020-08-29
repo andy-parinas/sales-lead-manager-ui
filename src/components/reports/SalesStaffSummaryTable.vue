@@ -123,7 +123,7 @@ name: "SalesStaffSummaryTable",
     methods: {
         generateReport(formData){
             this.loading = true;
-            ReportAPI.getSalesSummary(formData).then(response => {
+            ReportAPI.getSalesStaffSummary(formData).then(response => {
                 this.startDate = formData.startDate;
                 this.endDate = formData.endDate;
                 this.reports = response.data.results

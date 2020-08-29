@@ -41,7 +41,7 @@ const ReportAPI = {
             params = params + `&sales_staff_id=${formData.designAdvisorId}`
         }
 
-        const uri = `/api/reports/sales-summary?${params}`;
+        const uri = `/api/reports/sales-Staff-summary?${params}`;
 
 
         const response = await api().get(uri);
