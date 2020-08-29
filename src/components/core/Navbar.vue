@@ -115,8 +115,8 @@
                 {icon: 'mdi-hammer-screwdriver', text: 'Trade Staff', route: '/trade-staff'}
             ],
             reports: [
-                {icon: 'mdi-chart-areaspline', text: 'Sales Summary', route: '/reports/sales-summary'},
-                {icon: 'mdi-chart-areaspline', text: 'Sales Summary Product', route: '/reports/product-sales-summary'},
+                {icon: 'mdi-chart-areaspline', text: 'Sales Staff - Product', route: '/reports/sales-summary'},
+                {icon: 'mdi-chart-areaspline', text: 'Product Sales', route: '/reports/product-sales-summary'},
             ]
         }),
         methods: {
