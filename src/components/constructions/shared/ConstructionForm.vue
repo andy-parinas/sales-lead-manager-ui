@@ -12,8 +12,13 @@
                         />
                     </v-col>
                     <v-col cols="12" sm="12">
-                        <PostcodeSelect @onValueChanged="onPostcodeSelect" :required="true"
-                                        ref="postcodeSelect" />
+<!--                        <PostcodeSelect @onValueChanged="onPostcodeSelect"-->
+<!--                                        :initial-postcode-id="initialData.postcodeId"-->
+<!--                                        :required="true"-->
+<!--                                        ref="postcodeSelect" />-->
+                        <PostcodeSelectField @onValueChanged="onPostcodeSelect"
+                                             :initial-postcode-id="initialData.postcodeId"
+                                             :required="true" />
                     </v-col>
                 </v-row>
                 <v-row >
@@ -102,18 +107,17 @@
                 Save
             </v-btn>
         </v-card-actions>
-        <pre>{{form}}</pre>
     </v-form>
 </template>
 
 <script>
     import DateSelectField from "../../shared/DateSelectField";
     import TradeStaffSelectField from "../../shared/TradeStaffSelectField";
-    import PostcodeSelect from "../../contacts/shared/PostcodeSelect";
+    import PostcodeSelectField from "@/components/shared/PostcodeSelectField";
     export default {
         name: "ConstructionForm",
         props: ['initialData', 'saving'],
-        components: {PostcodeSelect, TradeStaffSelectField, DateSelectField},
+        components: {PostcodeSelectField, TradeStaffSelectField, DateSelectField},
         data(){
             return {
                 isFormValid: false,
@@ -133,6 +137,23 @@
                     actualConstructionComplete: '',
                     comments: '',
                     finalInspectionDate: '',
+                },
+                defaultForm: {
+                  siteAddress: '',
+                  postcodeId: '',
+                  materialList: '',
+                  dateMaterialsReceived: '',
+                  dateAssemblyCompleted: '',
+                  dateAnticipatedDelivery: '',
+                  dateFinishedProductDelivery: '',
+                  coilNumber: '',
+                  tradeStaffId: '',
+                  anticipatedConstructionStart: '',
+                  anticipatedConstructionComplete: '',
+                  actualConstructionStart: '',
+                  actualConstructionComplete: '',
+                  comments: '',
+                  finalInspectionDate: '',
                 },
                 rules: {
                     requiredField: v => !!v || 'This field is required',
@@ -178,6 +199,24 @@
 
             onTradeStaffSelect(tradeStaff){
                 this.form.tradeStaffId = tradeStaff.id
+            },
+          reset(){
+              this.$refs.form.resetValidation();
+          }
+        },
+        watch: {
+            initialData: {
+                handler(){
+                    if(this.initialData){
+                        this.form = Object.assign({}, this.initialData)
+                    }
+                },
+                deep: true
+            }
+        },
+        mounted() {
+            if (this.initialData){
+                this.form = Object.assign({}, this.initialData)
             }
         }
     }

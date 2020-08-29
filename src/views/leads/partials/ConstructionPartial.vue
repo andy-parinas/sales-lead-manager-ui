@@ -122,6 +122,7 @@
         <v-dialog v-model="showCreateDialog" persistent max-width="800px">
             <ConstructionCreateDialog
                     :lead-id="leadId"
+                    :siteAddress="leadAddress"
                     @close="showCreateDialog = false" />
         </v-dialog>
     </div>
@@ -132,11 +133,12 @@
     import ErrorHandlerMixins from "../../../mixins/ErrorHandler";
     import ConstructionCreateDialog from "../../../components/constructions/ConstructionCreateDialog";
     import EventBus from "../../../helpers/EventBus";
+    import {mapState} from 'vuex';
 
     export default {
         name: "ConstructionPartial",
         components: {ConstructionCreateDialog},
-        props: ['leadId'],
+        props: ['leadId', 'leadDetails'],
         data(){
             return {
                 construction: null,
@@ -145,6 +147,21 @@
             }
         },
         mixins: [ErrorHandlerMixins],
+        computed: {
+          ...mapState('leads', ['lead']),
+          leadAddress(){
+              if(this.lead && this.lead.details){
+                  return {
+                      siteAddress: this.lead.details.street1,
+                      postcodeId: this.lead.details.postcode.id
+                  }
+              }else {
+
+                return null;
+              }
+
+          }
+        },
         methods: {
             getConstruction(leadId){
                 this.loading = true

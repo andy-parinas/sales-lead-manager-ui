@@ -7,7 +7,8 @@
                 </v-btn>
             </template>
         </DialogHeader>
-        <ConstructionForm @onSave="addConstructionHandler" :saving="saving" ref="constructionForm" />
+        <ConstructionForm @onSave="addConstructionHandler"
+                          :saving="saving" ref="constructionForm" :initial-data="initialData" />
     </v-card>
 </template>
 
@@ -22,7 +23,8 @@
     export default {
         name: "ConstructionCreateDialog",
         props: {
-            leadId: {required: true}
+            leadId: {required: true},
+            siteAddress: { required: false}
         },
         components: {ConstructionForm, DialogHeader},
         data(){
@@ -31,6 +33,33 @@
             }
         },
         mixins: [ErrorHandlerMixins],
+        computed: {
+            initialData(){
+                if (this.siteAddress){
+
+                    return {
+                        siteAddress: this.siteAddress.siteAddress,
+                        postcodeId: this.siteAddress.postcodeId,
+                        materialList: '',
+                        dateMaterialsReceived: '',
+                        dateAssemblyCompleted: '',
+                        dateAnticipatedDelivery: '',
+                        dateFinishedProductDelivery: '',
+                        coilNumber: '',
+                        tradeStaffId: '',
+                        anticipatedConstructionStart: '',
+                        anticipatedConstructionComplete: '',
+                        actualConstructionStart: '',
+                        actualConstructionComplete: '',
+                        comments: '',
+                        finalInspectionDate: '',
+                    }
+
+                }else {
+                  return null
+                }
+            }
+        },
         methods: {
             ...mapActions(['setSuccessMessage']),
             addConstructionHandler(formData){
@@ -46,6 +75,9 @@
                 })
             },
             closeDialog(){
+                setTimeout(() => {
+                  this.$refs.constructionForm.reset()
+                }, 1000);
                 this.$emit('close')
             }
         }
