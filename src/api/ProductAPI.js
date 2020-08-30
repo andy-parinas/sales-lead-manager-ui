@@ -29,6 +29,25 @@ const ProductAPI = {
         return response.data
 
 
+    },
+
+    async updateProduct(productId, formData){
+
+        const uri = `/api/products/${productId}`;
+
+        const data = {
+            name: formData.name,
+            description: formData.description
+        }
+
+
+        await csrf.getCSRFCookie();
+
+        const response = await api().patch(uri, data);
+
+        return response.data
+
+
     }
 
 }

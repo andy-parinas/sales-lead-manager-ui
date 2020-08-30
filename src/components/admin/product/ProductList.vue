@@ -53,6 +53,11 @@
                 </v-row>
             </v-card-text>
         </v-card>
+        <v-dialog v-model="showEditDialog" persistent max-width="500px">
+            <ProductEditDialog
+                :initial-data="selectedItem"
+                @close="showEditDialog = false"/>
+        </v-dialog>
     </div>
 </template>
 
@@ -60,13 +65,18 @@
 import ProductAPI from "@/api/ProductAPI";
 import ErrorHandlerMixins from "@/mixins/ErrorHandler";
 import EventBus from "@/helpers/EventBus";
+import ProductEditDialog from "@/components/admin/product/ProductEditDialog";
 
 export default {
     name: "ProductList",
+    components: {ProductEditDialog},
     data(){
         return {
             products: [],
-            loading: false
+            loading: false,
+            showEditDialog: false,
+            showDeleteDialog: false,
+            selectedItem: null
         }
     },
     mixins: [ErrorHandlerMixins],
@@ -84,16 +94,29 @@ export default {
         deleteProduct(){
 
         },
-        editProduct(){
-
+        editProduct(product){
+            this.selectedItem = product
+            this.showEditDialog = true;
         },
         addProduct(product){
             this.products.push(product)
+        },
+        updateProducts(product){
+            const updatedProduct = this.products.map(p => {
+                if(p.id === product.id){
+                    return product;
+                }else {
+                    return p;
+                }
+            })
+
+            this.products = updatedProduct;
         }
     },
     mounted() {
         this.getProducts();
         EventBus.$on('PRODUCT_CREATED', payload => this.addProduct(payload))
+        EventBus.$on('PRODUCT_UPDATED', payload => this.updateProducts(payload))
     }
 }
 </script>

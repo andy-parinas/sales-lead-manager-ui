@@ -1,6 +1,6 @@
 <template>
     <v-card>
-        <DialogHeader title="Edit Lead Source">
+        <DialogHeader title="Edit Product">
             <template v-slot:action>
                 <v-btn icon @click="closeDialog">
                     <v-icon>mdi-close</v-icon>
@@ -15,18 +15,25 @@
                             <v-text-field
                                 v-model="form.name"
                                 :rules="[v => !!v || 'This field is required', v => v !== null && v.length >= 3 || 'Min 3 characters']"
-                                label="Lead Source Name">
+                                label="Product Name">
                             </v-text-field>
+                        </v-col>
+                        <v-col cols="12">
+                            <v-textarea
+                                v-model="form.description"
+                                rows="1"
+                                label="Description">
+                            </v-textarea>
                         </v-col>
                     </v-row>
                 </v-form>
             </v-card-text>
             <v-card-actions class="px-5">
                 <v-btn small width="100%" color="blue darken-1" class="mb-5 white--text"
-                       @click="updateLeadSource"
+                       @click="updateProduct"
                        :loading="loading"
                        :disabled="!isFormValid">
-                    Update Lead Source
+                    Update Product
                 </v-btn>
             </v-card-actions>
         </v-card>
@@ -34,14 +41,14 @@
 </template>
 
 <script>
-import DialogHeader from "@/components/core/DialogHeader";
-import LeadSourceAPI from "@/api/LeadSourceAPI";
 import ErrorHandlerMixins from "@/mixins/ErrorHandler";
+import DialogHeader from "@/components/core/DialogHeader";
+import ProductAPI from "@/api/ProductAPI";
 import {mapActions} from 'vuex';
 import EventBus from "@/helpers/EventBus";
 
 export default {
-    name: "LeadSourceEditDialog",
+    name: "ProductEditDialog",
     props: ['initialData'],
     components: {DialogHeader},
     data() {
@@ -49,27 +56,30 @@ export default {
             isFormValid: false,
             loading: false,
             form: {
-                name: ''
+                name: '',
+                description: ''
             }
         }
     },
     mixins: [ErrorHandlerMixins],
     methods: {
         ...mapActions(['setSuccessMessage']),
-        closeDialog(){
-            this.$emit('close');
-        },
-        updateLeadSource(){
-            this.loading = true;
-            LeadSourceAPI.updateLeadSource(this.initialData.id, this.form).then(response => {
-                this.setSuccessMessage('Lead Source Successfully Updated');
-                EventBus.$emit('LEAD_SOURCE_UPDATED', response.data)
+        updateProduct(){
+            this.loading = true
+            ProductAPI.updateProduct(this.initialData.id, this.form).then(response => {
+
+                this.setSuccessMessage("Product Successfully Updated");
+                EventBus.$emit('PRODUCT_UPDATED', response.data);
                 this.closeDialog();
+
             }).catch(error => {
                 this.handleError(error)
             }).finally(() => {
                 this.loading = false;
             })
+        },
+        closeDialog(){
+            this.$emit('close')
         }
     },
     watch: {
