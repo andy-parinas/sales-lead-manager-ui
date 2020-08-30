@@ -57,11 +57,11 @@
                 :initial-data="selectedItem"
                 @close="showEditDialog = false"/>
         </v-dialog>
-<!--        <v-dialog v-model="showDeleteDialog" persistent max-width="500px">-->
-<!--            <LeadSourceDeleteDialog-->
-<!--                :source="selectedItem"-->
-<!--                @close="showDeleteDialog = false"/>-->
-<!--        </v-dialog>-->
+        <v-dialog v-model="showDeleteDialog" persistent max-width="500px">
+            <TradeTypeDeleteDialog
+                :trade-type="selectedItem"
+                @close="showDeleteDialog = false"/>
+        </v-dialog>
     </div>
 </template>
 
@@ -70,10 +70,11 @@ import TradeTypeAPI from "@/api/TradeTypeAPI";
 import ErrorHandlerMixins from "@/mixins/ErrorHandler";
 import TradeTypeEditDialog from "@/components/admin/trade-type/TradeTypeEditDialog";
 import EventBus from "@/helpers/EventBus";
+import TradeTypeDeleteDialog from "@/components/admin/trade-type/TradeTypeDeleteDialog";
 
 export default {
     name: "TradeTypeList",
-    components: {TradeTypeEditDialog},
+    components: {TradeTypeDeleteDialog, TradeTypeEditDialog},
     data(){
         return {
             tradeTypes: [],
@@ -116,6 +117,11 @@ export default {
             })
 
             this.tradeTypes = updatedTypes;
+        },
+        updateTradeTypesOnDelete(tradeType){
+            const updatedTypes = this.tradeTypes.filter(t => t.id !== tradeType.id);
+
+            this.tradeTypes = updatedTypes;
         }
     },
     mounted() {
@@ -123,6 +129,7 @@ export default {
 
         EventBus.$on('TRADE_TYPE_CREATED', payload => this.addTradeType(payload))
         EventBus.$on('TRADE_TYPE_UPDATED', payload => this.updateTradeTypes(payload))
+        EventBus.$on('TRADE_TYPE_DELETED', payload => this.updateTradeTypesOnDelete(payload))
     }
 }
 </script>

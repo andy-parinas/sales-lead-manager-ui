@@ -41,7 +41,19 @@ const TradeTypeAPI = {
 
         const response = await api().patch(uri, data);
 
-        console.log('api', response);
+        return response.data;
+
+    },
+
+    async deleteTradeType(tradeTypeId){
+
+        const uri = `/api/trade-types/${tradeTypeId}`;
+
+
+        await csrf.getCSRFCookie();
+
+        const response = await api().delete(uri);
+
 
         return response.data;
 
