@@ -41,6 +41,8 @@ const TradeTypeAPI = {
 
         const response = await api().patch(uri, data);
 
+        console.log('api', response);
+
         return response.data;
 
     }

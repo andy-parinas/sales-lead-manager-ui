@@ -105,12 +105,24 @@ export default {
         },
         addTradeType(tradeType){
             this.tradeTypes.push(tradeType);
+        },
+        updateTradeTypes(tradeType){
+            const updatedTypes = this.tradeTypes.map(t => {
+                if(t.id === tradeType.id){
+                    return tradeType;
+                }else {
+                    return t;
+                }
+            })
+
+            this.tradeTypes = updatedTypes;
         }
     },
     mounted() {
         this.getTradeTypes();
 
         EventBus.$on('TRADE_TYPE_CREATED', payload => this.addTradeType(payload))
+        EventBus.$on('TRADE_TYPE_UPDATED', payload => this.updateTradeTypes(payload))
     }
 }
 </script>

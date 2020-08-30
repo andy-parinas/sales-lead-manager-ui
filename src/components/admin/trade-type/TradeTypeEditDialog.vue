@@ -35,6 +35,11 @@
 
 <script>
 import DialogHeader from "@/components/core/DialogHeader";
+import TradeTypeAPI from "@/api/TradeTypeAPI";
+import ErrorHandlerMixins from "@/mixins/ErrorHandler";
+import EventBus from "@/helpers/EventBus";
+import {mapActions} from 'vuex';
+
 export default {
     name: "TradeTypeEditDialog",
     props: ['initialData'],
@@ -48,9 +53,21 @@ export default {
             }
         }
     },
+    mixins: [ErrorHandlerMixins],
     methods: {
+        ...mapActions(['setSuccessMessage']),
         updateTradeType(){
-
+            this.loading = true;
+            TradeTypeAPI.updateTradeType(this.initialData.id, this.form).then(response => {
+                console.log('Updated', response)
+                EventBus.$emit('TRADE_TYPE_UPDATED', response.data);
+                this.setSuccessMessage('Trade Type Successfully Updated');
+                this.closeDialog();
+            }).catch(error => {
+                this.handleError(error)
+            }).finally(() => {
+                this.loading = false
+            })
         },
         closeDialog(){
             this.$emit('close');
