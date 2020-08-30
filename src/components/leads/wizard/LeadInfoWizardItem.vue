@@ -117,29 +117,6 @@
             updateData(form){
                 this.form = Object.assign({}, form)
             },
-            // checkFranchisePostcode(){
-            //     this.franchiseChecking = true;
-            //     PostcodeAPI.checkFranchisePostcode(this.form.franchiseId,
-            //         this.selectedContact.postcodeId).then(response => {
-            //
-            //             console.log('Check results: ', response.data)
-            //
-            //             if(response.data){
-            //                 this.postcodeStatus = 'INSIDE_FRANCHISE';
-            //                 this.form.postcodeStatus = 'inside_of_franchise'
-            //             }else {
-            //                 this.postcodeStatus = 'OUTSIDE_FRANCHISE';
-            //                 this.form.postcodeStatus = 'outside_of_franchise'
-            //             }
-            //
-            //     }).catch(error => {
-            //
-            //         console.log(error);
-            //
-            //     }).finally(() => {
-            //         this.franchiseChecking = false;
-            //     })
-            // },
 
         },
         computed: {

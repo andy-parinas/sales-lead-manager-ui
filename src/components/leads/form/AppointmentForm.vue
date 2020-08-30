@@ -167,7 +167,6 @@
         watch: {
           form: {
               handler(){
-                  console.log('Watching Form')
                   this.$emit('updateData', this.form)
               },
               deep: true

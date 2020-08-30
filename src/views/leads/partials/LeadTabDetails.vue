@@ -16,13 +16,13 @@
             <v-tab v-if="!summary"> Constructions </v-tab>
 
             <v-tab-item>
-                <LeadContactPartial :data="lead.details"  />
+                <LeadContactPartial :data="lead.details" :summary="summary"  />
             </v-tab-item>
             <v-tab-item>
-                <JobTypePartial :data="lead.jobType"  />
+                <JobTypePartial :data="lead.jobType" :summary="summary"  />
             </v-tab-item>
             <v-tab-item>
-                <AppointmentPartial :data="lead.appointment"  />
+                <AppointmentPartial :data="lead.appointment" :summary="summary"  />
             </v-tab-item>
             <v-tab-item v-if="!summary">
                 <DocumentPartial :lead-id="lead.details.id" />

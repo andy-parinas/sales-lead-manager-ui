@@ -73,6 +73,7 @@
     import ProductAPI from "../../../api/ProductAPI";
     import {format, parseISO} from "date-fns";
     import DesignAdvisorSelect from "./DesignAdvisorSelect";
+    import ErrorHandlerMixins from "@/mixins/ErrorHandler";
 
     export default {
         name: "JobTypeForm",
@@ -110,6 +111,7 @@
                 return this.form.dateAllocated ? format(parseISO(this.form.dateAllocated), 'dd/MM/yyyy') : ''
             },
         },
+        mixins: [ErrorHandlerMixins],
         methods: {
             getAllProducts(){
                 this.productLoading = true;
@@ -122,30 +124,31 @@
                         }
                     })
                 }).catch(error => {
-                    console.log(error)
+                    this.handleError(error)
                 }).finally(() => {
                     this.productLoading = false;
                 })
             },
 
             productChange(){
-                // if(this.product) {
-                //     this.form.productId = this.product.value;
-                //     this.form.product = this.product.text;
-                // }
                 if(this.products.length > 0){
                     const product = this.products.find(p => {
                         return p.value === this.form.productId
                     })
 
-                    if(product) this.form.product = product.text
+                    // if(product) this.form.product = product.text
+                    if(product){
+                        this.$set(this.form, 'product',product.text)
+                    }
                 }
             },
             designAssessorChange(staff){
 
                 if(staff){
-                    this.form.designAssessorId = staff.id;
-                    this.form.designAssessor = staff.title
+                    // this.form.designAssessorId = staff.id;
+                    // this.form.designAssessor = staff.title
+                    this.$set(this.form, 'designAssessorId', staff.id)
+                    this.$set(this.form, 'designAssessor', staff.title)
                 }
             }
 
@@ -162,7 +165,11 @@
             this.getAllProducts();
         },
         mounted() {
-            this.form = Object.assign({}, this.initialData)
+
+            if(this.initialData){
+                this.form = Object.assign({}, this.initialData)
+            }
+
             if(this.initialData && this.initialData.designAssessorId && this.initialData.designAssessor){
                 const designAssessor = {
                     value: this.initialData.designAssessorId,

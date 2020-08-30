@@ -6,9 +6,11 @@
            <v-row>
                <v-btn color="primary" class="mr-2" @click="$emit('moveBack')">Back</v-btn>
                <v-btn color="primary"
+                      :disabled="!isFormValid"
                       @click="moveNext">Continue</v-btn>
                <v-spacer></v-spacer>
-               <v-btn color="primary" class="mr-2" @click="$emit('cancel')">Cancel</v-btn>
+               <v-btn color="primary" class="mr-2"
+                      @click="$emit('cancel')">Cancel</v-btn>
            </v-row>
        </v-container>
    </div>
@@ -23,7 +25,6 @@
         components: {JobTypeForm},
         data(){
             return {
-
                 form: {
                     takenBy: '',
                     dateAllocated: '',
@@ -45,11 +46,14 @@
 
             }
         },
-
+        computed: {
+            isFormValid(){
+                return  this.form.productId !== '' && this.form.designAssessorId !== ''
+                    && this.form.dateAllocated !== '' && this.form.takenBy !== '';
+            }
+        },
         methods: {
-
             moveNext(){
-
                 this.$emit('moveNext', {
                     jobType: this.form
                 })
@@ -57,7 +61,6 @@
             updateData(form){
                 this.form = Object.assign({}, form);
             }
-
         },
 
     }

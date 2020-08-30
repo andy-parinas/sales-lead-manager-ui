@@ -7,7 +7,7 @@
                     <v-stepper-header>
                         <v-stepper-step :complete="stage > 1" step="1">Select Sales Contact</v-stepper-step>
                         <v-divider></v-divider>
-                        <v-stepper-step :complete="stage > 2" step="2">Add Lead Infromation</v-stepper-step>
+                        <v-stepper-step :complete="stage > 2" step="2">Add Lead Information</v-stepper-step>
                         <v-divider></v-divider>
                         <v-stepper-step :complete="stage > 3" step="3">Add Job Type</v-stepper-step>
                         <v-divider></v-divider>
@@ -15,9 +15,9 @@
                         <v-divider></v-divider>
                         <v-stepper-step step="5">Confirm</v-stepper-step>
                     </v-stepper-header>
-                    <div style="height: 10px">
-                        <v-progress-linear indeterminate color="green" v-if="loading"></v-progress-linear>
-                    </div>
+<!--                    <div style="height: 10px">-->
+<!--                        <v-progress-linear indeterminate color="green" v-if="loading"></v-progress-linear>-->
+<!--                    </div>-->
                     <v-stepper-items>
                         <v-stepper-content step="1">
                             <SalesContactWizardItem
@@ -46,6 +46,7 @@
                         <v-stepper-content step="5">
                             <ConfirmWizardItem
                                     :summary="form"
+                                    :loading="loading"
                                     @confirm="create"
                                     @moveBack="moveBack"
                                     @cancel="cancel"/>
@@ -138,11 +139,14 @@
         methods: {
             ...mapActions('salesContacts', ['selectContact']),
             ...mapActions('leads', ['createLead']),
+            ...mapActions(['setSuccessMessage']),
             setSalesContact(contactId){
                 this.form.sales_contact_id = contactId
             },
             moveNext(formData){
-                Object.assign(this.form, formData)
+                if(formData){
+                    Object.assign(this.form, formData)
+                }
                 this.stage = this.stage + 1;
             },
             moveBack(){
@@ -157,9 +161,11 @@
             create(){
                 this.loading = true;
                 this.createLead(this.form).then(() => {
-                    this.dialogResult.title = 'Lead Successfully Created'
-                    this.dialogResult.content = 'The lead is successfully created'
-                    this.showDialogResult = true;
+                    // this.dialogResult.title = 'Lead Successfully Created'
+                    // this.dialogResult.content = 'The lead is successfully created'
+                    // this.showDialogResult = true;
+                    this.setSuccessMessage("Lead Successfully Created")
+                    this.$router.push({name: 'LeadTable'})
                 }).catch(error => {
                     this.handleError(error)
                 }).finally(() => {

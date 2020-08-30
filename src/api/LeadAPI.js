@@ -52,7 +52,6 @@ const LeadAPI = {
 
         }
 
-        console.log('FranchiseData', data);
 
         const uri = `/api/franchises/${formData.details.franchiseId}/leads`;
 

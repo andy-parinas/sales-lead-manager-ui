@@ -37,7 +37,7 @@
                 </v-row>
                 <v-row>
                     <v-spacer></v-spacer>
-                    <v-btn text small fab @click="editDialog = true"><v-icon>mdi-pencil</v-icon></v-btn>
+                    <v-btn v-if="!summary" text small fab @click="editDialog = true"><v-icon>mdi-pencil</v-icon></v-btn>
                 </v-row>
                 <v-divider class="my-5"></v-divider>
                 <v-row>
@@ -73,7 +73,11 @@
                 <v-row>
                     <v-col cols="12" sm="12">
                         <v-icon small>mdi-map</v-icon>
-                        <span class="ml-2">{{data.postcode.locality}}, {{data.postcode.state}}, {{data.postcode.pcode}}</span>
+                        <span class="ml-2">
+                            {{summary? data.postcode : data.postcode.locality}},
+                            {{summary? data.state : data.postcode.state}},
+                            {{summary? data.postcode : data.postcode.pcode}}
+                        </span>
                     </v-col>
                 </v-row>
 
@@ -96,7 +100,8 @@
         name: "LeadContactPartial",
         components: {LeadInfoEditDialog},
         props: {
-            data: {required: true, type: Object}
+            data: {required: true, type: Object},
+            summary: {required: false}
         },
         data(){
             return {

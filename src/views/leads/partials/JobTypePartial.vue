@@ -45,7 +45,7 @@
                </v-row>
                <v-row>
                    <v-spacer></v-spacer>
-                   <v-btn text small fab @click="editDialog = true"><v-icon>mdi-pencil</v-icon></v-btn>
+                   <v-btn v-if="!summary" text small fab @click="editDialog = true"><v-icon>mdi-pencil</v-icon></v-btn>
                </v-row>
            </v-card-text>
        </v-card>
@@ -67,7 +67,8 @@
         name: "JobTypePartial",
         components: {JobTypeEditDialog},
         props: {
-            data: {required: true, type: Object}
+            data: {required: true, type: Object},
+            summary: {required: false}
         },
         data(){
             return {
