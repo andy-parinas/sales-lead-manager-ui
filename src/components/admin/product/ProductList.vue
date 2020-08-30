@@ -59,6 +59,7 @@
 <script>
 import ProductAPI from "@/api/ProductAPI";
 import ErrorHandlerMixins from "@/mixins/ErrorHandler";
+import EventBus from "@/helpers/EventBus";
 
 export default {
     name: "ProductList",
@@ -85,10 +86,14 @@ export default {
         },
         editProduct(){
 
+        },
+        addProduct(product){
+            this.products.push(product)
         }
     },
     mounted() {
         this.getProducts();
+        EventBus.$on('PRODUCT_CREATED', payload => this.addProduct(payload))
     }
 }
 </script>

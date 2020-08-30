@@ -33,6 +33,9 @@
 
 <script>
 import ErrorHandlerMixins from "@/mixins/ErrorHandler";
+import ProductAPI from "@/api/ProductAPI";
+import {mapActions} from 'vuex';
+import EventBus from "@/helpers/EventBus";
 
 export default {
     name: "ProductForm",
@@ -48,8 +51,20 @@ export default {
     },
     mixins: [ErrorHandlerMixins],
     methods: {
+        ...mapActions(['setSuccessMessage']),
         createProduct(){
-
+            this.loading = true;
+            ProductAPI.createProduct(this.form).then(response => {
+                EventBus.$emit('PRODUCT_CREATED', response.data);
+                this.setSuccessMessage('Product Successfully Created');
+                this.$set(this.form, 'name', "");
+                this.$set(this.form, 'description', "");
+                this.$refs.form.resetValidation();
+            }).catch(error => {
+                this.handleError(error)
+            }).finally(() => {
+                this.loading = false;
+            })
         }
     }
 }
