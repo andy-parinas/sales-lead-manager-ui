@@ -26,6 +26,9 @@
 
 <script>
 import ErrorHandlerMixins from "@/mixins/ErrorHandler";
+import TradeTypeAPI from "@/api/TradeTypeAPI";
+import EventBus from "@/helpers/EventBus";
+import {mapActions} from 'vuex';
 
 export default {
     name: "TradeTypeForm",
@@ -40,8 +43,19 @@ export default {
     },
     mixins: [ErrorHandlerMixins],
     methods: {
+        ...mapActions(['setSuccessMessage']),
         createTradeType(){
-
+            this.loading = true;
+            TradeTypeAPI.createTradeType(this.form).then(response => {
+                EventBus.$emit('TRADE_TYPE_CREATED', response.data)
+                this.setSuccessMessage('Trade Type Created');
+                this.$set(this.form, 'name', "");
+                this.$refs.form.resetValidation();
+            }).catch(error => {
+                this.handleError(error)
+            }).finally(() => {
+                this.loading = false;
+            })
         }
     }
 }

@@ -52,11 +52,11 @@
                 </v-row>
             </v-card-text>
         </v-card>
-<!--        <v-dialog v-model="showEditDialog" persistent max-width="500px">-->
-<!--            <LeadSourceEditDialog-->
-<!--                :initial-data="selectedItem"-->
-<!--                @close="showEditDialog = false"/>-->
-<!--        </v-dialog>-->
+        <v-dialog v-model="showEditDialog" persistent max-width="500px">
+            <TradeTypeEditDialog
+                :initial-data="selectedItem"
+                @close="showEditDialog = false"/>
+        </v-dialog>
 <!--        <v-dialog v-model="showDeleteDialog" persistent max-width="500px">-->
 <!--            <LeadSourceDeleteDialog-->
 <!--                :source="selectedItem"-->
@@ -68,14 +68,19 @@
 <script>
 import TradeTypeAPI from "@/api/TradeTypeAPI";
 import ErrorHandlerMixins from "@/mixins/ErrorHandler";
+import TradeTypeEditDialog from "@/components/admin/trade-type/TradeTypeEditDialog";
+import EventBus from "@/helpers/EventBus";
 
 export default {
     name: "TradeTypeList",
+    components: {TradeTypeEditDialog},
     data(){
         return {
             tradeTypes: [],
             loading: false,
-            selectedItem: null
+            selectedItem: null,
+            showEditDialog: false,
+            showDeleteDialog: false
         }
     },
     mixins: [ErrorHandlerMixins],
@@ -90,16 +95,22 @@ export default {
                 this.loading = false;
             })
         },
-        deleteSource(){
-
-
+        deleteSource(tradeType){
+            this.selectedItem = Object.assign({}, tradeType)
+            this.showDeleteDialog = true;
         },
-        editSource(){
-
+        editSource(tradeType){
+            this.selectedItem = Object.assign({}, tradeType)
+            this.showEditDialog = true;
+        },
+        addTradeType(tradeType){
+            this.tradeTypes.push(tradeType);
         }
     },
     mounted() {
         this.getTradeTypes();
+
+        EventBus.$on('TRADE_TYPE_CREATED', payload => this.addTradeType(payload))
     }
 }
 </script>
