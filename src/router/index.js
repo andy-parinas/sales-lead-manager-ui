@@ -123,9 +123,9 @@ const routes = [
                         meta: {requiresAuth: true}
                     },
                     {
-                        path: 'postcodes',
-                        name: 'PostcodeAdmin',
-                        component: () => import(/* webpackChunkName: "postcodeAdmin" */"@/views/admin/PostcodeAdminPage.vue"),
+                        path: 'lead-source',
+                        name: 'LeadSourceAdmin',
+                        component: () => import(/* webpackChunkName: "leadsourceadmin" */"@/views/admin/LeadSourceAdminPage.vue"),
                         meta: {requiresAuth: true}
                     },
                     {

@@ -106,7 +106,7 @@
             adminMenu: false,
             admins: [
                 {icon: 'mdi-account-settings', text: 'User Admin', route: '/admin/users'},
-                {icon: 'mdi-mailbox-open', text: 'Postcode Admin', route: '/admin/postcodes'},
+                {icon: 'mdi-map', text: 'Lead Source Admin', route: '/admin/lead-source'},
                 {icon: 'mdi-cart', text: 'Product Admin', route: '/admin/products'},
                 {icon: 'mdi-hammer-screwdriver', text: 'Trade Type Admin', route: '/admin/trade-types'}
             ],
