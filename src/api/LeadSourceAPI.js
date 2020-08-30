@@ -28,6 +28,23 @@ const LeadSourceAPI = {
 
         return response.data
 
+    },
+
+    async updateLeadSource(leadSourceId, formData){
+
+        const uri = `/api/lead-sources/${leadSourceId}`
+
+        const data = {
+            name: formData.name
+        }
+
+        await csrf.getCSRFCookie();
+
+        const response = await api().patch(uri, data);
+
+        return response.data;
+
+
     }
 
 }
