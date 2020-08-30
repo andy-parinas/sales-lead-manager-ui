@@ -1,8 +1,7 @@
 <template>
    <div>
         <JobTypeForm
-                @updateData="updateData"
-                :initial-data="initialData"></JobTypeForm>
+                @updateData="updateData"></JobTypeForm>
        <v-container>
            <v-row>
                <v-btn color="primary" class="mr-2" @click="$emit('moveBack')">Back</v-btn>

@@ -76,6 +76,7 @@
 
     import {mapState, mapActions} from 'vuex';
     import ConfirmWizardItem from "./ConfirmWizardItem";
+    import ErrorHandlerMixins from "@/mixins/ErrorHandler";
 
     export default {
         name: "FormWizard",
@@ -130,6 +131,7 @@
                 }
             }
         },
+        mixins: [ErrorHandlerMixins],
         computed: {
           ...mapState('salesContacts', ['selectedContact'])
         },
@@ -159,7 +161,7 @@
                     this.dialogResult.content = 'The lead is successfully created'
                     this.showDialogResult = true;
                 }).catch(error => {
-                    console.log(error.response);
+                    this.handleError(error)
                 }).finally(() => {
                     this.loading = false;
                 })

@@ -16,7 +16,6 @@
             <v-spacer></v-spacer>
             <v-btn  color="blue darken-1" class="mr-5 mb-5 white--text" :loading="loading" @click="save" :disabled="isFormEmpty" >Save</v-btn>
         </v-card-actions>
-      <pre>{{form}}</pre>
     </v-card>
 </template>
 

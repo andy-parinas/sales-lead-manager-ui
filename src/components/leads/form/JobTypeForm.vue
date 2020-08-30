@@ -66,7 +66,6 @@
                            type="article"
                            class="mx-auto"
         ></v-skeleton-loader>
-      <pre>{{form}}</pre>
     </v-form>
 </template>
 
@@ -78,14 +77,12 @@
     export default {
         name: "JobTypeForm",
         components: {DesignAdvisorSelect},
-        props: {
-          initialData: { required: true, type: Object}
-        },
+        props: ['initialData'],
         data(){
             return {
                 form: {
                     takenBy: '',
-                    dateAllocated: '',
+                    dateAllocated: new Date().toISOString().substr(0, 10),
                     productId: '',
                     product: '',
                     salesStaffId: '',

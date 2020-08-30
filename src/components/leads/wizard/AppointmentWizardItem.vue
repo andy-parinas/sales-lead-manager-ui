@@ -18,6 +18,7 @@
 <script>
 
     import AppointmentForm from "../form/AppointmentForm";
+    import ErrorHandlerMixins from "@/mixins/ErrorHandler";
 
     export default {
         name: "AppointmentWizardItem",
@@ -46,6 +47,7 @@
             }
 
         },
+        mixins: [ErrorHandlerMixins],
         computed: {
 
             isFormValid(){
@@ -59,7 +61,6 @@
                 })
             },
             updateData(form){
-                console.log('Updating data')
                 this.form = Object.assign({}, form)
             }
         }

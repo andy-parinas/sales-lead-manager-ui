@@ -48,6 +48,7 @@
 
 <script>
     import {mapState, mapActions} from 'vuex';
+    import ErrorHandlerMixins from "@/mixins/ErrorHandler";
 
     export default {
         name: "FormSalesContactSelect",
@@ -68,6 +69,7 @@
                 searchLoading: false
             }
         },
+        mixins: [ErrorHandlerMixins],
         computed: {
             ...mapState('salesContacts', ['salesContacts', 'selectedContact', 'pagination']),
 
@@ -75,14 +77,14 @@
         methods: {
             ...mapActions('salesContacts', ['selectContact', 'fetchSalesContacts']),
             onSelectContact(){
-                console.log('Select Contact')
+                //console.log('Select Contact')
                 this.$emit('setSalesContactId', this.selected.id)
                 this.selectContact(this.selected)
             },
             getSalesContacts(){
 
                 this.searchLoading = true;
-                console.log('Search for Contacts');
+                //console.log('Search for Contacts');
                 this.fetchSalesContacts({
                     options: this.options,
                     searchOptions: {
@@ -91,7 +93,7 @@
                     this.searchLoading = false;
 
                 }).catch(error => {
-                    console.log(error);
+                    this.handleError(error)
                     this.searchLoading = false;
                 })
             }
