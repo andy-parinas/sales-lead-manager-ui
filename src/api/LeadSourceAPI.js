@@ -45,6 +45,17 @@ const LeadSourceAPI = {
         return response.data;
 
 
+    },
+
+    async deleteLeadSource(leadSourceId){
+
+        const uri = `/api/lead-sources/${leadSourceId}`
+
+        await csrf.getCSRFCookie();
+
+        const response = await api().delete(uri);
+
+        return response.data;
     }
 
 }
