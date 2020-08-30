@@ -27,10 +27,14 @@
                 <template v-slot:item.actions="{item}">
                     <v-container>
                         <v-row class="justify-sm-start">
-                            <v-btn x-small fab text dark color="accent" @click="edit(item)" >
+                            <v-btn x-small fab text dark color="accent"
+                                   v-if="isHeadOffice"
+                                   @click="edit(item)" >
                                 <v-icon small > mdi-pencil </v-icon>
                             </v-btn>
-                            <v-btn x-small fab text dark color="error" class="mr-3" @click="deleteItem(item)">
+                            <v-btn x-small fab text dark color="error" class="mr-3"
+                                   v-if="isHeadOffice"
+                                   @click="deleteItem(item)">
                                 <v-icon small > mdi-trash-can-outline </v-icon>
                             </v-btn>
                         </v-row>
@@ -118,7 +122,11 @@
             }
         },
         computed: {
-            ...mapState('salesStaffs', ['salesStaffs', 'pagination'])
+            ...mapState('salesStaffs', ['salesStaffs', 'pagination']),
+            isHeadOffice(){
+                const userType = this.$store.state.auth.currentUser.userType;
+                return  userType === 'head_office';
+            },
         },
         methods: {
             ...mapActions('salesStaffs', ['fetchAllSalesStaff']),

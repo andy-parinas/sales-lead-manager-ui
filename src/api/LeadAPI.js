@@ -11,6 +11,8 @@ const LeadAPI = {
         const requestUri = '/api/leads'
         const uri = URIBuilder.build(requestUri, options, searchOption)
 
+        console.log(uri);
+
         const response = await api().get(uri);
 
         return response.data;

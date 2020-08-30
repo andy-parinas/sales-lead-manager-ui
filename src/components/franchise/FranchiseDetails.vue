@@ -29,15 +29,19 @@
                                 prepend-inner-icon="search"
                         ></v-text-field>
                     </v-col>
-                    <v-col cols="12" sm="5" class="d-flex align-center justify-center">
+                    <v-col cols="12" sm="5" class="d-flex align-center justify-start">
                         <v-btn @click="reset" class="mr-3"
                                small color="green darken-1" dark>
                             Refresh
                         </v-btn>
-                        <v-btn small color="primary" class="mr-3" @click="addPostcodeDialog = true">
+                        <v-btn small color="primary" class="mr-3"
+                               v-if="isHeadOffice"
+                               @click="addPostcodeDialog = true">
                             Add Postcode
                         </v-btn>
-                        <v-btn small color="error" :disabled="selected.length === 0"
+                        <v-btn small color="error"
+                               v-if="isHeadOffice"
+                               :disabled="selected.length === 0"
                                @click="removePostcodeDialog = true">
                             Remove Postcode
                         </v-btn>
@@ -122,6 +126,12 @@
                 }
             },
             mixins: [ErrorHandlerMixins],
+            computed: {
+                isHeadOffice(){
+                    const userType = this.$store.state.auth.currentUser.userType;
+                    return  userType === 'head_office';
+                },
+            },
             methods: {
                 ...mapActions(['setSuccessMessage']),
                 getFranchisePostcode(){

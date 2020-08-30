@@ -10,7 +10,9 @@
             <SalesStaffCreateDialog
                     @close="showCreateDialog = false" />
         </v-dialog>
-        <v-btn bottom color="pink" dark fab fixed right @click="showCreateDialog = true" >
+        <v-btn bottom color="pink" dark fab fixed right
+               v-if="isHeadOffice"
+               @click="showCreateDialog = true" >
             <v-icon>add</v-icon>
         </v-btn>
     </div>
@@ -28,6 +30,12 @@
             return {
                 showCreateDialog: false
             }
+        },
+        computed: {
+            isHeadOffice(){
+                const userType = this.$store.state.auth.currentUser.userType;
+                return  userType === 'head_office';
+            },
         }
 
     }

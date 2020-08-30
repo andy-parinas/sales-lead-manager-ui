@@ -39,6 +39,7 @@
     import {mapActions, mapState} from 'vuex';
     import FranchiseList from "./shared/FranchiseList";
     import ErrorHandlerMixins from "../../../mixins/ErrorHandler";
+    import FranchiseAPI from "@/api/FranchiseAPI";
 
 
     export default {
@@ -61,12 +62,15 @@
                 },
                 searchOptions: {
                     searchFor: '',
-                }
+                    searchIn: 'franchise_number'
+                },
+                franchises: [],
+                pagination: null
             }
         },
         mixins: [ErrorHandlerMixins],
         computed: {
-            ...mapState('franchises', ['franchises', 'pagination']),
+            // ...mapState('franchises', ['franchises', 'pagination']),
             ...mapState('users', [ 'selectedUser'])
         },
         methods: {
@@ -74,13 +78,22 @@
             ...mapActions('users', ['attachFranchise']),
             getAllFranchises(){
                 this.loading = true;
-                this.getFranchises({pageOptions: this.pageOptions,
-                    searchOptions: this.searchOptions}).then(() => {
-
-                }).catch(error => {
-                    this.handleError(error);
+                // this.getFranchises({pageOptions: this.pageOptions,
+                //     searchOptions: this.searchOptions}).then(response => {
+                //         console.log(response)
+                // }).catch(error => {
+                //     this.handleError(error);
+                // }).finally(() => {
+                //     this.loading = false;
+                // })
+                FranchiseAPI.getAllFranchise(this.pageOptions, this.searchOptions).then(response => {
+                    console.log(response)
+                    this.franchises = response.data;
+                    this.pagination = Object.assign({}, response.pagination)
+                }).catch(error =>{
+                    this.handleError(error)
                 }).finally(() => {
-                    this.loading = false;
+                    this.loading = false
                 })
 
             },
