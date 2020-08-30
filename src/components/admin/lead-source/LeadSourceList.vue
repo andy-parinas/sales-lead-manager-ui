@@ -56,6 +56,7 @@
 <script>
 import LeadSourceAPI from "@/api/LeadSourceAPI";
 import ErrorHandlerMixins from "@/mixins/ErrorHandler";
+import EventBus from "@/helpers/EventBus";
 
 export default {
     name: "LeadSourceList",
@@ -78,10 +79,14 @@ export default {
             }).finally(() => {
                 this.loading = false
             })
+        },
+        addSource(source){
+            this.sources.push(source)
         }
     },
     mounted() {
         this.getLeadSources();
+        EventBus.$on('LEAD_SOURCE_CREATED', payload => this.addSource(payload))
     }
 }
 </script>
