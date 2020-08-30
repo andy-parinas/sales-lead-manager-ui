@@ -48,6 +48,18 @@ const ProductAPI = {
         return response.data
 
 
+    },
+
+    async deleteProduct(productId){
+
+        const uri = `/api/products/${productId}`;
+
+        await csrf.getCSRFCookie();
+
+        const response = await api().delete(uri);
+
+        return response.data
+
     }
 
 }

@@ -58,6 +58,11 @@
                 :initial-data="selectedItem"
                 @close="showEditDialog = false"/>
         </v-dialog>
+        <v-dialog v-model="showDeleteDialog" persistent max-width="500px">
+            <ProductDeleteDialog
+                :product="selectedItem"
+                @close="showDeleteDialog = false"/>
+        </v-dialog>
     </div>
 </template>
 
@@ -66,10 +71,11 @@ import ProductAPI from "@/api/ProductAPI";
 import ErrorHandlerMixins from "@/mixins/ErrorHandler";
 import EventBus from "@/helpers/EventBus";
 import ProductEditDialog from "@/components/admin/product/ProductEditDialog";
+import ProductDeleteDialog from "@/components/admin/product/ProductDeleteDialog";
 
 export default {
     name: "ProductList",
-    components: {ProductEditDialog},
+    components: {ProductDeleteDialog, ProductEditDialog},
     data(){
         return {
             products: [],
@@ -91,8 +97,9 @@ export default {
                 this.loading = false
             })
         },
-        deleteProduct(){
-
+        deleteProduct(product){
+            this.selectedItem = product
+            this.showDeleteDialog = true;
         },
         editProduct(product){
             this.selectedItem = product
@@ -111,12 +118,19 @@ export default {
             })
 
             this.products = updatedProduct;
+        },
+        updateProductsOnDelete(product){
+            console.log()
+            const updatedProducts = this.products.filter(p => p.id !== product.id);
+
+            this.products = updatedProducts;
         }
     },
     mounted() {
         this.getProducts();
         EventBus.$on('PRODUCT_CREATED', payload => this.addProduct(payload))
         EventBus.$on('PRODUCT_UPDATED', payload => this.updateProducts(payload))
+        EventBus.$on('PRODUCT_DELETED', payload => this.updateProductsOnDelete(payload))
     }
 }
 </script>
