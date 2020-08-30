@@ -173,7 +173,7 @@
             franchiseChanged(franchise){
                 console.log('FranchiseChanged', franchise);
                 if(franchise){
-                    this.$set(this.form, 'franchiseId', franchise.value)
+                    this.$set(this.form, 'franchiseId', franchise.id)
                 }else {
                     this.$set(this.form, 'franchiseId', '')
                 }
