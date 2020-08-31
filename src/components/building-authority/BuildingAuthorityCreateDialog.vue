@@ -15,14 +15,36 @@
 <script>
 import DialogHeader from "@/components/core/DialogHeader";
 import BuildingAuthorityForm from "@/components/building-authority/shared/BuildingAuthorityForm";
+import BuildingAuthorityAPI from "@/api/BuildingAuthorityAPI";
+import ErrorHandlerMixins from "@/mixins/ErrorHandler";
+import {mapActions} from 'vuex';
+
+
 export default {
     name: "BuildingAuthorityCreateDialog",
+    props: ['leadId'],
     components: {BuildingAuthorityForm, DialogHeader},
+    data(){
+        return {
+            saving: false
+        }
+    },
+    mixins: [ErrorHandlerMixins],
     methods: {
-
-
-        addBuildingAuthorityHandler(){
-
+        ...mapActions(['setSuccessMessage']),
+        addBuildingAuthorityHandler(form){
+            if(this.leadId){
+                this.saving = true;
+                BuildingAuthorityAPI.createBuildingAuthority(this.leadId, form).then(() => {
+                    this.setSuccessMessage('Building Authority Created');
+                    this.$emit('success');
+                    this.closeDialog();
+                }).catch(error => {
+                    this.handleError(error)
+                }).finally(() => {
+                    this.saving = false;
+                })
+            }
         },
 
         closeDialog(){

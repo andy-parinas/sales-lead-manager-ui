@@ -24,32 +24,32 @@
                 <v-col cols="12" sm="6" md="6">
                     <v-icon small>mdi-thumb-up</v-icon>
                     <span class="ml-2 font-weight-medium caption"> Approval Required:</span>
-                    <span> Yes </span>
+                    <span> {{ buildingAuthority.approvalRequired }} </span>
                 </v-col>
                 <v-col cols="12" sm="6" md="6">
                     <v-icon small>mdi-office-building</v-icon>
                     <span class="ml-2 font-weight-medium caption">Building Authority Name:</span>
-                    <span> Building Authority </span>
+                    <span> {{ buildingAuthority.buildingAuthorityName }} </span>
                 </v-col>
                 <v-col cols="12" sm="6" md="6">
                     <v-icon small>mdi-calendar-month</v-icon>
                     <span class="ml-2 font-weight-medium caption"> Date Plans Sent To Draftsman :</span>
-                    <span> 31/08/2020 </span>
+                    <span> {{ buildingAuthority.datePlansSentToDraftsman }} </span>
                 </v-col>
                 <v-col cols="12" sm="6" md="6">
                     <v-icon small>mdi-calendar-month</v-icon>
                     <span class="ml-2 font-weight-medium caption"> Date Plans Completed:</span>
-                    <span> 31/08/2020 </span>
+                    <span> {{ buildingAuthority.datePlansCompleted }} </span>
                 </v-col>
                 <v-col cols="12" sm="6" md="6">
                     <v-icon small>mdi-calendar-month</v-icon>
                     <span class="ml-2 font-weight-medium caption"> Date Plans Sent To Authority:</span>
-                    <span> 31/08/2020 </span>
+                    <span> {{ buildingAuthority.datePlansSentToAuthority }} </span>
                 </v-col>
                 <v-col cols="12" sm="=12" md="12">
                     <v-icon small>mdi-comment</v-icon>
                     <span class="ml-2 font-weight-medium caption"> Building Authority Comments:</span>
-                    <span> 31/08/2020 </span>
+                    <span> {{ buildingAuthority.buildingAuthorityComments }} </span>
                 </v-col>
             </v-row>
             <v-divider class="my-3"></v-divider>
@@ -59,22 +59,22 @@
                 <v-col cols="12" sm="6" md="6">
                     <v-icon small>mdi-calendar-month</v-icon>
                     <span class="ml-2 font-weight-medium caption"> Anticipated Approval Date:</span>
-                    <span> 31/08/2020 </span>
+                    <span> {{ buildingAuthority.dateAnticipatedApproval }} </span>
                 </v-col>
                 <v-col cols="12" sm="6" md="6">
                     <v-icon small>mdi-calendar-month</v-icon>
                     <span class="ml-2 font-weight-medium caption">Date Received From Authority:</span>
-                    <span> 31/08/2020 </span>
+                    <span> {{ buildingAuthority.dateReceivedFromAuthority }} </span>
                 </v-col>
                 <v-col cols="12" sm="6" md="6">
                     <v-icon small>mdi-newspaper-variant-outline</v-icon>
                     <span class="ml-2 font-weight-medium caption"> Authority/DA Permit Number:</span>
-                    <span> 123456 </span>
+                    <span> {{buildingAuthority.permitNumber }} </span>
                 </v-col>
                 <v-col cols="12" sm="6" md="6">
                     <v-icon small>mdi-lock</v-icon>
                     <span class="ml-2 font-weight-medium caption"> Security Deposit Required:</span>
-                    <span> No </span>
+                    <span> {{ buildingAuthority.securityDepositRequired }} </span>
                 </v-col>
             </v-row>
 
@@ -84,17 +84,17 @@
                 <v-col cols="12" sm="6" md="6">
                     <v-icon small>mdi-office-building</v-icon>
                     <span class="ml-2 font-weight-medium caption"> Building Insurance Name: </span>
-                    <span> Alianze Insurance </span>
+                    <span> {{ buildingAuthority.buildingInsuranceName }} </span>
                 </v-col>
                 <v-col cols="12" sm="6" md="6">
                     <v-icon small>mdi-newspaper-variant-outline</v-icon>
                     <span class="ml-2 font-weight-medium caption">Building Insurance Number:</span>
-                    <span> ABC123213 </span>
+                    <span> {{ buildingAuthority.buildingInsuranceNumber }} </span>
                 </v-col>
                 <v-col cols="12" sm="6" md="6">
                     <v-icon small>mdi-calendar-month</v-icon>
                     <span class="ml-2 font-weight-medium caption"> Date Building Insurance Request Sent: </span>
-                    <span> 31/08/2020 </span>
+                    <span> {{ buildingAuthority.dateInsuranceRequestSent }} </span>
                 </v-col>
             </v-row>
             <v-row class="py-5">
@@ -105,6 +105,7 @@
         <v-dialog v-model="showCreateDialog" persistent max-width="800px">
             <BuildingAuthorityCreateDialog
                 :lead-id="leadId"
+                @success="successCreateHandler"
                 @close="showCreateDialog = false" />
         </v-dialog>
     </div>
@@ -112,6 +113,8 @@
 
 <script>
 import BuildingAuthorityCreateDialog from "@/components/building-authority/BuildingAuthorityCreateDialog";
+import BuildingAuthorityAPI from "@/api/BuildingAuthorityAPI";
+import ErrorHandlerMixins from "@/mixins/ErrorHandler";
 export default {
     name: "BuildingAuthorityPartial",
     props: ['leadId'],
@@ -123,6 +126,32 @@ export default {
             showCreateDialog: false
         }
     },
+    mixins: [ErrorHandlerMixins],
+    methods: {
+        getBuildingAuthority(leadId){
+            this.loading = true;
+            BuildingAuthorityAPI.getBuildingAuthority(leadId).then(response => {
+                if(response.status === 200){
+                    console.log(response.data.data)
+                    this.buildingAuthority = response.data.data
+                }
+            }).catch(error => {
+                this.handleError(error);
+            }).finally(() => {
+                this.loading = false;
+            })
+        },
+        successCreateHandler(){
+            if(this.leadId){
+                this.getBuildingAuthority(this.leadId)
+            }
+        }
+    },
+    mounted() {
+        if(this.leadId){
+            this.getBuildingAuthority(this.leadId)
+        }
+    }
 }
 </script>
 
