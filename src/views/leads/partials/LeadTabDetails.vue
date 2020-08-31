@@ -13,7 +13,9 @@
             <v-tab v-if="!summary"> Documents </v-tab>
             <v-tab v-if="!summary" > Contract </v-tab>
             <v-tab v-if="!summary"> Finance </v-tab>
+            <v-tab v-if="!summary"> Building Authority </v-tab>
             <v-tab v-if="!summary"> Constructions </v-tab>
+
 
             <v-tab-item>
                 <LeadContactPartial :data="lead.details" :summary="summary"  />
@@ -34,6 +36,9 @@
                 <FinancePartial :lead-id="lead.details.id" />
             </v-tab-item>
             <v-tab-item v-if="!summary">
+                <BuildingAuthorityPartial :lead-id="lead.details.id" />
+            </v-tab-item>
+            <v-tab-item v-if="!summary">
                 <ConstructionPartial :lead-id="lead.details.id" />
             </v-tab-item>
         </v-tabs>
@@ -48,6 +53,7 @@
     import ContractPartial from "./ContractPartial";
     import FinancePartial from "./FinancePartial";
     import ConstructionPartial from "./ConstructionPartial";
+    import BuildingAuthorityPartial from "@/views/leads/partials/BuildingAuthorityPartial";
 
 
     export default {
@@ -58,6 +64,7 @@
             summary: {type:Boolean}
         },
         components: {
+            BuildingAuthorityPartial,
             ConstructionPartial,
             FinancePartial,
             ContractPartial, DocumentPartial, LeadContactPartial, JobTypePartial, AppointmentPartial},
