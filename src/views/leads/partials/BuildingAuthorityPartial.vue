@@ -58,7 +58,7 @@
             <v-row>
                 <v-col cols="12" sm="6" md="6">
                     <v-icon small>mdi-calendar-month</v-icon>
-                    <span class="ml-2 font-weight-medium caption"> Anticipated Approval Date :</span>
+                    <span class="ml-2 font-weight-medium caption"> Anticipated Approval Date:</span>
                     <span> 31/08/2020 </span>
                 </v-col>
                 <v-col cols="12" sm="6" md="6">
@@ -102,12 +102,20 @@
                 <v-btn text small fab><v-icon>mdi-pencil</v-icon></v-btn>
             </v-row>
         </v-card>
+        <v-dialog v-model="showCreateDialog" persistent max-width="800px">
+            <BuildingAuthorityCreateDialog
+                :lead-id="leadId"
+                @close="showCreateDialog = false" />
+        </v-dialog>
     </div>
 </template>
 
 <script>
+import BuildingAuthorityCreateDialog from "@/components/building-authority/BuildingAuthorityCreateDialog";
 export default {
     name: "BuildingAuthorityPartial",
+    props: ['leadId'],
+    components: {BuildingAuthorityCreateDialog},
     data(){
         return {
             buildingAuthority: null,

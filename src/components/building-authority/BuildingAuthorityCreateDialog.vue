@@ -23,7 +23,7 @@ export default {
 
         addBuildingAuthorityHandler(){
 
-        }
+        },
 
         closeDialog(){
             this.$emit('close')
