@@ -121,6 +121,26 @@ const FinanceAPI = {
 
     },
 
+    async addPaymentFromSchedule(financeId, paymentScheduleId, formData){
+
+        const uri = `api/finances/${financeId}/payment-schedules/${paymentScheduleId}/pay`;
+
+        const data = {
+            payment: formData.payment
+        }
+
+        console.log(data);
+
+        await csrf.getCSRFCookie();
+
+        const response = await api().post(uri, data);
+
+
+        return response.data;
+
+
+    },
+
     async deletePaymentSchedule(financeId, paymentId){
 
         const uri = `api/finances/${financeId}/payment-schedules/${paymentId}`;

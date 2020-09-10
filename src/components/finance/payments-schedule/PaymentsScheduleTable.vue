@@ -45,7 +45,7 @@
                     <PaymentScheduleDeleteDialog @close="showDeleteDialog = false" :payment="selectedItem" :finance-id="financeId" />
                 </v-dialog>
                 <v-dialog v-model="showConvertDialog" persistent max-width="500px">
-                    <PaymentScheduleConvertDialog @close="showConvertDialog = false"
+                    <PaymentSchedulePay @close="showConvertDialog = false"
                                                   :payment="selectedItem"
                                                   :finance-id="financeId" />
                 </v-dialog>
@@ -61,11 +61,11 @@
     import EventBus from "../../../helpers/EventBus";
     import PaymentScheduleEditDialog from "./PaymentScheduleEditDialog";
     import PaymentScheduleDeleteDialog from "./PaymentScheduleDeleteDialog";
-    import PaymentScheduleConvertDialog from "./PaymentScheduleConvertDialog";
+    import PaymentSchedulePay from "@/components/finance/payments-schedule/PaymentSchedulePay";
     export default {
         name: "PaymentsScheduleTable",
         components: {
-            PaymentScheduleConvertDialog,
+            PaymentSchedulePay,
             PaymentScheduleDeleteDialog, PaymentScheduleEditDialog, PaymentScheduleCreateDialog},
         props: ['financeId'],
         data(){
@@ -79,6 +79,8 @@
                     { text: 'Due Date',value: 'dueDate'},
                     { text: 'Description', value: 'description' },
                     { text: 'Amount', value: 'amount' },
+                    { text: 'Payment', value: 'payment' },
+                    { text: 'Balance', value: 'balance' },
                     { text: 'Status', value: 'status' },
                     { text: 'Actions', value: 'actions', sortable: false },
                 ],
