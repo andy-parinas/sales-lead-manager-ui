@@ -15,6 +15,7 @@
             <v-tab v-if="!summary"> Finance </v-tab>
             <v-tab v-if="!summary"> Building Authority </v-tab>
             <v-tab v-if="!summary"> Constructions </v-tab>
+            <v-tab v-if="!summary"> Verifications </v-tab>
 
 
             <v-tab-item>
@@ -41,6 +42,9 @@
             <v-tab-item v-if="!summary">
                 <ConstructionPartial :lead-id="lead.details.id" />
             </v-tab-item>
+            <v-tab-item v-if="!summary">
+                <VerificationPartial :lead-id="lead.details.id" />
+            </v-tab-item>
         </v-tabs>
     </v-card>
 </template>
@@ -54,6 +58,7 @@
     import FinancePartial from "./FinancePartial";
     import ConstructionPartial from "./ConstructionPartial";
     import BuildingAuthorityPartial from "@/views/leads/partials/BuildingAuthorityPartial";
+    import VerificationPartial from "@/views/leads/partials/VerificationPartial";
 
 
     export default {
@@ -64,6 +69,7 @@
             summary: {type:Boolean}
         },
         components: {
+            VerificationPartial,
             BuildingAuthorityPartial,
             ConstructionPartial,
             FinancePartial,

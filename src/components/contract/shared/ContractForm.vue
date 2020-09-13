@@ -43,12 +43,17 @@
                                       :rules="[rules.requiredField, rules.numberField]"
                         />
                     </v-col>
-                    <v-col cols="12" sm="6"></v-col>
+                    <v-col cols="12" sm="6">
+                        <v-checkbox
+                            v-model="form.taxExempt"
+                            label="Is Tax Exempted"
+                        ></v-checkbox>
+                    </v-col>
                     <v-col cols="12" sm="6">
                         <v-text-field v-model="form.depositAmount"
                                       prepend-icon="mdi-cash-register"
                                       label="Deposit Amount"
-                                      :rules="[rules.optionalNumber, rules.lessThanPrice]"
+                                      :rules="[]"
                         />
                     </v-col>
                     <v-col cols="12" sm="6">
@@ -65,7 +70,7 @@
                                 <v-text-field
                                         prepend-icon="event"
                                         :value="computedDepositDateFormattedDatefns"
-                                        :rules="form.depositAmount !== ''? [rules.requiredField] : []"
+                                        :rules="[]"
                                         label="Date Deposit Received"
                                         readonly
                                         :disabled="form.depositAmount === '' "
@@ -174,7 +179,8 @@
                     contractPrice: '',
                     dateDepositReceived: '',
                     warrantyRequired: '',
-                    dateWarrantySent: ''
+                    dateWarrantySent: '',
+                    taxExempt: false
                 },
                 defaultForm: {
                     contractDate: '',
@@ -183,7 +189,8 @@
                     contractPrice: '',
                     dateDepositReceived: '',
                     warrantyRequired: '',
-                    dateWarrantySent: ''
+                    dateWarrantySent: '',
+                    taxExempt: false
                 },
                 warrantyRequirements: [
                     { value: 'yes', text: 'Yes'},

@@ -26,6 +26,7 @@ const ContractAPI = {
             date_deposit_received: formData.dateDepositReceived,
             warranty_required: formData.warrantyRequired,
             date_warranty_sent: formData.dateWarrantySent,
+            tax_exempt: formData.taxExempt
         }
 
         await csrf.getCSRFCookie();
@@ -49,6 +50,7 @@ const ContractAPI = {
             date_deposit_received: formData.dateDepositReceived,
             warranty_required: formData.warrantyRequired,
             date_warranty_sent: formData.dateWarrantySent,
+            tax_exempt: formData.taxExempt
         }
 
         await csrf.getCSRFCookie();
