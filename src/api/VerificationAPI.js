@@ -1,4 +1,5 @@
 import api from "@/api/api";
+import csrf from "@/api/csrf";
 
 
 const VerificationAPI = {
@@ -10,6 +11,33 @@ const VerificationAPI = {
         const response = await api().get(uri);
 
         return response;
+
+    },
+
+    async createVerification(leadId, formData){
+
+        const uri = `/api/leads/${leadId}/verifications`;
+
+        const data = {
+            design_correct: formData.designCorrect,
+            date_design_check: formData.dateDesignCheck,
+            costing_correct: formData.costingCorrect,
+            date_costing_check: formData.dateCostingCheck,
+            estimated_build_days: formData.estimatedBuildDays,
+            trades_required: formData.tradesRequired,
+            building_supervisor: formData.buildingSupervisor,
+            roof_sheet_id: formData.roofSheetId,
+            roof_colour_id: formData.roofColourId,
+            lineal_metres: formData.linealMetres,
+            franchise_authority: formData.franchiseAuthority,
+            authority_date: formData.authorityDate,
+        }
+
+        await csrf.getCSRFCookie();
+
+        const response = await api().post(uri, data);
+
+        return response.data
 
     }
 

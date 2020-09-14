@@ -14,6 +14,7 @@
                     <v-col cols="12" sm=6>
                         <DateSelectField label="Design Check Date"
                                          :initial-date="initialData? initialData.dateDesignCheck : ''"
+                                         :required="true"
                                          @onDateSelected="designCheckDateHandler" />
                     </v-col>
                     <v-col cols="12" sm="6">
@@ -26,7 +27,7 @@
                     <v-col cols="12" sm=6>
                         <DateSelectField label="Costing Check Date"
                                          :initial-date="initialData? initialData.dateCostingCheck : ''"
-                                         @onDateSelected="designCheckDateHandler" />
+                                         @onDateSelected="costingCheckDateHandler" />
                     </v-col>
                 </v-row>
                 <v-row>
@@ -50,10 +51,13 @@
                     </v-col>
                     <v-col cols="12" sm="6"></v-col>
                     <v-col cols="12" sm="6">
-                        <RoofSheetSelect />
+                        <RoofSheetSelect
+                            @onValueChanged="roofSheetSelectHandler" />
                     </v-col>
                     <v-col cols="12" sm="6">
-                        <RoofColourSelect />
+                        <RoofColourSelect
+                            :is-required="form.roofSheetId !== ''"
+                            @onValueChanged="roofColourSelectHandler" />
                     </v-col>
                     <v-col cols="12" sm="6">
                         <v-text-field v-model="form.linealMetres"
@@ -85,6 +89,7 @@
                 Save
             </v-btn>
         </v-card-actions>
+        <pre>{{ form }}</pre>
     </v-form>
 </template>
 
@@ -119,9 +124,34 @@ export default {
         }
     },
     methods: {
-        designCheckDateHandler()
+        designCheckDateHandler(date)
         {
-
+            if(date){
+                this.$set(this.form, 'dateDesignCheck', date)
+            }else {
+                this.$set(this.form, 'dateDesignCheck', '')
+            }
+        },
+        costingCheckDateHandler(date){
+            if(date){
+                this.$set(this.form, 'dateCostingCheck', date)
+            }else {
+                this.$set(this.form, 'dateCostingCheck', '')
+            }
+        },
+        roofSheetSelectHandler(roofSheet){
+            if(roofSheet){
+                this.$set(this.form, 'roofSheetId', roofSheet.id)
+            }else {
+                this.$set(this.form, 'roofSheetId', '')
+            }
+        },
+        roofColourSelectHandler(roofColour){
+            if(roofColour){
+                this.$set(this.form, 'roofColourId', roofColour.id)
+            }else {
+                this.$set(this.form, 'roofColourId', '')
+            }
         }
     }
 }

@@ -116,8 +116,9 @@ export default {
         getVerification(leadId){
             this.loading = true;
             VerificationAPI.getVerification(leadId).then(response => {
-                console.log(response)
-
+                if(response.status === 200){
+                    this.verification = response.data.data
+                }
             }).catch(error => {
                 console.log(error)
             }).finally(() => {

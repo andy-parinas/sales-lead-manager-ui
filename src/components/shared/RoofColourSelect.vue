@@ -48,7 +48,7 @@ export default {
             })
         },
         roofColourValueChange(){
-
+            this.$emit('onValueChanged', this.roofColour)
         }
     },
     mounted() {

@@ -48,7 +48,7 @@ export default {
             })
         },
         roofSheetValueChange(){
-
+            this.$emit('onValueChanged', this.roofSheet)
         }
     },
     mounted() {
