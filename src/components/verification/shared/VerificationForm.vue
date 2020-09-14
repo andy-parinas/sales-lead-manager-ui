@@ -21,7 +21,6 @@
                                   prepend-icon="mdi-thumb-up"
                                   label="Costing Correct"
                                   :items="[{value: 'yes', text: 'Yes'}, {value: 'no', text: 'No'}]"
-                                  :rules="[rules.requiredField]"
                         ></v-select>
                     </v-col>
                     <v-col cols="12" sm=6>
@@ -33,45 +32,39 @@
                 <v-row>
                     <v-col cols="12" sm="6">
                         <v-text-field v-model="form.estimatedBuildDays"
-                                      prepend-icon="mdi-office-building"
+                                      prepend-icon="mdi-calendar-blank-multiple"
                                       label="Estimated Build Days"
                         />
                     </v-col>
                     <v-col cols="12" sm="6">
                         <v-text-field v-model="form.tradesRequired"
-                                      prepend-icon="mdi-office-building"
+                                      prepend-icon="mdi-tools"
                                       label="Trades Required"
                         />
                     </v-col>
                     <v-col cols="12" sm="6">
                         <v-text-field v-model="form.buildingSupervisor"
-                                      prepend-icon="mdi-office-building"
+                                      prepend-icon="mdi-account-hard-hat"
                                       label="Building Supervisor"
                         />
                     </v-col>
                     <v-col cols="12" sm="6"></v-col>
                     <v-col cols="12" sm="6">
-                        <v-text-field v-model="form.roofSheetId"
-                                      prepend-icon="mdi-office-building"
-                                      label="Roof Sheet Product"
-                        />
+                        <RoofSheetSelect />
                     </v-col>
                     <v-col cols="12" sm="6">
-                        <v-text-field v-model="form.roofColourId"
-                                      prepend-icon="mdi-office-building"
-                                      label="Roof Sheet Colour"
-                        />
+                        <RoofColourSelect />
                     </v-col>
                     <v-col cols="12" sm="6">
                         <v-text-field v-model="form.linealMetres"
-                                      prepend-icon="mdi-office-building"
+                                      prepend-icon="mdi-tape-measure"
                                       label="Lineal Metres"
                         />
                     </v-col>
                     <v-col cols="12" sm="6"></v-col>
                     <v-col cols="12" sm="6">
                         <v-text-field v-model="form.franchiseAuthority"
-                                      prepend-icon="mdi-office-building"
+                                      prepend-icon="mdi-store"
                                       label="Franchise Authority"
                         />
                     </v-col>
@@ -97,9 +90,11 @@
 
 <script>
 import DateSelectField from "@/components/shared/DateSelectField";
+import RoofColourSelect from "@/components/shared/RoofColourSelect";
+import RoofSheetSelect from "@/components/shared/RoofSheetSelect";
 export default {
     name: "VerificationForm",
-    components: {DateSelectField},
+    components: {RoofSheetSelect, RoofColourSelect, DateSelectField},
     props: ['initialData', 'saving'],
     data(){
         return {
