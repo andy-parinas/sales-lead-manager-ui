@@ -80,7 +80,6 @@
                 Save
             </v-btn>
         </v-card-actions>
-        <pre>{{ form }}</pre>
     </v-form>
 </template>
 
