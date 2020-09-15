@@ -8,15 +8,21 @@ Vue.filter('capitalize', function (value) {
 })
 
 Vue.filter('formatDate', function (value) {
-    const dateArray = value.split(" ");
-    const date = dateArray[0].split("-");
+    if(value){
+        const dateArray = value.split(" ");
+        const date = dateArray[0].split("-");
 
-    if(date.length < 3) return '';
+        if(date.length < 3) return '';
 
-    return `${date[2]}/${date[1]}/${date[0]}`
+        return `${date[2]}/${date[1]}/${date[0]}`
+    }else {
+        return '';
+    }
 })
 
 Vue.filter('formatTime', function (value) {
+
+    if(!value) return '';
 
     const dateTimeArray = value.split(" ");
 
