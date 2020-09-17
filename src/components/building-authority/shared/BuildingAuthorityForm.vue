@@ -21,17 +21,17 @@
                 <v-row>
                     <v-col cols="12" sm=6>
                         <DateSelectField label="Date Plans Sent To Draftsman"
-                                         :initial-date="initialData? initialData.dueDate : ''"
+                                         :initial-date="initialData? initialData.datePlansSentToDraftsman : ''"
                                          @onDateSelected="datePlansSentToDraftsmanHandler" />
                     </v-col>
                     <v-col cols="12" sm=6>
                         <DateSelectField label="Date Plans Completed"
-                                         :initial-date="initialData? initialData.dueDate : ''"
+                                         :initial-date="initialData? initialData.datePlansCompleted : ''"
                                          @onDateSelected="datePlansCompleted" />
                     </v-col>
                     <v-col cols="12" sm=6>
                         <DateSelectField label="Date Plans Sent To Authority"
-                                         :initial-date="initialData? initialData.dueDate : ''"
+                                         :initial-date="initialData? initialData.datePlansSentToAuthority : ''"
                                          @onDateSelected="datePlansSentToAuthority" />
                     </v-col>
                     <v-col cols="12">
@@ -46,12 +46,12 @@
                 <v-row>
                     <v-col cols="12" sm=6>
                         <DateSelectField label="Anticipated Approval Date"
-                                         :initial-date="initialData? initialData.dueDate : ''"
+                                         :initial-date="initialData? initialData.dateAnticipatedApproval : ''"
                                          @onDateSelected="dateAnticipatedApproval"/>
                     </v-col>
                     <v-col cols="12" sm=6>
                         <DateSelectField label="Date Received From Authority"
-                                         :initial-date="initialData? initialData.dueDate : ''"
+                                         :initial-date="initialData? initialData.dateReceivedFromAuthority : ''"
                                          @onDateSelected="dateReceivedFromAuthority"/>
                     </v-col>
                     <v-col cols="12" sm="6">
@@ -83,7 +83,7 @@
                     </v-col>
                     <v-col cols="12" sm=6>
                         <DateSelectField label="Date Building Insurance Request Sent"
-                                         :initial-date="initialData? initialData.dueDate : ''"
+                                         :initial-date="initialData? initialData.dateInsuranceRequestSent : ''"
                                          @onDateSelected="dateBuildingInsuranceRequestSent"/>
                     </v-col>
                 </v-row>
@@ -170,6 +170,11 @@ export default {
 
         }
 
+    },
+    mounted() {
+        if(this.initialData){
+            this.form = Object.assign({}, this.initialData)
+        }
     }
 }
 </script>

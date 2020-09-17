@@ -34,17 +34,17 @@
                 <v-col cols="12" sm="6" md="6">
                     <v-icon small>mdi-calendar-month</v-icon>
                     <span class="ml-2 font-weight-medium caption"> Date Plans Sent To Draftsman :</span>
-                    <span> {{ buildingAuthority.datePlansSentToDraftsman }} </span>
+                    <span> {{ buildingAuthority.datePlansSentToDraftsman | formatDate }} </span>
                 </v-col>
                 <v-col cols="12" sm="6" md="6">
                     <v-icon small>mdi-calendar-month</v-icon>
                     <span class="ml-2 font-weight-medium caption"> Date Plans Completed:</span>
-                    <span> {{ buildingAuthority.datePlansCompleted }} </span>
+                    <span> {{ buildingAuthority.datePlansCompleted | formatDate }} </span>
                 </v-col>
                 <v-col cols="12" sm="6" md="6">
                     <v-icon small>mdi-calendar-month</v-icon>
                     <span class="ml-2 font-weight-medium caption"> Date Plans Sent To Authority:</span>
-                    <span> {{ buildingAuthority.datePlansSentToAuthority }} </span>
+                    <span> {{ buildingAuthority.datePlansSentToAuthority |formatDate }} </span>
                 </v-col>
                 <v-col cols="12" sm="=12" md="12">
                     <v-icon small>mdi-comment</v-icon>
@@ -59,12 +59,12 @@
                 <v-col cols="12" sm="6" md="6">
                     <v-icon small>mdi-calendar-month</v-icon>
                     <span class="ml-2 font-weight-medium caption"> Anticipated Approval Date:</span>
-                    <span> {{ buildingAuthority.dateAnticipatedApproval }} </span>
+                    <span> {{ buildingAuthority.dateAnticipatedApproval |formatDate }} </span>
                 </v-col>
                 <v-col cols="12" sm="6" md="6">
                     <v-icon small>mdi-calendar-month</v-icon>
                     <span class="ml-2 font-weight-medium caption">Date Received From Authority:</span>
-                    <span> {{ buildingAuthority.dateReceivedFromAuthority }} </span>
+                    <span> {{ buildingAuthority.dateReceivedFromAuthority |formatDate }} </span>
                 </v-col>
                 <v-col cols="12" sm="6" md="6">
                     <v-icon small>mdi-newspaper-variant-outline</v-icon>
@@ -94,12 +94,12 @@
                 <v-col cols="12" sm="6" md="6">
                     <v-icon small>mdi-calendar-month</v-icon>
                     <span class="ml-2 font-weight-medium caption"> Date Building Insurance Request Sent: </span>
-                    <span> {{ buildingAuthority.dateInsuranceRequestSent }} </span>
+                    <span> {{ buildingAuthority.dateInsuranceRequestSent |formatDate }} </span>
                 </v-col>
             </v-row>
             <v-row class="py-5">
                 <v-spacer></v-spacer>
-                <v-btn text small fab><v-icon>mdi-pencil</v-icon></v-btn>
+                <v-btn text small fab @click="showEditDialog = true"><v-icon>mdi-pencil</v-icon></v-btn>
             </v-row>
         </v-card>
         <v-dialog v-model="showCreateDialog" persistent max-width="800px">
@@ -108,6 +108,14 @@
                 @success="successCreateHandler"
                 @close="showCreateDialog = false" />
         </v-dialog>
+        <v-dialog v-model="showEditDialog" persistent max-width="800px">
+            <BuildingAuthorityEditDialog
+                :lead-id="leadId"
+                :building-authority="buildingAuthority"
+                @onContractUpdated="updateBuildingAuthority"
+                @close="showEditDialog = false"
+                @success="updateSuccessHandler"/>
+        </v-dialog>
     </div>
 </template>
 
@@ -115,15 +123,17 @@
 import BuildingAuthorityCreateDialog from "@/components/building-authority/BuildingAuthorityCreateDialog";
 import BuildingAuthorityAPI from "@/api/BuildingAuthorityAPI";
 import ErrorHandlerMixins from "@/mixins/ErrorHandler";
+import BuildingAuthorityEditDialog from "@/components/building-authority/BuildingAuthorityEditDialog";
 export default {
     name: "BuildingAuthorityPartial",
     props: ['leadId'],
-    components: {BuildingAuthorityCreateDialog},
+    components: {BuildingAuthorityEditDialog, BuildingAuthorityCreateDialog},
     data(){
         return {
             buildingAuthority: null,
             loading: false,
-            showCreateDialog: false
+            showCreateDialog: false,
+            showEditDialog: false
         }
     },
     mixins: [ErrorHandlerMixins],
@@ -145,6 +155,14 @@ export default {
             if(this.leadId){
                 this.getBuildingAuthority(this.leadId)
             }
+        },
+        updateSuccessHandler(buildingAuthority){
+            if(buildingAuthority){
+                this.buildingAuthority = Object.assign({},buildingAuthority)
+            }
+        },
+        updateBuildingAuthority(){
+
         }
     },
     mounted() {
