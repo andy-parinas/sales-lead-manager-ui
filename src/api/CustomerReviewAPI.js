@@ -26,6 +26,15 @@ const CustomerReviewAPI = {
 
         return response.data;
 
+    },
+
+    async getCustomerReview(leadId){
+
+        const uri = `/api/leads/${leadId}/customer-reviews`;
+
+        return await api().get(uri);
+
+
     }
 
 }

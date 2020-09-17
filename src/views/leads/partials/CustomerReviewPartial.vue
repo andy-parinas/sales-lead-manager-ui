@@ -22,23 +22,23 @@
                 <v-col cols="12" sm="6" md="6">
                     <v-icon small>mdi-calendar-month</v-icon>
                     <span class="ml-2 font-weight-medium caption"> Date Project Completed:</span>
-                    <span> 15/09/2020 </span>
+                    <span> {{  customerReview.dateProjectCompleted | formatDate }} </span>
                 </v-col>
                 <v-col cols="12" sm="6" md="6">
                     <v-icon small>mdi-calendar-month</v-icon>
                     <span class="ml-2 font-weight-medium caption"> Date Warranty Received:</span>
-                    <span> 15/09/2020 </span>
+                    <span> {{ customerReview.dateWarrantyReceived | formatDate }} </span>
                 </v-col>
 
                 <v-col cols="12" sm="6" md="12">
                     <v-icon small>mdi-home-outline</v-icon>
                     <span class="ml-2 font-weight-medium caption"> Type Of Home Addition:</span>
-                    <span> Additions 1 </span>
+                    <span> {{ customerReview.homeAdditionType }} </span>
                 </v-col>
                 <v-col cols="12" sm="6" md="12">
                     <v-icon small>mdi-home-outline</v-icon>
                     <span class="ml-2 font-weight-medium caption"> Home Addition Description:</span>
-                    <span> descriptions </span>
+                    <span> {{ customerReview.homeAdditionDescription }} </span>
                 </v-col>
             </v-row>
             <v-divider class="my-3"></v-divider>
@@ -46,28 +46,28 @@
                 <v-col cols="12" sm="6" md="12">
                     <v-icon small>mdi-calendar-month</v-icon>
                     <span class="ml-2 font-weight-medium caption"> How Would You Rate The Service You Received:</span>
-                    <span> 15/09/2020 </span>
+                    <span> {{  customerReview.serviceReceivedRating }} </span>
                 </v-col>
                 <v-col cols="12" sm="6" md="12">
                     <v-icon small>mdi-calendar-month</v-icon>
                     <span class="ml-2 font-weight-medium caption"> How Would You Rate The Workmanship Of Your Spanline Home Addition:</span>
-                    <span> 15/09/2020 </span>
+                    <span> {{ customerReview.workmanshipRating }} </span>
                 </v-col>
 
                 <v-col cols="12" sm="6" md="12">
                     <v-icon small>mdi-home-outline</v-icon>
                     <span class="ml-2 font-weight-medium caption"> How Would You Rate Your Satisfaction With The Finished Product:</span>
-                    <span> Additions 1 </span>
+                    <span> {{ customerReview.finishedProductRating }} </span>
                 </v-col>
                 <v-col cols="12" sm="6" md="12">
                     <v-icon small>mdi-home-outline</v-icon>
                     <span class="ml-2 font-weight-medium caption"> How Would You Rate The Quality,Service And Advise Of Your Design Consultant:</span>
-                    <span> descriptions </span>
+                    <span> {{  customerReview.designConsultantRating }} </span>
                 </v-col>
                 <v-col cols="12" sm="6" md="12">
                     <v-icon small>mdi-home-outline</v-icon>
                     <span class="ml-2 font-weight-medium caption"> Customer Comments:</span>
-                    <span> descriptions </span>
+                    <span> {{ customerReview.comments }} </span>
                 </v-col>
             </v-row>
         </v-card>
@@ -83,6 +83,7 @@
 <script>
 import ErrorHandlerMixins from "@/mixins/ErrorHandler";
 import CustomerReviewCreateDialog from "@/components/customer-review/CustomerReviewCreateDialog";
+import CustomerReviewAPI from "@/api/CustomerReviewAPI";
 
 export default {
     name: "CustomerReviewPartial",
@@ -97,15 +98,27 @@ export default {
     },
     mixins: [ErrorHandlerMixins],
     methods: {
-        getCustomerReview(){
-
+        getCustomerReview(leadId){
+            this.loading = true
+            CustomerReviewAPI.getCustomerReview(leadId).then(response => {
+                if(response.status === 200){
+                    this.customerReview = response.data.data
+                    console.log(this.customerReview)
+                }
+            }).catch(error => {
+                this.handleError(error)
+            }).finally(() => {
+                this.loading = false
+            })
         },
         successCreateHandler(){
 
         }
     },
     mounted() {
-
+        if(this.leadId){
+            this.getCustomerReview(this.leadId)
+        }
     }
 }
 </script>
