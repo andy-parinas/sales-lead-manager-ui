@@ -89,7 +89,7 @@
             </v-row>
             <v-row class="py-5">
                 <v-spacer></v-spacer>
-                <v-btn text small fab><v-icon>mdi-pencil</v-icon></v-btn>
+                <v-btn text small fab @click="showEditDialog = true"><v-icon>mdi-pencil</v-icon></v-btn>
             </v-row>
         </v-card>
         <v-dialog v-model="showCreateDialog" persistent max-width="800px">
@@ -98,6 +98,13 @@
                 @success="successCreateHandler"
                 @close="showCreateDialog = false" />
         </v-dialog>
+        <v-dialog v-model="showEditDialog" persistent max-width="800px">
+            <VerificationEditDialog
+                :lead-id="leadId"
+                :verification="verification"
+                @close="showEditDialog = false"
+                @success="updateSuccessHandler"/>
+        </v-dialog>
     </div>
 </template>
 
@@ -105,16 +112,18 @@
 import VerificationAPI from "@/api/VerificationAPI";
 import VerificationCreateDialog from "@/components/verification/VerificationCreateDialog";
 import ErrorHandlerMixins from "@/mixins/ErrorHandler";
+import VerificationEditDialog from "@/components/verification/VerificationEditDialog";
 
 export default {
     name: "VerificationPartial",
-    components: {VerificationCreateDialog},
+    components: {VerificationEditDialog, VerificationCreateDialog},
     props: ['leadId'],
     data(){
         return {
             verification: null,
             loading: false,
-            showCreateDialog: false
+            showCreateDialog: false,
+            showEditDialog: false
         }
     },
     mixins: [ErrorHandlerMixins],
@@ -135,6 +144,11 @@ export default {
         successCreateHandler(){
             if(this.leadId){
                 this.getVerification(this.leadId)
+            }
+        },
+        updateSuccessHandler(verification){
+            if(verification){
+                this.verification = Object.assign({}, verification);
             }
         }
     },

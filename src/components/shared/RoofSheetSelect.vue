@@ -26,7 +26,7 @@ import RoofSheetAPI from "@/api/RoofSheetAPI";
 
 export default {
     name: "RoofSheetSelect",
-    props: ['isRequired', 'initialRoofColourId'],
+    props: ['isRequired', 'initialRoofSheet'],
     data(){
         return {
             roofSheet: '',
@@ -41,6 +41,9 @@ export default {
             this.loading = true;
             RoofSheetAPI.getRoofSheets().then(response => {
                 this.roofSheets = response.data
+                if(this.initialRoofSheet){
+                    this.roofSheet = this.initialRoofSheet
+                }
             }).catch(error => {
                 this.handleError(error)
             }).finally(() => {
@@ -53,6 +56,7 @@ export default {
     },
     mounted() {
         this.getRoofSheet();
+
     }
 }
 </script>

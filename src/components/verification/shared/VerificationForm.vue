@@ -52,11 +52,13 @@
                     <v-col cols="12" sm="6"></v-col>
                     <v-col cols="12" sm="6">
                         <RoofSheetSelect
+                            :initial-roof-sheet="form.roofSheetId"
                             @onValueChanged="roofSheetSelectHandler" />
                     </v-col>
                     <v-col cols="12" sm="6">
                         <RoofColourSelect
                             :is-required="form.roofSheetId !== ''"
+                            :initial-roof-colour="form.roofColourId"
                             @onValueChanged="roofColourSelectHandler" />
                     </v-col>
                     <v-col cols="12" sm="6">
@@ -75,7 +77,7 @@
                     <v-col cols="12" sm=6>
                         <DateSelectField label="Authority Date"
                                          :initial-date="initialData? initialData.authorityDate : ''"
-                                         @onDateSelected="designCheckDateHandler" />
+                                         @onDateSelected="authorityDateHandler" />
                     </v-col>
                 </v-row>
             </v-container>
@@ -89,7 +91,6 @@
                 Save
             </v-btn>
         </v-card-actions>
-        <pre>{{ form }}</pre>
     </v-form>
 </template>
 
@@ -139,6 +140,13 @@ export default {
                 this.$set(this.form, 'dateCostingCheck', '')
             }
         },
+        authorityDateHandler(date){
+            if(date){
+                this.$set(this.form, 'authorityDate', date)
+            }else {
+                this.$set(this.form, 'authorityDate', '')
+            }
+        },
         roofSheetSelectHandler(roofSheet){
             if(roofSheet){
                 this.$set(this.form, 'roofSheetId', roofSheet.id)
@@ -152,6 +160,21 @@ export default {
             }else {
                 this.$set(this.form, 'roofColourId', '')
             }
+        }
+    },
+    watch: {
+        initialData: {
+            handler(){
+                if(this.initialData){
+                    this.form = Object.assign({}, this.initialData)
+                }
+            },
+            deep: true
+        }
+    },
+    mounted() {
+        if (this.initialData){
+            this.form = Object.assign({}, this.initialData)
         }
     }
 }

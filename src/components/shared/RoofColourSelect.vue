@@ -26,7 +26,7 @@ import ErrorHandlerMixins from "@/mixins/ErrorHandler";
 
 export default {
     name: "RoofColourSelect",
-    props: ['isRequired', 'initialRoofColourId'],
+    props: ['isRequired', 'initialRoofColour'],
     data(){
         return {
             roofColour: '',
@@ -41,6 +41,9 @@ export default {
             this.loading = true;
             RoofColourAPI.getRoofColours().then(response => {
                 this.roofColours = response.data
+                if(this.initialRoofColour){
+                    this.roofColour = this.initialRoofColour
+                }
             }).catch(error => {
                 this.handleError(error)
             }).finally(() => {
