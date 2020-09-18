@@ -12,12 +12,8 @@
                         />
                     </v-col>
                     <v-col cols="12" sm="12">
-<!--                        <PostcodeSelect @onValueChanged="onPostcodeSelect"-->
-<!--                                        :initial-postcode-id="initialData.postcodeId"-->
-<!--                                        :required="true"-->
-<!--                                        ref="postcodeSelect" />-->
                         <PostcodeSelectField @onValueChanged="onPostcodeSelect"
-                                             :initial-postcode-id="initialData.postcodeId"
+                                             :initial-postcode-id="initialData.postcode.id"
                                              :required="true" />
                     </v-col>
                 </v-row>
@@ -32,24 +28,24 @@
                     </v-col>
                     <v-col cols="12" sm=6>
                         <DateSelectField label="Date Materials Received"
-                                         :initial-date="initialData? initialData.dueDate : ''"
+                                         :initial-date="initialData? initialData.dateMaterialsReceived : ''"
                                          @onDateSelected="dateMaterialsReceivedSelectedHandler" />
                     </v-col>
                     <v-col cols="12" sm=6>
                         <DateSelectField label="Date Assembly Completed"
-                                         :initial-date="initialData? initialData.dueDate : ''"
+                                         :initial-date="initialData? initialData.dateAssemblyCompleted : ''"
                                          @onDateSelected="dateAssemblyCompletedSelectedHandler" />
                     </v-col>
                 </v-row>
                 <v-row>
                     <v-col cols="12" sm=6>
                         <DateSelectField label="Anticipated Delivery Date"
-                                         :initial-date="initialData? initialData.dueDate : ''"
+                                         :initial-date="initialData? initialData.dateAnticipatedDelivery : ''"
                                          @onDateSelected="dateAnticipatedDeliveryHandler" />
                     </v-col>
                     <v-col cols="12" sm=6>
                         <DateSelectField label="Finished Product Delivery Date"
-                                         :initial-date="initialData? initialData.dueDate : ''"
+                                         :initial-date="initialData? initialData.dateFinishedProductDelivery : ''"
                                          @onDateSelected="dateFinishedProductDeliveryHandler" />
                     </v-col>
                     <v-col cols="12" sm="12">
@@ -61,26 +57,28 @@
                 </v-row>
                 <v-row>
                     <v-col cols="12" sm="12">
-                        <TradeStaffSelectField :is-required="true" @onValueChanged="onTradeStaffSelect" />
+                        <TradeStaffSelectField :is-required="true"
+                                               :initial-id="form.tradeStaffId"
+                                               @onValueChanged="onTradeStaffSelect" />
                     </v-col>
                     <v-col cols="12" sm=6>
                         <DateSelectField label="Anticipated Construction Start"
-                                         :initial-date="initialData? initialData.dueDate : ''"
+                                         :initial-date="initialData? initialData.anticipatedConstructionStart : ''"
                                          @onDateSelected="anticipatedConstructionStartHandler" />
                     </v-col>
                     <v-col cols="12" sm=6>
                         <DateSelectField label="Actual Construction Start"
-                                         :initial-date="initialData? initialData.dueDate : ''"
+                                         :initial-date="initialData? initialData.actualConstructionStart : ''"
                                          @onDateSelected="actualConstructionStartHandler" />
                     </v-col>
                     <v-col cols="12" sm=6>
                         <DateSelectField label="Anticipated Completion Date"
-                                         :initial-date="initialData? initialData.dueDate : ''"
+                                         :initial-date="initialData? initialData.anticipatedConstructionComplete : ''"
                                          @onDateSelected="anticipatedConstructionCompleteHandler" />
                     </v-col>
                     <v-col cols="12" sm=6>
                         <DateSelectField label="Actual Completion Date"
-                                         :initial-date="initialData? initialData.dueDate : ''"
+                                         :initial-date="initialData? initialData.actualConstructionComplete : ''"
                                          @onDateSelected="actualConstructionCompleteHandler" />
                     </v-col>
                     <v-col cols="12" sm="12">
@@ -92,7 +90,7 @@
                     </v-col>
                     <v-col cols="12" sm=6>
                         <DateSelectField label="Final Inspection Date"
-                                         :initial-date="initialData? initialData.dueDate : ''"
+                                         :initial-date="initialData? initialData.finalInspectionDate : ''"
                                          @onDateSelected="finalInspectionDateHandler" />
                     </v-col>
                 </v-row>
@@ -216,6 +214,7 @@
         },
         mounted() {
             if (this.initialData){
+                console.log(this.initialData)
                 this.form = Object.assign({}, this.initialData)
             }
         }

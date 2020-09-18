@@ -26,7 +26,7 @@
 
     export default {
         name: "TradeStaffSelectField",
-        props: ['isRequired'],
+        props: ['isRequired', 'initialId'],
         data(){
             return {
                 tradeStaff: '',
@@ -49,6 +49,19 @@
                 })
 
             },
+            getTradeStaffById(tradeStaffId){
+               if(tradeStaffId){
+                   this.loading = true
+                   TradeStaffAPI.getTradeStaffById(tradeStaffId).then(response => {
+                       this.tradeStaffs = [response.data]
+                       this.tradeStaff = response.data.id
+                   }).catch(error => {
+                       console.log(error)
+                   }).finally(() => {
+                       this.loading = false;
+                   })
+               }
+            },
             searchOnKeyUp(event){
 
                 const excludedKeys = [
@@ -64,6 +77,25 @@
             },
             tradeStaffValueChange(){
                 this.$emit('onValueChanged', this.tradeStaff)
+            }
+        },
+        watch: {
+            initialId: {
+                handler(){
+                    if(this.initialId){
+                        this.getTradeStaffById(this.initialId);
+                    }else {
+                        this.postcodes = [];
+                        this.postcodeId = '';
+                    }
+                },
+                deep: true
+            }
+        },
+        mounted() {
+
+            if(this.initialId){
+                this.getTradeStaffById(this.initialId);
             }
         }
     }

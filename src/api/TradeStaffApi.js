@@ -93,6 +93,15 @@ const TradeStaffAPI = {
 
         return response.data;
 
+    },
+
+    async getTradeStaffById(tradeStaffId){
+
+        const uri = `/api/trade-staffs/${tradeStaffId}`;
+
+        const response = await api().get(uri);
+
+        return response.data;
     }
 
 }
