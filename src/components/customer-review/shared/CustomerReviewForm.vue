@@ -122,6 +122,11 @@ export default {
         dateWarrantyReceivedHandler(date){
             this.$set(this.form, 'dateWarrantyReceived', date)
         }
+    },
+    mounted() {
+        if(this.initialData){
+            this.form = Object.assign({}, this.initialData)
+        }
     }
 }
 </script>

@@ -70,12 +70,23 @@
                     <span> {{ customerReview.comments }} </span>
                 </v-col>
             </v-row>
+            <v-row class="py-5">
+                <v-spacer></v-spacer>
+                <v-btn text small fab @click="showEditDialog = true"><v-icon>mdi-pencil</v-icon></v-btn>
+            </v-row>
         </v-card>
         <v-dialog v-model="showCreateDialog" persistent max-width="800px">
             <CustomerReviewCreateDialog
                 :lead-id="leadId"
                 @success="successCreateHandler"
                 @close="showCreateDialog = false" />
+        </v-dialog>
+        <v-dialog v-model="showEditDialog" persistent max-width="800px">
+            <CustomerReviewEditDialog
+                :lead-id="leadId"
+                :customer-review="customerReview"
+                @success="successCreateHandler"
+                @close="showEditDialog = false" />
         </v-dialog>
     </div>
 </template>
@@ -84,16 +95,18 @@
 import ErrorHandlerMixins from "@/mixins/ErrorHandler";
 import CustomerReviewCreateDialog from "@/components/customer-review/CustomerReviewCreateDialog";
 import CustomerReviewAPI from "@/api/CustomerReviewAPI";
+import CustomerReviewEditDialog from "@/components/customer-review/CustomerReviewEditDialog";
 
 export default {
     name: "CustomerReviewPartial",
-    components: {CustomerReviewCreateDialog},
+    components: {CustomerReviewEditDialog, CustomerReviewCreateDialog},
     props: ['leadId'],
     data(){
         return {
             customerReview: null,
             loading: false,
-            showCreateDialog: false
+            showCreateDialog: false,
+            showEditDialog: false
         }
     },
     mixins: [ErrorHandlerMixins],
