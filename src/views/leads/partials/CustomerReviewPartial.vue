@@ -85,7 +85,7 @@
             <CustomerReviewEditDialog
                 :lead-id="leadId"
                 :customer-review="customerReview"
-                @success="successCreateHandler"
+                @success="updateSuccessHandler"
                 @close="showEditDialog = false" />
         </v-dialog>
     </div>
@@ -116,7 +116,6 @@ export default {
             CustomerReviewAPI.getCustomerReview(leadId).then(response => {
                 if(response.status === 200){
                     this.customerReview = response.data.data
-                    console.log(this.customerReview)
                 }
             }).catch(error => {
                 this.handleError(error)
@@ -124,8 +123,11 @@ export default {
                 this.loading = false
             })
         },
-        successCreateHandler(){
-
+        successCreateHandler(customerReview){
+            this.customerReview = Object.assign({}, customerReview)
+        },
+        updateSuccessHandler(customerReview){
+            this.customerReview = Object.assign({}, customerReview)
         }
     },
     mounted() {

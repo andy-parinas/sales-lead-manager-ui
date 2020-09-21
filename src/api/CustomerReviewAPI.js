@@ -35,6 +35,31 @@ const CustomerReviewAPI = {
         return await api().get(uri);
 
 
+    },
+
+    async updateCustomerReview(leadId, customerReviewId, formData){
+
+        const uri = `/api/leads/${leadId}/customer-reviews/${customerReviewId}`;
+
+        const data = {
+            date_project_completed: formData.dateProjectCompleted,
+            date_warranty_received: formData.dateWarrantyReceived,
+            home_addition_type: formData.homeAdditionType,
+            home_addition_description: formData.homeAdditionDescription,
+            service_received_rating: formData.serviceReceivedRating,
+            workmanship_rating: formData.workmanshipRating,
+            finished_product_rating: formData.finishedProductRating,
+            design_consultant_rating: formData.designConsultantRating,
+            comments: formData.comments,
+        }
+
+        await csrf.getCSRFCookie();
+
+        const response = await api().patch(uri, data);
+
+        return response.data;
+
+
     }
 
 }
