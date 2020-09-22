@@ -19,6 +19,10 @@
                    @click="resetSearch">
                 <v-icon>mdi-refresh</v-icon>
             </v-btn>
+            <v-btn color="primary" fab small elevation="3" class="mr-2 white--text"
+                   @click="$emit('upload')">
+                <v-icon>mdi-upload</v-icon>
+            </v-btn>
         </v-col>
     </v-row>
 </template>

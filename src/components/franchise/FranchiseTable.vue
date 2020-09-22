@@ -4,7 +4,8 @@
             <v-card-title id="table-header" >
                 <FranchiseSearchForm
                         @search="searchFranchise"
-                        @reset="resetSearch" />
+                        @reset="resetSearch"
+                        @upload="uploadDialog = true"/>
             </v-card-title>
             <v-data-table
                     :headers="headers"
@@ -53,6 +54,10 @@
             <DeleteFranchiseDialog :franchise="selectedItem"
                                       @close="closeDeleteDialog"/>
         </v-dialog>
+        <v-dialog v-model="uploadDialog" persistent max-width="550" class="px-2">
+            <UploadDialog :franchise="selectedItem"
+                                   @close="uploadDialog = false"/>
+        </v-dialog>
     </div>
 </template>
 
@@ -62,15 +67,18 @@
     import ChipFranchiseType from "./shared/ChipFranchiseType";
     import EditFranchiseDialog from "./EditFranchiseDialog";
     import DeleteFranchiseDialog from "./DeleteFranchiseDialog";
+    import ErrorHandlerMixins from "@/mixins/ErrorHandler";
+    import UploadDialog from "@/components/franchise/UploadDialog";
 
     export default {
         name: "FranchiseTable",
-        components: {DeleteFranchiseDialog, EditFranchiseDialog, ChipFranchiseType, FranchiseSearchForm},
+        components: {UploadDialog, DeleteFranchiseDialog, EditFranchiseDialog, ChipFranchiseType, FranchiseSearchForm},
         data(){
             return{
                 loading: false,
                 editDialog: false,
                 deleteDialog: false,
+                uploadDialog: false,
                 pageOptions: {
                     page: 1,
                     itemsPerPage: 10,
@@ -103,6 +111,7 @@
                 selectedItem: null
             }
         },
+        mixins: [ErrorHandlerMixins],
         computed: {
             ...mapState('franchises', ['franchises', 'pagination']),
             isHeadOffice(){

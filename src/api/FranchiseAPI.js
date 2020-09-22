@@ -121,6 +121,17 @@ const FranchiseAPI = {
 
         return response.data;
 
+    },
+
+    async uploadFranchisePostcode(data){
+
+        const uri = '/api/franchises/uploads'
+
+        await csrf.getCSRFCookie();
+
+        const response = await api().post(uri, data)
+
+        return response.data;
     }
 
 }
