@@ -63,6 +63,28 @@ const ReportAPI = {
         const response = await api().get(uri);
 
         return response.data;
+    },
+
+    async getOutcomeSummary(formData){
+
+
+        let params = `start_date=${encodeURIComponent(formData.startDate)}&end_date=${encodeURIComponent(formData.endDate)}`
+
+        if(formData.outcome && formData.outcome !== ""){
+            params = params + `&outcome=${formData.outcome}`
+        }
+
+        if(formData.franchiseId && formData.franchiseId !== ""){
+            params = params + `&franchise_id=${formData.franchiseId}`
+        }
+
+
+        const uri = `/api/reports/outcome-summary?${params}`;
+
+        const response = await api().get(uri);
+
+        return response.data;
+
     }
 
 

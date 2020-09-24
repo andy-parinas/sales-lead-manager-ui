@@ -118,6 +118,7 @@
                 {icon: 'mdi-chart-areaspline', text: 'Sales Staff', route: '/reports/sales-summary'},
                 {icon: 'mdi-chart-areaspline', text: 'Sales Staff - Product', route: '/reports/sales_staff-products'},
                 {icon: 'mdi-chart-areaspline', text: 'Product Sales', route: '/reports/product-sales-summary'},
+                {icon: 'mdi-chart-areaspline', text: 'Outcome Summary', route: '/reports/outcome-report'},
             ]
         }),
         methods: {
