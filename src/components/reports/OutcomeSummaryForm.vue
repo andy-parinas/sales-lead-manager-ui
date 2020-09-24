@@ -36,6 +36,7 @@
 <script>
 import DateSelect from "@/components/reports/shared/DateSelect";
 import FranchiseDropDown from "@/components/leads/form/FranchiseDropDown";
+import EventBus from "@/helpers/EventBus";
 export default {
 name: "OutcomeSummaryForm",
     components: {FranchiseDropDown, DateSelect},
@@ -61,16 +62,21 @@ name: "OutcomeSummaryForm",
     },
     methods: {
         generateReport(){
-
+            console.log('Outcome Report Clicked')
+            EventBus.$emit('GENERATE_OUTCOME_REPORT', this.form)
         },
-        startDateSelectHandler(){
-
+        startDateSelectHandler(startDate){
+            this.form.startDate = startDate
         },
-        endDateSelectHandler(){
-
+        endDateSelectHandler(endDate){
+            this.form.endDate = endDate
         },
-        franchiseSelected(){
-
+        franchiseSelected(franchise){
+            if(franchise){
+                this.form.franchiseId = franchise.id
+            }else {
+                this.form.franchiseId = ''
+            }
         }
     }
 

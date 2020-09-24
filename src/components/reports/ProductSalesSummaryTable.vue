@@ -104,6 +104,8 @@
                     grandAveragePrice: ''
 
                 },
+                startDate: '',
+                endDate: ''
             }
         },
         mixins: [ErrorHandlerMixins],

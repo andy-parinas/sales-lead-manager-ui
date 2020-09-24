@@ -6,7 +6,7 @@
         <OutcomeSummaryForm />
       </v-col>
       <v-col cols="12" sm="9">
-        Table heere
+        <OutcomeSummaryTable />
       </v-col>
     </v-row>
   </div>
@@ -15,9 +15,10 @@
 <script>
 import PageHeader from "@/components/core/PageHeader";
 import OutcomeSummaryForm from "@/components/reports/OutcomeSummaryForm";
+import OutcomeSummaryTable from "@/components/reports/OutcomeSummaryTable";
 export default {
 name: "OutcomeReport",
-  components: {OutcomeSummaryForm, PageHeader}
+  components: {OutcomeSummaryTable, OutcomeSummaryForm, PageHeader}
 }
 </script>
 
