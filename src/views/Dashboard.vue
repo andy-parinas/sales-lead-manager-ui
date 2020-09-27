@@ -6,60 +6,20 @@
         <!-- Start of Statistics Information -->
         <!-- this needs to be on separate components -->
 
-<!--        <v-row class="mb-5">-->
-<!--          <v-col cols="12" sm="6" md="4">-->
-<!--                <v-card class="mx-auto" color="green darken-2" dark >-->
-<!--                     <v-card-title>-->
-<!--                        <v-icon large left> today </v-icon>-->
-<!--                        <span class="title font-weight-light">Today's Leads</span>-->
-<!--                      </v-card-title>-->
-<!--                      <v-card-text > -->
-<!--                        <v-row align="center" class="mx-0">-->
-<!--                          <div class="display-2 font-weight-bold white&#45;&#45;text">10</div>-->
-<!--                          <div class="ml-2">Leads</div>-->
-<!--                        </v-row>-->
-<!--                        <v-row class="mx-0" justify="end">-->
-<!--                            <v-btn text x-small><v-icon small>refresh</v-icon></v-btn>-->
-<!--                        </v-row>-->
-<!--                      </v-card-text>-->
-<!--                </v-card>-->
-<!--          </v-col>-->
-<!--          <v-col cols="12" sm="6" md="4">-->
-<!--                <v-card class="mx-auto" color="blue darken-2" dark >-->
-<!--                     <v-card-title>-->
-<!--                        <v-icon large left> date_range  </v-icon>-->
-<!--                        <span class="title font-weight-light">This Week's Leads</span>-->
-<!--                      </v-card-title>-->
-<!--                      <v-card-text > -->
-<!--                        <v-row align="center" class="mx-0">-->
-<!--                          <div class="display-2 font-weight-bold white&#45;&#45;text">59</div>-->
-<!--                          <div class="ml-2">Leads</div>-->
-<!--                        </v-row>-->
-<!--                        <v-row class="mx-0" justify="end">-->
-<!--                            &lt;!&ndash; <span class="caption">Refreshing...</span> &ndash;&gt;-->
-<!--                            <v-btn text x-small><v-icon small>refresh</v-icon></v-btn>-->
-<!--                        </v-row>-->
-<!--                      </v-card-text>-->
-<!--                </v-card>-->
-<!--          </v-col>-->
-<!--              <v-col cols="12" sm="6" md="4">-->
-<!--                <v-card class="mx-auto" color="orange darken-2" dark >-->
-<!--                     <v-card-title>-->
-<!--                        <v-icon large left> people </v-icon>-->
-<!--                        <span class="title font-weight-light">All Leads</span>-->
-<!--                      </v-card-title>-->
-<!--                      <v-card-text > -->
-<!--                        <v-row align="center" class="mx-0">-->
-<!--                          <div class="display-2 font-weight-bold white&#45;&#45;text">500</div>-->
-<!--                          <div class="ml-2">Leads</div>-->
-<!--                        </v-row>-->
-<!--                        <v-row class="mx-0" justify="end">-->
-<!--                            <v-btn text x-small><v-icon small>refresh</v-icon></v-btn>-->
-<!--                        </v-row>-->
-<!--                      </v-card-text>-->
-<!--                </v-card>-->
-<!--          </v-col>-->
-<!--        </v-row>-->
+        <v-row class="mb-5">
+            <v-col cols="12" sm="6" md="6" xl="4">
+                <AllOutcome />
+            </v-col>
+            <v-col cols="12" sm="6" md="6" xl="4">
+                <SuccessfulOutcome />
+            </v-col>
+            <v-col cols="12" sm="6" md="6" xl="4">
+                <PendingOutcome />
+            </v-col>
+            <v-col cols="12" sm="6" md="6" xl="4">
+                <CancelledOutcome />
+            </v-col>
+        </v-row>
 
 <!--        &lt;!&ndash; End of Statistics Information &ndash;&gt;-->
 
@@ -100,9 +60,13 @@
 <script>
     import PageHeader from "../components/core/PageHeader";
     import ReportAPI from "@/api/ReportAPI";
+    import AllOutcome from "@/components/dashboard/AllOutcome";
+    import SuccessfulOutcome from "@/components/dashboard/SuccessfulOutcome";
+    import PendingOutcome from "@/components/dashboard/PendingOutcome";
+    import CancelledOutcome from "@/components/dashboard/CancelledOutcome";
     export default {
         name: 'Dashboard',
-        components: {PageHeader},
+        components: {CancelledOutcome, PendingOutcome, SuccessfulOutcome, AllOutcome, PageHeader},
         data: () => ({
           items: [
             { icon: 'folder', iconClass: 'grey lighten-1 white--text', title: '12321312', subtitle: 'Gold Coast Franchise' },
@@ -132,13 +96,13 @@
                 }
 
 
-                ReportAPI.getProductSalesSummary(formData).then(response => {
+                ReportAPI.getOutcome(formData).then(response => {
                     console.log(response.data)
                 }).catch(error => {
                     console.log(error)
                 })
 
-            }
+            },
 
         },
         mounted() {
