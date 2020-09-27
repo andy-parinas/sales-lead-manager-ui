@@ -79,7 +79,8 @@ const ReportAPI = {
         }
 
 
-        const uri = `/api/reports/outcome-summary?${params}`;
+        const uri = `/api/reports/outcome-sales-staff?${params}`;
+        console.log(uri)
 
         const response = await api().get(uri);
 

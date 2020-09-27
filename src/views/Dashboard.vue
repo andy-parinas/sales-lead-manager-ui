@@ -99,6 +99,7 @@
 
 <script>
     import PageHeader from "../components/core/PageHeader";
+    import ReportAPI from "@/api/ReportAPI";
     export default {
         name: 'Dashboard',
         components: {PageHeader},
@@ -111,9 +112,37 @@
         }),
 
         methods: {
-          itemClicked: () => {
+            itemClicked: () => {
             console.log('Item Clicked');
-          }
+            },
+
+            getProductForTheMonth(){
+                const dateNow = new Date();
+                const dateNowArray = dateNow.toLocaleDateString().split("/")
+
+                const dateMonthAgo = new Date();
+                dateMonthAgo.setMonth(dateNow.getMonth() - 1);
+
+                const dateMonthAgoArray = dateMonthAgo.toLocaleDateString().split("/")
+
+
+                const formData = {
+                    startDate: `${dateMonthAgoArray[2]}-${dateMonthAgoArray[1]}-${dateMonthAgoArray[0]}`,
+                    endDate: `${dateNowArray[2]}-${dateNowArray[1]}-${dateNowArray[0]}`
+                }
+
+
+                ReportAPI.getProductSalesSummary(formData).then(response => {
+                    console.log(response.data)
+                }).catch(error => {
+                    console.log(error)
+                })
+
+            }
+
+        },
+        mounted() {
+            this.getProductForTheMonth()
         }
     }
 </script>
