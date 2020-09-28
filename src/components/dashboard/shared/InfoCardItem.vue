@@ -10,7 +10,7 @@
                 <div class="ml-2">{{ unit }}</div>
             </v-row>
             <v-row class="mx-0" justify="end">
-                <v-btn text x-small><v-icon small>refresh</v-icon></v-btn>
+                <v-btn text x-small :loading="loading"><v-icon small>refresh</v-icon></v-btn>
             </v-row>
         </v-card-text>
     </v-card>
@@ -19,7 +19,7 @@
 <script>
 export default {
     name: "InfoCardItem",
-    props: ['color', 'title', 'value', 'unit']
+    props: ['color', 'title', 'value', 'unit', 'loading']
 }
 </script>
 

@@ -106,7 +106,7 @@
 
         },
         mounted() {
-            this.getProductForTheMonth()
+            // this.getProductForTheMonth()
         }
     }
 </script>
