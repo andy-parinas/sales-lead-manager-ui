@@ -16,28 +16,43 @@ export default {
     ],
     methods: {
         createChart() {
-            const ctx = document.getElementById("bar-chart");
-            const myChart = new Chart(ctx, {
+            const ctx = document.getElementById("pie-chart");
+            new Chart(ctx, {
                 type: 'pie',
-                data: this.chartData,
+                data: {
+                    labels: ["Green", "Blue", "Gray", "Purple", "Yellow", "Red", "Black", "Test", "Test2"],
+                    datasets: [{
+                        backgroundColor: [
+                            "#2ecc71",
+                            "#3498db",
+                            "#95a5a6",
+                            "#9b59b6",
+                            "#f1c40f",
+                            "#e74c3c",
+                            "#34495e"
+                        ],
+                        data: [12, 19, 3, 17, 28, 24, 7, 5, 8]
+                    }]
+                },
                 options: {
-                    legend: {
-                        display: true,
-                        position: 'top',
-                        labels: {
-                            boxWidth: 80,
-                            fontColor: 'black'
-                        }
+                    tooltips: {
+                        enabled: false
                     },
-                    scales: {
-                        animation: false,
-                        yAxes: [{
-                            display: true,
-                            ticks: {
-                                suggestedMin: this.minValue,
-                                suggestedMax: this.maxValue
-                            }
-                        }]
+                    plugins: {
+                        datalabels: {
+                            formatter: (value, ctx) => {
+                                let datasets = ctx.chart.data.datasets;
+                                let percentage = '0%';
+                                if (datasets.indexOf(ctx.dataset) === datasets.length - 1) {
+                                    let sum = datasets[0].data.reduce((a, b) => a + b, 0);
+                                    let percentage = Math.round((value / sum) * 100) + '%';
+                                    return percentage;
+                                } else {
+                                    return percentage;
+                                }
+                            },
+                            color: '#fff',
+                        }
                     }
                 },
             });
@@ -52,6 +67,9 @@ export default {
             },
             deep: true
         }
+    },
+    mounted() {
+        this.createChart();
     }
 }
 </script>

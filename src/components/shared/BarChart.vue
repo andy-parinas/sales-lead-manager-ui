@@ -17,7 +17,7 @@ export default {
     methods: {
         createChart() {
             const ctx = document.getElementById("bar-chart");
-            const myChart = new Chart(ctx, {
+            new Chart(ctx, {
                 type: 'bar',
                 data: this.chartData,
                 options: {

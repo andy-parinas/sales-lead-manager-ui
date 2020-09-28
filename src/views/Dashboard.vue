@@ -21,37 +21,12 @@
             </v-col>
         </v-row>
 
-<!--        &lt;!&ndash; End of Statistics Information &ndash;&gt;-->
-
-<!--        <v-divider></v-divider>-->
-
-<!--        &lt;!&ndash; start of Subfranchises Info. This is for Franchise Admin Only &ndash;&gt;-->
-<!--        &lt;!&ndash; this needs to be on sperate components &ndash;&gt;-->
-<!--        <v-row align="center" justify="start" class="mt-8">-->
-<!--          <v-col cols="12" sm="5" md="5" lg="5">-->
-<!--            <v-card class="mx-auto">-->
-<!--              <v-toolbar color="light-blue" dark>-->
-<!--                <v-toolbar-title>Sub Franchises</v-toolbar-title>-->
-<!--              </v-toolbar>-->
-
-<!--              <v-list two-line subheader>-->
-<!--                <v-list-item v-for="item in items" :key="item.title" @click="itemClicked" >-->
-<!--                  <v-list-item-content>-->
-<!--                    <v-list-item-title>-->
-<!--                      <span class="grey&#45;&#45;text text&#45;&#45;darken-1" >Franchise Number: </span>-->
-<!--                      <span class="font-weight-bold" > {{ item.title }} </span>-->
-<!--                    </v-list-item-title>-->
-<!--                    <v-list-item-subtitle class="mt-1">-->
-<!--                      <span class="font-weight-medium">{{item.subtitle}}</span>-->
-<!--                    </v-list-item-subtitle>-->
-<!--                  </v-list-item-content>-->
-<!--                </v-list-item>-->
-<!--              </v-list>-->
-<!--            </v-card>-->
-<!--          </v-col>-->
-<!--        </v-row>-->
-
-<!--        &lt;!&ndash; End of Subfranchises Info &ndash;&gt;-->
+        <v-row>
+            <v-col cols="12">
+                <h2>Current Month's Number of Leads Per Product</h2>
+                <ProductChart />
+            </v-col>
+        </v-row>
 
       </v-container>
   </div>
@@ -59,14 +34,14 @@
 
 <script>
     import PageHeader from "../components/core/PageHeader";
-    import ReportAPI from "@/api/ReportAPI";
     import AllOutcome from "@/components/dashboard/AllOutcome";
     import SuccessfulOutcome from "@/components/dashboard/SuccessfulOutcome";
     import PendingOutcome from "@/components/dashboard/PendingOutcome";
     import CancelledOutcome from "@/components/dashboard/CancelledOutcome";
+    import ProductChart from "@/components/dashboard/ProductChart";
     export default {
         name: 'Dashboard',
-        components: {CancelledOutcome, PendingOutcome, SuccessfulOutcome, AllOutcome, PageHeader},
+        components: {ProductChart, CancelledOutcome, PendingOutcome, SuccessfulOutcome, AllOutcome, PageHeader},
         data: () => ({
           items: [
             { icon: 'folder', iconClass: 'grey lighten-1 white--text', title: '12321312', subtitle: 'Gold Coast Franchise' },
@@ -80,29 +55,7 @@
             console.log('Item Clicked');
             },
 
-            getProductForTheMonth(){
-                const dateNow = new Date();
-                const dateNowArray = dateNow.toLocaleDateString().split("/")
 
-                const dateMonthAgo = new Date();
-                dateMonthAgo.setMonth(dateNow.getMonth() - 1);
-
-                const dateMonthAgoArray = dateMonthAgo.toLocaleDateString().split("/")
-
-
-                const formData = {
-                    startDate: `${dateMonthAgoArray[2]}-${dateMonthAgoArray[1]}-${dateMonthAgoArray[0]}`,
-                    endDate: `${dateNowArray[2]}-${dateNowArray[1]}-${dateNowArray[0]}`
-                }
-
-
-                ReportAPI.getOutcome(formData).then(response => {
-                    console.log(response.data)
-                }).catch(error => {
-                    console.log(error)
-                })
-
-            },
 
         },
         mounted() {
