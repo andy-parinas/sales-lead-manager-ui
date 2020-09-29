@@ -10,6 +10,7 @@
 <script>
 import InfoCardItem from "@/components/dashboard/shared/InfoCardItem";
 import ReportAPI from "@/api/ReportAPI";
+import ErrorHandlerMixins from "@/mixins/ErrorHandler";
 export default {
     name: "PendingOutcome",
     components: {InfoCardItem},
@@ -19,6 +20,7 @@ export default {
             loading: false
         }
     },
+    mixins: [ErrorHandlerMixins],
     methods: {
         getPendingOutcome(){
             const dateNow = new Date();
@@ -31,13 +33,12 @@ export default {
             }
             this.loading = true
             ReportAPI.getOutcome(formData).then(response => {
-                console.log('Pending', response.data)
                 const data = response.data;
                 if(data.total && data.total.totalOutcome){
                     this.value = data.total.totalOutcome
                 }
             }).catch(error => {
-                console.log(error)
+                this.handleError(error)
             }).finally(() => {
                 this.loading = false
             })

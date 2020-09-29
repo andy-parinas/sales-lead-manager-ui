@@ -10,6 +10,7 @@
 <script>
 import InfoCardItem from "@/components/dashboard/shared/InfoCardItem";
 import ReportAPI from "@/api/ReportAPI";
+import ErrorHandlerMixins from "@/mixins/ErrorHandler";
 export default {
     name: "AllOutcome",
     components: {InfoCardItem},
@@ -19,6 +20,7 @@ export default {
             loading: false
         }
     },
+    mixins: [ErrorHandlerMixins],
     methods: {
         getAllOutcome(){
             const dateNow = new Date();
@@ -30,12 +32,11 @@ export default {
             }
             this.loading = true
             ReportAPI.getOutcome(formData).then(response => {
-                console.log('AllOutcome', response.data)
                 const data = response.data;
                 this.value = data.total.totalOutcome
 
             }).catch(error => {
-                console.log(error)
+                this.handleError(error)
             }).finally(() => {
                 this.loading = false
             })

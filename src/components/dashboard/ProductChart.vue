@@ -9,6 +9,7 @@
 // import PieChart from "@/components/shared/PieChart";
 import ReportAPI from "@/api/ReportAPI";
 import BarChart from "@/components/shared/BarChart";
+import ErrorHandlerMixins from "@/mixins/ErrorHandler";
 export default {
 name: "ProductChart",
     components: {BarChart},
@@ -18,6 +19,7 @@ name: "ProductChart",
             max: 50
         }
     },
+    mixins: [ErrorHandlerMixins],
     methods: {
         getProductForTheMonth(){
             const dateNow = new Date();
@@ -54,11 +56,9 @@ name: "ProductChart",
                     ]
                 }
                 this.chartData = Object.assign({}, chartData)
-                console.log('Chart Data', chartData)
-
 
             }).catch(error => {
-                console.log(error)
+                this.handleError(error);
             })
 
         },
