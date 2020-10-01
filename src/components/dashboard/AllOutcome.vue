@@ -33,8 +33,9 @@ export default {
             this.loading = true
             ReportAPI.getOutcome(formData).then(response => {
                 const data = response.data;
-                this.value = data.total.totalOutcome
-
+                if(data.total && data.total.totalOutcome){
+                    this.value = data.total.totalOutcome
+                }
             }).catch(error => {
                 this.handleError(error)
             }).finally(() => {
