@@ -119,6 +119,7 @@
                 {icon: 'mdi-chart-areaspline', text: 'Sales Staff - Product', route: '/reports/sales_staff-products'},
                 {icon: 'mdi-chart-areaspline', text: 'Product Sales', route: '/reports/product-sales-summary'},
                 {icon: 'mdi-chart-areaspline', text: 'Outcome Summary', route: '/reports/outcome-report'},
+                {icon: 'mdi-chart-areaspline', text: 'Lead Sources', route: '/reports/lead-sources-report'},
             ]
         }),
         methods: {
