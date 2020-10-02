@@ -66,6 +66,7 @@
     import SalesStaffDetails from "./SalesStaffDetails";
     import SalesStaffEditDialog from "./SalesStaffEditDialog";
     import SalesStaffDeleteDialog from "./SalesStaffDeleteDialog";
+    import ErrorHandlerMixins from "@/mixins/ErrorHandler";
     export default {
         name: "SalesStaffTable",
         components: {SalesStaffDeleteDialog, SalesStaffEditDialog, SalesStaffDetails, SearchForm},
@@ -128,6 +129,7 @@
                 return  userType === 'head_office';
             },
         },
+        mixins: [ErrorHandlerMixins],
         methods: {
             ...mapActions('salesStaffs', ['fetchAllSalesStaff']),
             getSalesStaffs(pageOptions, searchOptions){
@@ -136,7 +138,7 @@
                     this.fetchAllSalesStaff({pageOptions, searchOptions}).then(() => {
 
                     }).catch(error => {
-                        console.log(error.response)
+                        this.handleError(error)
                     }).finally(() => {
                         this.loading = false;
                     })

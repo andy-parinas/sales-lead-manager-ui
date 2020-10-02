@@ -34,7 +34,7 @@
                     </v-col>
                     <v-col cols="12" sm="6">
                         <FranchiseSelect
-                                :initial-data="initialFranchise"
+                                :initial-data="initialData? initialData.franchiseId : null"
                                 :required="true"
                                 @onValueChanged="franchiseChanged"/>
                     </v-col>
