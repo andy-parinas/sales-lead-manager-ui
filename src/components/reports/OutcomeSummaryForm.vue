@@ -62,7 +62,6 @@ name: "OutcomeSummaryForm",
     },
     methods: {
         generateReport(){
-            console.log('Outcome Report Clicked')
             EventBus.$emit('GENERATE_OUTCOME_REPORT', this.form)
         },
         startDateSelectHandler(startDate){

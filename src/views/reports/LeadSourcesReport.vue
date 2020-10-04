@@ -6,7 +6,7 @@
                 <LeadSourcesSummaryForm />
             </v-col>
             <v-col cols="12" sm="9">
-
+                <LeadSourcesSummaryTable />
             </v-col>
         </v-row>
     </div>
@@ -15,9 +15,10 @@
 <script>
 import PageHeader from "@/components/core/PageHeader";
 import LeadSourcesSummaryForm from "@/components/reports/LeadSourcesSummaryForm";
+import LeadSourcesSummaryTable from "@/components/reports/LeadSourcesSummaryTable";
 export default {
     name: "LeadSourcesReport",
-    components: {LeadSourcesSummaryForm, PageHeader}
+    components: {LeadSourcesSummaryTable, LeadSourcesSummaryForm, PageHeader}
 }
 </script>
 

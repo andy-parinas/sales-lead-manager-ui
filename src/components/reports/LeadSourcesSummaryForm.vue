@@ -10,6 +10,9 @@
                         <DateSelect label="End Date" :required="true" @onDateSelected="endDateSelectHandler" />
                     </v-col>
                     <v-col cols="12">
+                        <LeadSourceSelect @valueChanged="leadSourceValueChangedHandler" />
+                    </v-col>
+                    <v-col cols="12">
                         <v-select
                             v-model="form.outcome"
                             :items="outcomes"
@@ -32,9 +35,11 @@
 
 <script>
 import DateSelect from "@/components/reports/shared/DateSelect";
+import LeadSourceSelect from "@/components/shared/LeadSourceSelect";
+import EventBus from "@/helpers/EventBus";
 export default {
 name: "LeadSourcesSummaryForm",
-    components: {DateSelect},
+    components: {LeadSourceSelect, DateSelect},
     data(){
         return{
             isFormValid:false,
@@ -50,20 +55,35 @@ name: "LeadSourcesSummaryForm",
             form: {
                 startDate: '',
                 endDate: '',
-                franchiseId: '',
+                source: '',
                 outcome: ''
             },
         }
     },
     methods: {
         generateReport(){
-
+            EventBus.$emit('GENERATE_LEAD_SOURCES_REPORT', this.form)
         },
-        startDateSelectHandler(){
-
+        startDateSelectHandler(date){
+            if(date){
+                this.$set(this.form, "startDate", date)
+            }else {
+                this.$set(this.form, "startDate", "")
+            }
         },
-        endDateSelectHandler(){
-
+        endDateSelectHandler(date){
+            if(date){
+                this.$set(this.form, "endDate", date)
+            }else {
+                this.$set(this.form, "endDate", "")
+            }
+        },
+        leadSourceValueChangedHandler(leadSourceId){
+            if(leadSourceId){
+                this.$set(this.form, "source", leadSourceId)
+            }else {
+                this.$set(this.form, "source", null)
+            }
         }
     }
 }

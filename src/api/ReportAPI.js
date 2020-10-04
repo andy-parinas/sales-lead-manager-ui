@@ -108,6 +108,27 @@ const ReportAPI = {
 
         return response.data;
 
+    },
+
+    async getLeadSources(formData){
+
+        let params = `start_date=${encodeURIComponent(formData.startDate)}&end_date=${encodeURIComponent(formData.endDate)}`
+
+        if(formData.source && formData.source !== ""){
+            params = params + `&source=${formData.source}`
+        }
+
+        if(formData.outcome && formData.outcome !== ""){
+            params = params + `&outcome=${formData.outcome}`
+        }
+
+        const uri = `/api/reports/lead-sources?${params}`;
+
+        console.log(uri)
+
+        const response = await api().get(uri);
+
+        return response.data;
     }
 
 
