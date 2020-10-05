@@ -1,6 +1,6 @@
 module.exports = {
   devServer: {
-    host: 'app.homestead.test'
+    host: 'ezitask.spanline.com.au'
   },
   "transpileDependencies": [
     "vuetify"
