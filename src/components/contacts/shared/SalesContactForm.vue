@@ -93,6 +93,9 @@
             <v-btn color="primary" class="text--white" :loading="saving" :disabled="!canSave"
                    @click="$emit('onSave', form)"
             >Save</v-btn>
+          <v-btn v-if="!edit" color="success" class="text--white" :loading="creating" :disabled="!canSave"
+                 @click="$emit('onSaveAndCreateLead', form)"
+          >Save and Crate Lead</v-btn>
         </v-card-actions>
     </v-form>
 </template>
@@ -109,6 +112,7 @@
         props: {
             initialData: {type: [Object, null]},
             saving: {type: Boolean},
+            creating: {type: Boolean},
             edit: {type: Boolean}
         },
         mixins: [ErrorHandlerMixins],
@@ -181,6 +185,8 @@
             },
 
             reset(){
+                this.form = Object.assign({}, this.defaultForm)
+                this.$refs.postcodeSelect.reset()
                 this.$refs.contactForm.resetValidation();
             }
 

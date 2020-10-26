@@ -8,9 +8,11 @@
             </template>
         </DialogHeader>
         <SalesContactForm
-                ref="salesStaffForm"
+                ref="salesContactForm"
                 :saving="saving"
-                @onSave="onSalesStaffCreate"/>
+                :creating="creating"
+                @onSave="onSalesStaffCreate"
+                @onSaveAndCreateLead="saveAndCreateLeadHandler"/>
     </v-card>
 </template>
 
@@ -25,11 +27,12 @@
         data(){
             return {
                 saving: false,
+                creating: false
             }
         },
         mixins: [ErrorHandlerMixins],
         methods: {
-            ...mapActions('salesContacts', ['createSalesContact']),
+            ...mapActions('salesContacts', ['createSalesContact', 'selectContact', 'createSalesContactAndLead']),
             ...mapActions(['setSuccessMessage']),
             onSalesStaffCreate(form){
                 this.saving = true;
@@ -42,7 +45,20 @@
                     this.saving = false;
                 })
             },
+            saveAndCreateLeadHandler(form){
+              this.creating = true;
+              this.createSalesContactAndLead(form).then(() => {
+                this.setSuccessMessage("Contact Successfully Created")
+                this.$router.push({name: 'LeadCreate'})
+                this.closeDialog();
+              }).catch(error => {
+                this.handleError(error)
+              }).finally(() => {
+                this.creating = false;
+              })
+            },
             closeDialog(){
+                this.$refs.salesContactForm.reset();
                 this.$emit('close');
             }
         }

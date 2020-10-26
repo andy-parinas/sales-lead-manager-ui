@@ -89,6 +89,9 @@
             },
             postcodeValueChange(){
                 this.$emit('onValueChanged', this.postcodeId)
+            },
+            reset(){
+              this.postcodeId = '';
             }
         },
         watch: {
