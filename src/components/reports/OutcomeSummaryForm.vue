@@ -16,9 +16,11 @@
                     clearable
                     label="Outcome"
                     prepend-icon="mdi-clipboard-check"></v-select>
+              <div class="caption pl-5">All will be included if no selection is made</div>
             </v-col>
             <v-col cols="12">
                 <FranchiseDropDown @onValueChanged="franchiseSelected" />
+              <div class="caption pl-5">All will be included if no selection is made</div>
             </v-col>
         </v-row>
       </v-card-text>

@@ -11,12 +11,15 @@
                     </v-col>
                     <v-col cols="12">
                         <DesignAdvisorSelect @onValueChanged="designAdvisorSelected" />
+                        <div class="caption pl-5">All will be included if no selection is made</div>
                     </v-col>
                     <v-col cols="12">
                         <ProductSelect @onValueChanged="onProductSelectHandler" />
+                        <div class="caption pl-5">All will be included if no selection is made</div>
                     </v-col>
                     <v-col cols="12">
                         <FranchiseDropDown @onValueChanged="franchiseSelected" />
+                        <div class="caption pl-5">All will be included if no selection is made</div>
                     </v-col>
                 </v-row>
             </v-card-text>
