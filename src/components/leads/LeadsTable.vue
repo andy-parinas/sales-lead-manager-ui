@@ -117,6 +117,7 @@
                     { text: 'State', value: 'state' },
                     { text: 'Postcode', value: 'postcode' },
                     { text: 'Outcome', value: 'outcome' },
+                    { text: 'Quoted Price', value: 'quotedPrice' },
                     { text: 'Franchise', value: 'franchiseNumber' },
                     { text: 'Actions', value: 'actions', sortable: false }
                 ],
