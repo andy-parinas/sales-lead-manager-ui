@@ -29,7 +29,7 @@
                     appointmentDate: '',
                     appointmentTime: '',
                     outcome: '',
-                    quotedPrice: '',
+                    quotedPrice: 0.0,
                     notes: '',
                     comments: '',
                     date: ''
@@ -39,7 +39,7 @@
                     appointmentDate: new Date().toISOString().substr(0, 10),
                     appointmentTime: '',
                     outcome: '',
-                    quotedPrice: '',
+                    quotedPrice: 0.0,
                     notes: '',
                     comments: '',
                     date: ''
@@ -51,7 +51,7 @@
         computed: {
 
             isFormValid(){
-                return this.form.appointmentDate && this.form.appointmentTime && this.form.quotedPrice && this.form.outcome
+                return this.form.appointmentDate && this.form.appointmentTime && this.form.outcome
             }
         },
         methods: {

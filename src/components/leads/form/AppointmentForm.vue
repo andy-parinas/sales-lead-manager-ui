@@ -77,7 +77,7 @@
                     <v-text-field v-model="form.quotedPrice"
                                   prepend-icon="mdi-tag"
                                   label="Quoted Price"
-                                  :rules="rules.required" />
+                                  :rules="[]" />
                 </v-col>
 
 
@@ -125,7 +125,7 @@
                     appointmentDate: '',
                     appointmentTime: '',
                     outcome: '',
-                    quotedPrice: '',
+                    quotedPrice: '0.0',
                     notes: '',
                     comments: '',
                     date: ''
