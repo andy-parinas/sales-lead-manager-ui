@@ -90,7 +90,8 @@
                     leadSourceId: '',
                     leadSource: '',
                     leadDate: new Date().toISOString().substr(0, 10),
-                    postcodeStatus: ''
+                    postcodeStatus: '',
+                    receivedVia: ''
 
                 },
                 initialData: {
@@ -100,6 +101,7 @@
                     leadSourceId: '',
                     leadSource: '',
                     leadDate: new Date().toISOString().substr(0, 10),
+                    receivedVia: ''
                 }
 
             }

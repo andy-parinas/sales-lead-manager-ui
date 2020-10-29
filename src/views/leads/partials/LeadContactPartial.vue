@@ -28,6 +28,10 @@
                         <span class="ml-2 caption font-weight-bold">Lead Source: </span> <span class="ml-1"> {{ data.leadSource | capitalize }} </span>
                     </v-col>
                     <v-col cols="12" sm="6">
+                      <v-icon small>mdi-web</v-icon>
+                      <span class="ml-2 caption font-weight-bold">Lead Received Via: </span> <span class="ml-1"> {{ data.receivedVia | capitalize }} </span>
+                    </v-col>
+                    <v-col cols="12" sm="6">
                         <v-icon small>mdi-map-marker</v-icon>
                         <span class="ml-2 caption font-weight-bold">Status: </span>
                         <v-chip small label :color="isInsideFranchise" text-color="white">

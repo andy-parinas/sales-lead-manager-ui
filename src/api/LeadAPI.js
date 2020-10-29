@@ -35,7 +35,8 @@ const LeadAPI = {
                 sales_contact_id: formData.sales_contact_id,
                 lead_source_id: formData.details.leadSourceId,
                 lead_date: formData.details.leadDate,
-                lead_number: formData.details.leadNumber
+                lead_number: formData.details.leadNumber,
+                received_via: formData.details.receivedVia
             },
             job_type: {
                 taken_by: formData.jobType.takenBy,
@@ -53,6 +54,8 @@ const LeadAPI = {
             }
 
         }
+
+        console.log('Create Lead', data)
 
 
         const uri = `/api/franchises/${formData.details.franchiseId}/leads`;
@@ -73,8 +76,11 @@ const LeadAPI = {
             lead_number:  formData.leadNumber,
             lead_date: formData.leadDate,
             franchise_id: formData.franchiseId,
-            lead_source_id: formData.leadSourceId
+            lead_source_id: formData.leadSourceId,
+            received_via: formData.receivedVia
         }
+
+        console.log('Update', data)
 
         const uri = `/api/leads/${formData.id}`;
 

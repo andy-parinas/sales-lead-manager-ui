@@ -66,6 +66,16 @@
                             required
                     ></v-autocomplete>
                 </v-col>
+              <v-col cols="12" sm="6">
+                <v-autocomplete
+                    v-model="form.receivedVia"
+                    :items="receivedSource"
+                    clearable
+                    label="Lead Received Via"
+                    prepend-icon="mdi-web"
+                    required
+                ></v-autocomplete>
+              </v-col>
                 <v-col cols="12" sm="12" >
                     <v-row v-if="franchiseChecking">
                        <v-col cols="12">
@@ -131,9 +141,15 @@
                     leadSourceId: '',
                     leadSource: '',
                     leadDate: '',
-                    postcodeStatus: ''
-
+                    postcodeStatus: '',
+                    receivedVia: ''
                 },
+                receivedSource: [
+                    'Phone',
+                    'Web Lead',
+                    'Walk In',
+                    'Other'
+                ]
             }
         },
         computed: {

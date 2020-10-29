@@ -99,6 +99,7 @@
                         leadDate: '',
                         customerType: '',
                         leadSource: '',
+                        receivedVia: '',
                         postcodeStatus: '',
                         firstName: '',
                         lastName: '',
