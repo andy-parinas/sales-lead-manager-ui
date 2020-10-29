@@ -86,6 +86,11 @@
                     <span class="ml-2 font-weight-medium caption"> Authority Date:</span>
                     <span> {{ verification.authorityDate | formatDate }} </span>
                 </v-col>
+              <v-col cols="12" sm="6" md="6">
+                <v-icon small>mdi-calendar-month</v-icon>
+                <span class="ml-2 font-weight-medium caption"> Date Maintenance Letter Sent:</span>
+                <span> {{ verification.dateMaintenanceLetterSent | formatDate }} </span>
+              </v-col>
             </v-row>
             <v-row class="py-5">
                 <v-spacer></v-spacer>

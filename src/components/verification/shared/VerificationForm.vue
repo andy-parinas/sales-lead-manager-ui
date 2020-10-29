@@ -49,7 +49,12 @@
                                       label="Building Supervisor"
                         />
                     </v-col>
-                    <v-col cols="12" sm="6"></v-col>
+                  <v-col cols="12" sm="6">
+                    <v-text-field v-model="form.linealMetres"
+                                  prepend-icon="mdi-tape-measure"
+                                  label="Lineal Metres"
+                    />
+                  </v-col>
                     <v-col cols="12" sm="6">
                         <RoofSheetSelect
                             :initial-roof-sheet="form.roofSheetId"
@@ -62,13 +67,6 @@
                             @onValueChanged="roofColourSelectHandler" />
                     </v-col>
                     <v-col cols="12" sm="6">
-                        <v-text-field v-model="form.linealMetres"
-                                      prepend-icon="mdi-tape-measure"
-                                      label="Lineal Metres"
-                        />
-                    </v-col>
-                    <v-col cols="12" sm="6"></v-col>
-                    <v-col cols="12" sm="6">
                         <v-text-field v-model="form.franchiseAuthority"
                                       prepend-icon="mdi-store"
                                       label="Franchise Authority"
@@ -79,6 +77,11 @@
                                          :initial-date="initialData? initialData.authorityDate : ''"
                                          @onDateSelected="authorityDateHandler" />
                     </v-col>
+                  <v-col cols="12" sm=6>
+                    <DateSelectField label="Maintenance Letter Sent"
+                                     :initial-date="initialData? initialData.dateMaintenanceLetterSent : ''"
+                                     @onDateSelected="maintenanceLetterSentHandlerHandler" />
+                  </v-col>
                 </v-row>
             </v-container>
         </v-card-text>
@@ -120,7 +123,8 @@ export default {
                 roofColourId: '',
                 linealMetres: '',
                 franchiseAuthority: '',
-                authorityDate: ''
+                authorityDate: '',
+                dateMaintenanceLetterSent: ''
             }
         }
     },
@@ -160,6 +164,13 @@ export default {
             }else {
                 this.$set(this.form, 'roofColourId', '')
             }
+        },
+        maintenanceLetterSentHandlerHandler(date){
+          if(date){
+            this.$set(this.form, 'dateMaintenanceLetterSent', date)
+          }else {
+            this.$set(this.form, 'dateMaintenanceLetterSent', '')
+          }
         }
     },
     watch: {

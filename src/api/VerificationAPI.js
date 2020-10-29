@@ -31,6 +31,7 @@ const VerificationAPI = {
             lineal_metres: formData.linealMetres,
             franchise_authority: formData.franchiseAuthority,
             authority_date: formData.authorityDate,
+            date_maintenance_letter_sent: formData.dateMaintenanceLetterSent
         }
 
         await csrf.getCSRFCookie();
@@ -59,6 +60,7 @@ const VerificationAPI = {
             lineal_metres: formData.linealMetres,
             franchise_authority: formData.franchiseAuthority,
             authority_date: formData.authorityDate,
+            date_maintenance_letter_sent: formData.dateMaintenanceLetterSent
         }
 
         await csrf.getCSRFCookie();
