@@ -63,8 +63,71 @@
                     </v-menu>
                 </v-col>
 
+<!--                re-appointment-->
 
-                <v-col cols="12">
+                <v-col cols="6" sm="6">
+                  <v-menu
+                      v-model="followUp1"
+                      ref="followUpMenu1"
+                      :close-on-content-click="false"
+                      transition="scale-transition"
+                      offset-y
+                      max-width="290px"
+                      min-width="290px"
+                  >
+                    <template v-slot:activator="{ on }">
+                      <v-text-field
+                          prepend-icon="event"
+                          :value="computedFollowUpDateFormattedDatefns"
+                          label="Follow-Up Date"
+                          readonly
+                          v-on="on"
+                      ></v-text-field>
+                    </template>
+                    <v-date-picker
+                        v-model="form.followUpDate"
+                        @input="followUp1 = false"
+                        @change="onFollowUpDateTimeChange"
+                    ></v-date-picker>
+                  </v-menu>
+                </v-col>
+
+
+                <v-col cols="6" sm="6">
+                  <v-menu
+                      ref="followUpMenu2"
+                      v-model="followUp2"
+                      :close-on-content-click="false"
+                      :nudge-right="40"
+                      :return-value.sync="form.followUpTime"
+                      transition="scale-transition"
+                      offset-y
+                      max-width="290px"
+                      min-width="290px"
+                  >
+                    <template v-slot:activator="{ on }">
+                      <v-text-field
+                          :value="computedFollowUpTime"
+                          label="Follow-Up Time"
+                          prepend-icon="access_time"
+                          readonly
+                          v-on="on"
+                      ></v-text-field>
+                    </template>
+                    <v-time-picker
+                        v-if="followUp2"
+                        v-model="form.followUpTime"
+                        @change="onFollowUpDateTimeChange"
+                        ampm-in-title
+                        full-width
+                        @click:minute="$refs.followUpMenu2.save(form.followUpTime)">
+                    </v-time-picker>
+                  </v-menu>
+                </v-col>
+
+<!--              End of Re-Appointment-->
+
+              <v-col cols="12">
                     <v-textarea
                             v-model="form.notes"
                             rows="2"
@@ -102,6 +165,7 @@
                 </v-col>
             </v-row>
         </v-container>
+      <pre>{{ initialData }}</pre>
     </v-form>
 </template>
 
@@ -119,11 +183,16 @@
                 valid: false,
                 menu: false,
                 menu2: false,
+                followUp1: false,
+                followUp2: false,
                 appointmentDate: new Date().toISOString().substr(0, 10),
                 appointmentTime: '',
                 form: {
                     appointmentDate: '',
                     appointmentTime: '',
+                    followUpDate: '',
+                    followUpTime: '',
+                    followUp: '',
                     outcome: '',
                     quotedPrice: '0.0',
                     notes: '',
@@ -150,6 +219,9 @@
             computedDateFormattedDatefns () {
                 return this.form.appointmentDate ? format(parseISO(this.form.appointmentDate), 'dd/MM/yyyy') : ''
             },
+            computedFollowUpDateFormattedDatefns(){
+              return this.form.followUpDate ? format(parseISO(this.form.followUpDate), 'dd/MM/yyyy') : ''
+            },
             computedTime(){
                 if(this.form.appointmentTime){
                     return Utils.convertToAMPM(this.form.appointmentTime)
@@ -157,12 +229,23 @@
                     return ''
                 }
 
+            },
+            computedFollowUpTime(){
+              if(this.form.followUpTime){
+                return Utils.convertToAMPM(this.form.followUpTime)
+              }else {
+                return ''
+              }
+
             }
         },
         methods: {
             onDateTimeChange(){
                 this.form.date = `${this.form.appointmentDate} ${this.form.appointmentTime}`;
             },
+            onFollowUpDateTimeChange(){
+              this.form.followUp = `${this.form.followUpDate} ${this.form.followUpTime}`;
+            }
         },
         watch: {
           form: {

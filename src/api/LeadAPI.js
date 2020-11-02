@@ -47,6 +47,7 @@ const LeadAPI = {
             },
             appointment: {
                 appointment_date: `${formData.appointment.appointmentDate} ${formData.appointment.appointmentTime}`,
+                followup_date: formData.appointment.followUp,
                 appointment_notes: formData.appointment.notes,
                 quoted_price: formData.appointment.quotedPrice,
                 outcome: formData.appointment.outcome,
@@ -55,9 +56,7 @@ const LeadAPI = {
 
         }
 
-        console.log('Create Lead', data)
-
-
+        console.log("Create Lead", data)
         const uri = `/api/franchises/${formData.details.franchiseId}/leads`;
 
         await Csrf.getCSRFCookie();
@@ -79,8 +78,6 @@ const LeadAPI = {
             lead_source_id: formData.leadSourceId,
             received_via: formData.receivedVia
         }
-
-        console.log('Update', data)
 
         const uri = `/api/leads/${formData.id}`;
 
@@ -117,6 +114,7 @@ const LeadAPI = {
         // Normalized Data
         const data = {
             appointment_date: formData.date,
+            followup_date: formData.followUp,
             appointment_notes: formData.notes,
             outcome: formData.outcome,
             quoted_price: formData.quotedPrice,
