@@ -117,6 +117,13 @@
                             ></v-date-picker>
                         </v-menu>
                     </v-col>
+                  <v-col cols="12" sm="6">
+                    <v-autocomplete v-model="form.roofSheetProfile"
+                              :items="profiles"
+                              label="Roof Sheet Profile"
+                              prepend-icon="mdi-home-roof"
+                              clearable></v-autocomplete>
+                  </v-col>
                 </v-row>
             </v-container>
         </v-card-text>
@@ -180,7 +187,8 @@
                     dateDepositReceived: '',
                     warrantyRequired: '',
                     dateWarrantySent: '',
-                    taxExempt: false
+                    taxExempt: false,
+                    roofSheetProfile: '',
                 },
                 defaultForm: {
                     contractDate: '',
@@ -190,12 +198,21 @@
                     dateDepositReceived: '',
                     warrantyRequired: '',
                     dateWarrantySent: '',
-                    taxExempt: false
+                    taxExempt: false,
+                    roofSheetProfile: '',
                 },
                 warrantyRequirements: [
                     { value: 'yes', text: 'Yes'},
                     { value: 'no', text: 'No'}
                 ],
+                profiles: [
+                  'Double-U',
+                  'Slendek',
+                  'Ezi Struct Insulated Roofing',
+                  'Ezi Struct Insulated Walling',
+                  'Spanlites',
+                  'Weatherite',
+                ]
             }
         },
         computed: {

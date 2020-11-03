@@ -165,7 +165,6 @@
                 </v-col>
             </v-row>
         </v-container>
-      <pre>{{ initialData }}</pre>
     </v-form>
 </template>
 

@@ -75,6 +75,12 @@
                     </v-col>
                 </v-row>
                 <v-row>
+                  <v-col cols="12" sm="6">
+                    <v-icon small>mdi-home-roof</v-icon>
+                    <span class="ml-2 caption font-weight-bold"> Roof Sheet Profile: </span> <span> {{contract.roofSheetProfile }} </span>
+                  </v-col>
+                </v-row>
+                <v-row>
                     <v-spacer></v-spacer>
                     <v-btn text small fab @click="showEditDialog = true"><v-icon>mdi-pencil</v-icon></v-btn>
                 </v-row>

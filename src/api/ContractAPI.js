@@ -26,7 +26,8 @@ const ContractAPI = {
             date_deposit_received: formData.dateDepositReceived,
             warranty_required: formData.warrantyRequired,
             date_warranty_sent: formData.dateWarrantySent,
-            tax_exempt: formData.taxExempt
+            tax_exempt: formData.taxExempt,
+            roof_sheet_profile: formData.roofSheetProfile
         }
 
         await csrf.getCSRFCookie();
@@ -50,7 +51,8 @@ const ContractAPI = {
             date_deposit_received: formData.dateDepositReceived,
             warranty_required: formData.warrantyRequired,
             date_warranty_sent: formData.dateWarrantySent,
-            tax_exempt: formData.taxExempt
+            tax_exempt: formData.taxExempt,
+            roof_sheet_profile: formData.roofSheetProfile
         }
 
         await csrf.getCSRFCookie();
