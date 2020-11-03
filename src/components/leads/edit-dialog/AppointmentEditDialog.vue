@@ -1,11 +1,12 @@
 <template>
     <v-card>
-        <v-toolbar color="blue-grey darken-1" dark >
-            <v-toolbar-title>Edit Lead - Appointment</v-toolbar-title>
-        </v-toolbar>
-        <div style="height: 10px">
-            <v-progress-linear indeterminate color="green" v-if="loading" />
-        </div>
+        <DialogHeader title="Edit Appointment">
+          <template v-slot:action>
+            <v-btn icon @click="closeDialog">
+              <v-icon>mdi-close</v-icon>
+            </v-btn>
+          </template>
+        </DialogHeader>
         <v-card-text>
             <AppointmentForm
                 :initial-data="lead.appointment"
@@ -30,8 +31,7 @@
         </v-card-text>
         <v-card-actions>
             <v-spacer></v-spacer>
-            <v-btn color="blue darken-1" text @click="closeDialog" >Close</v-btn>
-            <v-btn color="blue darken-1" text @click="save" >Save</v-btn>
+            <v-btn  color="blue darken-1" class="mr-5 mb-5 white--text" :loading="loading" @click="save" >Save</v-btn>
         </v-card-actions>
     </v-card>
 </template>
@@ -40,9 +40,10 @@
     import AppointmentForm from "../form/AppointmentForm";
     import {mapState, mapActions} from 'vuex'
     import ErrorHandler from "../../../helpers/ErrorHandler";
+    import DialogHeader from "@/components/core/DialogHeader";
     export default {
         name: "AppointmentEditDialog",
-        components: {AppointmentForm},
+        components: {DialogHeader, AppointmentForm},
         data(){
             return {
                 loading: false,

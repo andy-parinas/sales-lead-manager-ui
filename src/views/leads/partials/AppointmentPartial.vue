@@ -6,10 +6,10 @@
                     <v-col cols="12" sm="12">
                         <v-icon small>mdi-calendar-clock</v-icon>
                         <span class="ml-2 caption font-weight-bold"> Appointment Date: </span>
-                        <v-chip class="ma-2" color="yellow darken-4" text-color="white">
+                        <v-chip class="ma-2" color="green darken-2" text-color="white">
                             {{ data.date | formatDate }}
                         </v-chip>
-                        <v-chip class="ma-2" color="orange" text-color="white">
+                        <v-chip class="ma-2" color="green darken-2" text-color="white">
                             {{ data.date | formatTime }}
                         </v-chip>
                     </v-col>
@@ -18,10 +18,10 @@
                   <v-col cols="12" sm="12">
                     <v-icon small>mdi-calendar-clock</v-icon>
                     <span class="ml-2 caption font-weight-bold"> Follow-Up Date: </span>
-                    <v-chip class="ma-2" color="yellow darken-4" text-color="white">
+                    <v-chip class="ma-2" color="blue darken-2" text-color="white">
                       {{ data.followUp | formatDate }}
                     </v-chip>
-                    <v-chip class="ma-2" color="orange" text-color="white">
+                    <v-chip class="ma-2" color="blue darken-2" text-color="white">
                       {{ data.followUp | formatTime }}
                     </v-chip>
                   </v-col>
@@ -41,6 +41,10 @@
                     <v-col cols="12" sm="6">
                         <v-icon small>mdi-clipboard-check</v-icon>
                         <span class="ml-2 mr-2 caption font-weight-bold"> Outcome: </span> <ChipOutcome :outcome="data.outcome" :small="true" />
+                        <v-chip v-if="data.outcome === 'success' && !data.withContract"
+                            small label color="orange darken-3" text-color="white" class="ml-3">
+                          No Contracts Created
+                        </v-chip>
                     </v-col>
                 </v-row>
                 <v-row>

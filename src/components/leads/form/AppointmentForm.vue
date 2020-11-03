@@ -164,6 +164,7 @@
                     ></v-textarea>
                 </v-col>
             </v-row>
+            <OutcomeContractAlert v-if="form.outcome === 'success'" />
         </v-container>
     </v-form>
 </template>
@@ -171,10 +172,12 @@
 <script>
     import {format, parseISO} from "date-fns";
     import Utils from "../../../helpers/Utils";
+    import OutcomeContractAlert from "@/components/leads/OutcomeContractAlert";
 
     export default {
         name: "AppointmentForm",
-        props: {
+      components: {OutcomeContractAlert},
+      props: {
           initialData: {required: true, type:Object}
         },
         data(){
