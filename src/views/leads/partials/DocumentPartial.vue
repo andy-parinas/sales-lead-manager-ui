@@ -13,9 +13,13 @@
         <v-card flat class="mx-10 mt-5 mb-10" outlined v-else>
             <v-list >
                 <template v-for="(document, index) in documents">
-                    <v-list-item  :key="document.id">
+                    <v-list-item  :key="document.id" class="py-2">
                         <DocumentIcon :document-type="document.type" />
-                        <span class="ml-2">{{ document.title }}</span>
+                        <div>
+                          <div class="ml-2 subtitle-2">{{ document.description }}</div>
+                          <div class="ml-2 caption mt-1">{{ document.title }}</div>
+                        </div>
+
                         <v-spacer></v-spacer>
                         <div class="d-flex">
                             <v-btn  v-if="currentUser.userType !== 'staff_user'"
@@ -40,15 +44,22 @@
         <v-divider></v-divider>
         <v-row v-if="currentUser.userType !== 'staff_user'"
                 class="mx-10 mt-10 mb-5" align="center">
-            <v-file-input v-model="fileForUpload"
-                    show-size label="Lead Document"></v-file-input>
-            <v-btn @click="uploadFile"
-                   :loading="uploading"
-                   :disabled="fileForUpload === null"
-                    small color="primary" class="text--white ml-3">
+            <v-col cols="12">
+              <v-file-input v-model="fileForUpload"
+                            show-size label="Lead Document"></v-file-input>
+              <v-text-field
+                  v-model="description"
+                  label="Document Description"
+                  prepend-icon="mdi-file-document-outline"
+              ></v-text-field>
+              <v-btn @click="uploadFile"
+                     :loading="uploading"
+                     :disabled="fileForUpload === null"
+                     small color="primary" class="text--white ml-3">
                 Upload
                 <v-icon small>mdi-upload</v-icon>
-            </v-btn>
+              </v-btn>
+            </v-col>
         </v-row>
         <v-dialog v-model="showDeleteDialog" persistent max-width="350" class="px-2">
             <v-card>
@@ -90,7 +101,8 @@
                 downloadingId: null,
                 showDeleteDialog: false,
                 deleting: false,
-                fileToDelete: null
+                fileToDelete: null,
+                description: ''
 
             }
         },
@@ -115,11 +127,13 @@
                 data.append('file', this.fileForUpload)
                 data.append('title', this.fileForUpload.name)
                 data.append('type', this.fileForUpload.type? this.fileForUpload.type : "unknown" )
+                data.append('description', this.description )
 
                 this.uploading = true
 
                 DocumentAPI.uploadFile(this.leadId, data).then(response => {
                     this.fileForUpload = null
+                    this.description = ''
                     this.setSuccessMessage('File successfully uploaded');
                     this.documents.push(response.data);
                 }).catch(error => {
