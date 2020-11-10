@@ -37,7 +37,8 @@ const SalesStaffAPI = {
             last_name: formData.lastName,
             email: formData.email,
             contact_number: formData.contactNumber,
-            franchise_id: formData.franchiseId,
+            sales_phone: formData.salesPhone,
+            franchises: formData.franchises,
             status: formData.status,
         }
 
@@ -69,7 +70,8 @@ const SalesStaffAPI = {
             last_name: formData.lastName,
             email: formData.email,
             contact_number: formData.contactNumber,
-            franchise_id: formData.franchiseId,
+            sales_phone: formData.salesPhone,
+            franchises: formData.franchises,
             status: formData.status,
         }
 

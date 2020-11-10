@@ -82,7 +82,25 @@ export default {
 
             const response = await SalesStaffAPI.create(formData);
 
-            commit('insertSalesStaff', response.data);
+            let franchises = "";
+
+            const data = response.data;
+
+            data.franchise.map(f => {
+                franchises = franchises + f.franchise_number + ', '
+            })
+
+            const staff = {
+                contactNumber: data.contactNumber,
+                firstName: data.firstName,
+                lastName: data.lastName,
+                email: data.email,
+                status: data.status,
+                franchises: franchises
+            }
+
+
+            commit('insertSalesStaff', staff);
         },
 
         async deleteSalesStaff({commit}, salesStaffId){

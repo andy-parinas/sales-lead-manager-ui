@@ -32,11 +32,20 @@
                                       :rules="[rules.requiredField]"
                         />
                     </v-col>
+                  <v-col cols="12" sm="6">
+                    <v-text-field v-model="form.salesPhone"
+                                  type="tel"
+                                  prepend-icon="mdi-phone"
+                                  label="Sales Phone"
+                                  :rules="[]"
+                    />
+                  </v-col>
                     <v-col cols="12" sm="6">
-                        <FranchiseSelect
-                                :initial-data="initialData? initialData.franchiseId : null"
-                                :required="true"
-                                @onValueChanged="franchiseChanged"/>
+<!--                        <FranchiseSelect-->
+<!--                                :initial-data="initialData? initialData.franchiseId : null"-->
+<!--                                :required="true"-->
+<!--                                @onValueChanged="franchiseChanged"/>-->
+                            <FranchiseMultipleSelect @onSelectionChanged="franchiseSelectionHandler" />
                     </v-col>
                     <v-col cols="12" sm="6">
                         <v-select
@@ -64,10 +73,11 @@
 </template>
 
 <script>
-    import FranchiseSelect from "../../leads/form/FranchiseSelect";
+    // import FranchiseSelect from "../../leads/form/FranchiseSelect";
+    import FranchiseMultipleSelect from "@/components/shared/FranchiseMultipleSelect";
     export default {
         name: "SalesStaffForm",
-        components: {FranchiseSelect},
+        components: {FranchiseMultipleSelect},
         props: {
             initialData: {type: [Object, null]},
             saving: {type: Boolean}
@@ -86,7 +96,8 @@
                     lastName: '',
                     email: '',
                     contactNumber: '',
-                    franchiseId: '',
+                    salesPhone: '',
+                    franchises: '',
                     status: ''
                 },
                 defaultForm: {
@@ -94,7 +105,8 @@
                     lastName: '',
                     email: '',
                     contactNumber: '',
-                    franchiseId: '',
+                    salesPhone: '',
+                    franchises: '',
                     status: ''
                 },
                 statuses: [
@@ -114,11 +126,14 @@
                 }else {
                     this.$set(this.form, 'franchiseId', '')
                 }
-            }
+            },
+          franchiseSelectionHandler(franchises){
+              this.form.franchises = franchises
+          }
         },
         computed: {
             canSave(){
-                return this.isFormValid && this.form.franchiseId && this.form.franchiseId !== ''
+                return this.isFormValid && this.form.franchises.length > 0 && this.form.franchiseId !== ''
             }
         },
         watch: {
