@@ -43,7 +43,31 @@ export default {
         async fetchAllSalesStaff({commit}, {pageOptions, searchOptions}){
             const response = await SalesStaffAPI.getAllSalesStaff(pageOptions, searchOptions)
 
-            commit('setSalesStaffs', response.data);
+
+            const salesStaffs = response.data.map(d => {
+
+                let franchises = ""
+
+                d.franchises.map(f => {
+                   franchises = franchises + f.franchise_number + ', '
+                })
+
+                const staff = {
+                    contactNumber: d.contactNumber,
+                    firstName: d.firstName,
+                    lastName: d.lastName,
+                    email: d.email,
+                    status: d.status,
+                    franchises: franchises
+                }
+
+                return staff;
+            })
+
+            console.log(salesStaffs);
+
+            // commit('setSalesStaffs', response.data);
+            commit('setSalesStaffs', salesStaffs);
             commit('setPagination', response.pagination)
         },
 

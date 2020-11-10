@@ -85,7 +85,7 @@
                     { text: 'First Name',value: 'firstName'},
                     { text: 'Last Name', value: 'lastName' },
                     { text: 'E-Mail', value: 'email' },
-                    { text: 'Franchise', value: 'franchise' },
+                    { text: 'Franchises', value: 'franchises', sortable: false },
                     { text: 'Status', value: 'status' },
                     { text: 'Actions', value: 'actions', sortable: false },
                     { text: '', value: 'data-table-expand' },
