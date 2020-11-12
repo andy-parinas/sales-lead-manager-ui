@@ -31,7 +31,7 @@
                         <thead>
                         <tr>
                             <th class="text-left">Design Adivisor</th>
-                            <th class="text-left">Franchise</th>
+                            <th class="text-left">Franchise Number</th>
                             <th class="text-right"># Sales</th>
                             <th class="text-right"># Leads</th>
                             <th class="text-right">Total Contracts</th>
@@ -51,7 +51,7 @@
                         </tr>
                         <tr>
                             <td class="font-weight-bold">Total </td>
-                            <td>  </td>
+                            <td class="font-weight-bold"> </td>
                             <td class="text-right font-weight-bold"> {{ total.totalNumberOfSales | decimalFormat }} </td>
                             <td class="text-right font-weight-bold"> {{ total.totalNumberOfLeads | decimalFormat }} </td>
                             <td class="text-right font-weight-bold"> {{ total.grandTotalContracts | decimalFormat }} </td>
@@ -60,7 +60,7 @@
                         </tr>
                         <tr>
                             <td class="font-weight-bold">Average </td>
-                            <td>  </td>
+                            <td class="font-weight-bold"> </td>
                             <td class="text-right font-weight-bold"> {{ total.averageNumberOfSales | decimalFormat }} </td>
                             <td class="text-right font-weight-bold"> {{ total.averageNumberOfLeads | decimalFormat }} </td>
                             <td class="text-right font-weight-bold"> {{ total.averageTotalContract | decimalFormat }} </td>
