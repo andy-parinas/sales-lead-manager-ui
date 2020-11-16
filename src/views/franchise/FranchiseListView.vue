@@ -6,7 +6,7 @@
                 <FranchiseDetails @goBack="hideFranchise" :franchise="selectedFranchise" />
             </v-col>
         </v-row>
-        <v-row class="mt-6" justify="center" v-show="!selectedFranchise">
+        <v-row class="mt-6 mb-10" justify="center" v-show="!selectedFranchise">
             <v-col cols="12" sm="12">
                 <FranchiseTable @showFranchise="showFranchise" />
             </v-col>

@@ -120,7 +120,7 @@ export default {
     mixins: [ErrorHandlerMixins],
     computed: {
         title(){
-            return `Sales Summary Report From ${this.formatDate(this.startDate)} To ${this.formatDate(this.endDate)}`
+            return `Sales Staff - Product Summary Report From ${this.formatDate(this.startDate)} To ${this.formatDate(this.endDate)}`
         },
         fileName(){
             return `sales_summary_${this.formatDate2(this.startDate)}_${this.formatDate2(this.endDate)}`
