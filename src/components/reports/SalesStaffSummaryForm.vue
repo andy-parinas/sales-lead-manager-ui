@@ -74,7 +74,6 @@ export default {
             }
         },
         salesStaffFranchiseSelected(franchiseId){
-            console.log("SalesStafFranchiseSelected", franchiseId)
             if(franchiseId){
               this.form.franchiseId = franchiseId
             }else {
