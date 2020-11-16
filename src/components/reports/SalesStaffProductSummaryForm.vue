@@ -25,6 +25,10 @@
                         <FranchiseDropDown @onValueChanged="franchiseSelected" />
                         <div class="caption pl-5">All will be included if no selection is made</div>
                     </v-col>
+                    <v-col cols="12">
+                      <FranchiseTypeSelect @onValueChanged="franchiseTypeSelected" />
+                      <div class="caption pl-5">All will be included if no selection is made</div>
+                    </v-col>
                 </v-row>
             </v-card-text>
             <v-card-actions class="px-5">
@@ -46,12 +50,15 @@ import FranchiseDropDown from "../leads/form/FranchiseDropDown";
 import DateSelect from "./shared/DateSelect";
 import ProductSelect from "./shared/ProductSelect";
 import SalesStaffFranchiseSelect from "@/components/shared/SalesStaffFranchiseSelect";
+import FranchiseTypeSelect from "@/components/shared/FranchiseTypeSelect";
 
 
 
 export default {
 name: "SalesStaffProductSummaryForm",
-    components: {SalesStaffFranchiseSelect, FranchiseDropDown, ProductSelect, DesignAdvisorSelect, DateSelect},
+    components: {
+      FranchiseTypeSelect,
+      SalesStaffFranchiseSelect, FranchiseDropDown, ProductSelect, DesignAdvisorSelect, DateSelect},
     data(){
         return {
             valid: false,
@@ -65,7 +72,8 @@ name: "SalesStaffProductSummaryForm",
                 endDate: '',
                 franchiseId: '',
                 designAdvisorId: '',
-                productId: ''
+                productId: '',
+                franchiseType: ''
             },
             withDesignAdvisor: false
         }
@@ -91,6 +99,13 @@ name: "SalesStaffProductSummaryForm",
             }else {
                 this.form.franchiseId = ''
             }
+        },
+        franchiseTypeSelected(franchiseType){
+          if(franchiseType){
+            this.form.franchiseType = franchiseType
+          }else {
+            this.form.franchiseType = ""
+          }
         },
         salesStaffFranchiseSelected(franchiseId){
             if(franchiseId){

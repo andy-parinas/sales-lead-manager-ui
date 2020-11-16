@@ -20,6 +20,10 @@ const ReportAPI = {
             params = params + `&product_id=${formData.productId}`
         }
 
+        if(formData.franchiseType && formData.franchiseType !== ""){
+            params = params + `&franchise_type=${formData.franchiseType}`
+        }
+
         const uri = `/api/reports/sales-summary?${params}`;
 
 
@@ -39,6 +43,10 @@ const ReportAPI = {
 
         if(formData.designAdvisorId && formData.designAdvisorId !== ""){
             params = params + `&sales_staff_id=${formData.designAdvisorId}`
+        }
+
+        if(formData.franchiseType && formData.franchiseType !== ""){
+            params = params + `&franchise_type=${formData.franchiseType}`
         }
 
         const uri = `/api/reports/sales-Staff-summary?${params}`;
@@ -78,6 +86,9 @@ const ReportAPI = {
             params = params + `&franchise_id=${formData.franchiseId}`
         }
 
+        if(formData.franchiseType && formData.franchiseType !== ""){
+            params = params + `&franchise_type=${formData.franchiseType}`
+        }
 
         const uri = `/api/reports/outcome-sales-staff?${params}`;
         console.log(uri)
@@ -98,6 +109,10 @@ const ReportAPI = {
 
         if(formData.franchiseId && formData.franchiseId !== ""){
             params = params + `&franchise_id=${formData.franchiseId}`
+        }
+
+        if(formData.franchiseType && formData.franchiseType !== ""){
+            params = params + `&franchise_type=${formData.franchiseType}`
         }
 
 

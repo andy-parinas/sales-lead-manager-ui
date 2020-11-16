@@ -22,6 +22,10 @@
                 <FranchiseDropDown @onValueChanged="franchiseSelected" />
               <div class="caption pl-5">All will be included if no selection is made</div>
             </v-col>
+            <v-col cols="12">
+              <FranchiseTypeSelect @onValueChanged="franchiseTypeSelected" />
+              <div class="caption pl-5">All will be included if no selection is made</div>
+            </v-col>
         </v-row>
       </v-card-text>
       <v-card-actions class="px-5">
@@ -39,9 +43,10 @@
 import DateSelect from "@/components/reports/shared/DateSelect";
 import FranchiseDropDown from "@/components/leads/form/FranchiseDropDown";
 import EventBus from "@/helpers/EventBus";
+import FranchiseTypeSelect from "@/components/shared/FranchiseTypeSelect";
 export default {
 name: "OutcomeSummaryForm",
-    components: {FranchiseDropDown, DateSelect},
+    components: {FranchiseTypeSelect, FranchiseDropDown, DateSelect},
     data(){
         return {
             outcomes: [
@@ -57,7 +62,8 @@ name: "OutcomeSummaryForm",
                 startDate: '',
                 endDate: '',
                 franchiseId: '',
-                outcome: ''
+                outcome: '',
+                franchiseType: ''
             },
             isFormValid: false
         }
@@ -78,7 +84,14 @@ name: "OutcomeSummaryForm",
             }else {
                 this.form.franchiseId = ''
             }
-        }
+        },
+        franchiseTypeSelected(franchiseType){
+          if(franchiseType){
+            this.form.franchiseType = franchiseType
+          }else {
+            this.form.franchiseType = ""
+          }
+        },
     }
 
 }
