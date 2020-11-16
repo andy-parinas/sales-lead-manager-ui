@@ -24,6 +24,7 @@
 <script>
     import SalesStaffAPI from "../../../api/SalesStaffAPI";
     import ErrorHandlerMixins from "@/mixins/ErrorHandler";
+    import EventBus from "@/helpers/EventBus";
 
     export default {
         name: "DesignAdvisorSelect",
@@ -82,6 +83,7 @@
 
             },
             salesStaffValueChange(){
+                EventBus.$emit('DESIGN_ADVISOR_SELECT_CHANGED', this.salesStaff);
                 this.$emit('onValueChanged', this.salesStaff)
             }
         },

@@ -13,7 +13,11 @@
                         <DesignAdvisorSelect @onValueChanged="designAdvisorSelected" />
                         <div class="caption pl-5">All will be included if no selection is made</div>
                     </v-col>
-                    <v-col cols="12">
+                    <v-col cols="12" v-show="withDesignAdvisor">
+                      <SalesStaffFranchiseSelect @onValueChanged="salesStaffFranchiseSelected" />
+                      <div class="caption pl-5">All will be included if no selection is made.</div>
+                    </v-col>
+                    <v-col cols="12" v-show="!withDesignAdvisor">
                         <FranchiseDropDown @onValueChanged="franchiseSelected" />
                       <div class="caption pl-5">All will be included if no selection is made</div>
                     </v-col>
@@ -35,11 +39,12 @@ import DateSelect from "@/components/reports/shared/DateSelect";
 import DesignAdvisorSelect from "@/components/leads/form/DesignAdvisorSelect";
 import FranchiseDropDown from "@/components/leads/form/FranchiseDropDown";
 import EventBus from "@/helpers/EventBus";
+import SalesStaffFranchiseSelect from "@/components/shared/SalesStaffFranchiseSelect";
 
 
 export default {
     name: "SalesStaffSummaryForm",
-    components: {FranchiseDropDown, DesignAdvisorSelect, DateSelect},
+    components: {SalesStaffFranchiseSelect, FranchiseDropDown, DesignAdvisorSelect, DateSelect},
     data(){
         return {
             valid: false,
@@ -53,7 +58,8 @@ export default {
                 endDate: '',
                 franchiseId: '',
                 designAdvisorId: '',
-            }
+            },
+            withDesignAdvisor: false
         }
     },
     methods: {
@@ -67,12 +73,22 @@ export default {
                 this.form.franchiseId = ''
             }
         },
+        salesStaffFranchiseSelected(franchiseId){
+            console.log("SalesStafFranchiseSelected", franchiseId)
+            if(franchiseId){
+              this.form.franchiseId = franchiseId
+            }else {
+              this.form.franchiseId = ''
+            }
+        },
         designAdvisorSelected(designAdvisor){
-            console.log(designAdvisor)
             if(designAdvisor){
                 this.form.designAdvisorId = designAdvisor.id
+                this.withDesignAdvisor = true
             }else {
                 this.form.designAdvisorId = ''
+                this.withDesignAdvisor = false;
+                this.form.franchiseId = ''
             }
         },
         startDateSelectHandler(startDate){

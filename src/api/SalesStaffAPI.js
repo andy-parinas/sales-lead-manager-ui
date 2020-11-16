@@ -91,6 +91,15 @@ const SalesStaffAPI = {
 
         return response.data;
 
+    },
+
+    async getSalesStaff(staffId){
+        const uri = `/api/sales-staffs/${staffId}`
+
+        const response = await api().get(uri);
+
+        return response.data;
+
     }
 
 }
