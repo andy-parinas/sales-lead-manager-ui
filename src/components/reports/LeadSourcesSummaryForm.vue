@@ -22,6 +22,27 @@
                             prepend-icon="mdi-clipboard-check"></v-select>
                       <div class="caption pl-5">All will be included if no selection is made</div>
                     </v-col>
+                    <v-col cols="12">
+                      <v-select
+                          v-model="form.sortBy"
+                          :items="sortItems"
+                          label="Sort By"
+                          prepend-icon="mdi-sort"
+                          clearable
+                      ></v-select>
+                    </v-col>
+                    <v-col cols="12">
+                      <v-select
+                          v-model="form.direction"
+                          :items="[
+                                  {text: 'Ascending', value: 'asc'},
+                                  {text: 'Descending', value: 'desc'},
+                              ]"
+                          label="Direction"
+                          prepend-icon="mdi-sort"
+                          clearable
+                      ></v-select>
+                    </v-col>
                 </v-row>
             </v-card-text>
             <v-card-actions class="px-5">
@@ -60,6 +81,11 @@ name: "LeadSourcesSummaryForm",
                 source: '',
                 outcome: ''
             },
+            sortItems: [
+              {text: 'Lead Source', value: 'name'},
+              {text: 'Outcome', value: 'outcome'},
+              {text: 'Number Of Leads', value: 'numberOfLeads'}
+            ]
         }
     },
     methods: {

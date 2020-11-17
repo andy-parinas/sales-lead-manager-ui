@@ -26,7 +26,7 @@
                         <thead>
                         <tr>
                             <th class="text-left">Franchise</th>
-                            <th class="text-left">Outcome</th>
+                            <th class="text-right">Outcome</th>
                             <th class="text-right">Number Of Leads</th>
                             <th class="text-right">Sales Staffs</th>
                         </tr>
@@ -34,7 +34,7 @@
                         <tbody>
                         <tr v-for="(report, index) in reports" :key="index">
                             <td>{{ report.franchise_number }}</td>
-                            <td class="text-right">{{ report.outcome }}</td>
+                            <td class="text-right">{{ report.outcome | capitalize }}</td>
                             <td class="text-right">{{ report.numberOfLeads }}</td>
                             <td class="text-right">{{ report.salesStaff}}</td>
                         </tr>
