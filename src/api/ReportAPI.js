@@ -24,6 +24,11 @@ const ReportAPI = {
             params = params + `&franchise_type=${formData.franchiseType}`
         }
 
+        if((formData.sortBy && formData.sortBy !== "") && (formData.direction && formData.direction !== "")){
+            params = params + `&sort_by=${formData.sortBy}&direction=${formData.direction}`
+        }
+
+
         const uri = `/api/reports/sales-summary?${params}`;
 
 
@@ -49,6 +54,10 @@ const ReportAPI = {
             params = params + `&franchise_type=${formData.franchiseType}`
         }
 
+        if((formData.sortBy && formData.sortBy !== "") && (formData.direction && formData.direction !== "")){
+            params = params + `&sort_by=${formData.sortBy}&direction=${formData.direction}`
+        }
+
         const uri = `/api/reports/sales-Staff-summary?${params}`;
 
 
@@ -64,6 +73,10 @@ const ReportAPI = {
 
         if(formData.productId && formData.productId !== ""){
             params = params + `&product_id=${formData.productId}`
+        }
+
+        if((formData.sortBy && formData.sortBy !== "") && (formData.direction && formData.direction !== "")){
+            params = params + `&sort_by=${formData.sortBy}&direction=${formData.direction}`
         }
 
         const uri = `/api/reports/product-sales-summary?${params}`;
@@ -88,6 +101,10 @@ const ReportAPI = {
 
         if(formData.franchiseType && formData.franchiseType !== ""){
             params = params + `&franchise_type=${formData.franchiseType}`
+        }
+
+        if((formData.sortBy && formData.sortBy !== "") && (formData.direction && formData.direction !== "")){
+            params = params + `&sort_by=${formData.sortBy}&direction=${formData.direction}`
         }
 
         const uri = `/api/reports/outcome-sales-staff?${params}`;
@@ -115,9 +132,13 @@ const ReportAPI = {
             params = params + `&franchise_type=${formData.franchiseType}`
         }
 
+        if((formData.sortBy && formData.sortBy !== "") && (formData.direction && formData.direction !== "")){
+            params = params + `&sort_by=${formData.sortBy}&direction=${formData.direction}`
+        }
+
 
         const uri = `/api/reports/outcome?${params}`;
-        console.log('outcome', uri)
+
 
         const response = await api().get(uri);
 
@@ -137,9 +158,12 @@ const ReportAPI = {
             params = params + `&outcome=${formData.outcome}`
         }
 
+        if((formData.sortBy && formData.sortBy !== "") && (formData.direction && formData.direction !== "")){
+            params = params + `&sort_by=${formData.sortBy}&direction=${formData.direction}`
+        }
+
         const uri = `/api/reports/lead-sources?${params}`;
 
-        console.log(uri)
 
         const response = await api().get(uri);
 
