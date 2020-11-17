@@ -6,6 +6,8 @@
                 <!-- <span class="hidden-sm-and-down">Ezi-Task CRM</span> -->
                 <span class="font-weight-light">Ezi-Task</span>
                 <span>CRM</span>
+                <span >
+                </span>
             </v-toolbar-title>
             <v-spacer />
             <v-btn text @click="logoutFromApp" >

@@ -11,6 +11,12 @@
                         {{ message }}
                         <v-btn dark small fab text @click="showErrorMessage = false" > <v-icon small>mdi-close</v-icon> </v-btn>
                       </v-snackbar>
+
+                      <v-row class="d-flex justify-center align-center">
+                         <v-col class="d-flex justify-center align-center">
+                           <SpanlineLogo />
+                         </v-col>
+                      </v-row>
                         <v-card class="elevation-12" >
                             <v-toolbar color="primary" dark flat>
                                 <v-toolbar-title>
@@ -50,10 +56,12 @@
 <script>
 
     import {mapActions} from 'vuex';
+    import SpanlineLogo from "@/components/core/SpanlineLogo";
 
     export default {
         name: 'Login',
-        data(){
+      components: {SpanlineLogo},
+      data(){
             return {
                 username: '',
                 password: '',
