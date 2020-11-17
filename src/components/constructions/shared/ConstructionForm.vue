@@ -13,7 +13,7 @@
                     </v-col>
                     <v-col cols="12" sm="12">
                         <PostcodeSelectField @onValueChanged="onPostcodeSelect"
-                                             :initial-postcode-id="initialData.postcode.id"
+                                             :initial-postcode-id="initialData.postcodeId"
                                              :required="true" />
                     </v-col>
                 </v-row>
