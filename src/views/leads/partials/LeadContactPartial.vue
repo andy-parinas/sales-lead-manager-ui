@@ -39,6 +39,26 @@
                         </v-chip>
                     </v-col>
                 </v-row>
+                <v-row v-if="!summary" >
+                    <v-col cols="12" sm="3">
+                        <v-btn small color="primary" width="100%"
+                               :loading="unAssignedSending"
+                               :disabled="data.unAssignedIntroSent !== null ? true: false"
+                               @click="sendUnassignedIntroLetter" >
+                          Send Unassigned Intro Letter
+                        </v-btn>
+                    </v-col>
+                </v-row>
+                <v-row v-if="!summary">
+                    <v-col cols="12" sm="3">
+                        <v-btn small color="primary" width="100%"
+                               :loading="assignedSending"
+                               :disabled="data.assignedIntroSent !== null ? true : false"
+                               @click="sendAssignedIntroLetter" >
+                          Send Assigned Intro Letter
+                        </v-btn>
+                    </v-col>
+                </v-row>
                 <v-row>
                     <v-spacer></v-spacer>
                     <v-btn v-if="!summary" text small fab @click="editDialog = true"><v-icon>mdi-pencil</v-icon></v-btn>
@@ -100,6 +120,8 @@
 
 <script>
     import LeadInfoEditDialog from "../../../components/leads/edit-dialog/LeadInfoEditDialog";
+    import lettersAPI from "@/api/lettersAPI";
+    import ErrorHandlerMixins from "@/mixins/ErrorHandler";
     export default {
         name: "LeadContactPartial",
         components: {LeadInfoEditDialog},
@@ -109,9 +131,12 @@
         },
         data(){
             return {
-                editDialog: false
+                editDialog: false,
+                unAssignedSending: false,
+                assignedSending: false
             }
         },
+        mixins: [ErrorHandlerMixins],
         computed: {
             status(){
                 if(this.data && this.data.postcodeStatus === 'outside_of_franchise'){
@@ -127,6 +152,30 @@
                 }
 
                 return 'orange darken-3'
+            }
+        },
+        methods: {
+            sendUnassignedIntroLetter(){
+                this.unAssignedSending = true;
+                lettersAPI.sendUnAssignedIntoLetter(this.data.id, this.data.salesContactId).then(response => {
+                    console.log('Send Letter', response)
+                    this.$set(this.data, 'unAssignedIntroSent', response.data.unassigned_intro_sent)
+                }).catch(error => {
+                    this.errorHandler(error)
+                }).finally(() => {
+                    this.unAssignedSending = false;
+                })
+            },
+            sendAssignedIntroLetter(){
+                this.assignedSending = true;
+                lettersAPI.sendAssignedIntoLetter(this.data.id, this.data.salesContactId).then(response => {
+                  console.log('Send Letter', response)
+                  this.$set(this.data, 'assignedIntroSent', response.data.assigned_intro_sent)
+                }).catch(error => {
+                    this.handleError(error)
+                }).finally(() => {
+                  this.assignedSending = false;
+                })
             }
         }
     }
