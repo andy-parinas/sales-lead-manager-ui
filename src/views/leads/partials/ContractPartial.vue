@@ -80,16 +80,18 @@
                     <span class="ml-2 caption font-weight-bold"> Roof Sheet Profile: </span> <span> {{contract.roofSheetProfile }} </span>
                   </v-col>
                 </v-row>
-              <v-row>
-                <v-col cols="12" sm="3">
-                  <v-btn small color="primary" width="100%"
-                        :disabled="contract.welcomeLetterSent !==null ? true : false"
-                        :loading="welcomeSending"
-                        @click="sendSummaryLetter" >
-                    Send Welcome Letter
-                  </v-btn>
-                </v-col>
-              </v-row>
+                <v-divider class="my-3"></v-divider>
+                <v-row>
+                    <v-col cols="12" sm="3">
+                    <v-btn small color="primary" width="100%"
+                            :disabled="contract.welcomeLetterSent !==null ? true : false"
+                            :loading="welcomeSending"
+                            @click="sendSummaryLetter" >
+                        Send Welcome Letter
+                        <v-icon class="ml-2">mdi-send</v-icon>
+                    </v-btn>
+                    </v-col>
+                </v-row>
                 <v-row>
                     <v-spacer></v-spacer>
                     <v-btn text small fab @click="showEditDialog = true"><v-icon>mdi-pencil</v-icon></v-btn>

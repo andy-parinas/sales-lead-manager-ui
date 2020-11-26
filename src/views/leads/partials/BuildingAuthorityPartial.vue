@@ -97,6 +97,32 @@
                     <span> {{ buildingAuthority.dateInsuranceRequestSent |formatDate }} </span>
                 </v-col>
             </v-row>
+            <v-divider class="my-3"></v-divider>
+            <v-row>
+                 <v-col cols="12" sm="3">
+                    <v-btn small color="primary" width="100%">
+                        Send Intro Council Letter
+                        <v-icon class="ml-2">mdi-send</v-icon>
+                    </v-btn>
+                    </v-col>
+            </v-row>
+              <v-row>
+                 <v-col cols="12" sm="3">
+                    <v-btn small color="primary" width="100%" >
+                        Send Out Of Council Letter
+                        <v-icon class="ml-2">mdi-send</v-icon>
+                    </v-btn>
+                    </v-col>
+            </v-row>
+              <v-row>
+                 <v-col cols="12" sm="3">
+                    <v-btn small color="primary" width="100%" >
+                        Send No Council Letter
+                        <v-icon class="ml-2">mdi-send</v-icon>
+                    </v-btn>
+                    </v-col>
+            </v-row>
+
             <v-row class="py-5">
                 <v-spacer></v-spacer>
                 <v-btn text small fab @click="showEditDialog = true"><v-icon>mdi-pencil</v-icon></v-btn>
@@ -133,7 +159,10 @@ export default {
             buildingAuthority: null,
             loading: false,
             showCreateDialog: false,
-            showEditDialog: false
+            showEditDialog: false,
+            sendingIntroCouncil: false,
+            sendingOutOfCouncil: false,
+            sendingNoCouncil: false
         }
     },
     mixins: [ErrorHandlerMixins],
@@ -162,6 +191,16 @@ export default {
             }
         },
         updateBuildingAuthority(){
+
+        },
+        sendIntroCouncil(){
+            
+
+        },
+        sendOutOfCouncil(){
+
+        },
+        sendNoCouncil(){
 
         }
     },

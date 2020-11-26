@@ -40,6 +40,41 @@ const lettersAPI = {
         return response.data
 
 
+    },
+
+    async sendIntroCouncil(leadId){
+
+        const uri = `authorities/${leadId}/letters/council-intro`;
+
+        await csrf.getCSRFCookie();
+
+        const response = await api().post(uri);
+
+        return response.data
+
+    },
+
+    async sendOutOfCouncil(leadId){
+
+        const uri = `authorities/${leadId}/letters/no-council`;
+
+        await csrf.getCSRFCookie();
+
+        const response = await api().post(uri);
+
+        return response.data
+
+    },
+
+    async sendNoCouncil(leadId){
+
+        const uri = `authorities/${leadId}/letters/out-of-council`;
+
+        await csrf.getCSRFCookie();
+
+        const response = await api().post(uri);
+
+        return response.data
     }
 
 
