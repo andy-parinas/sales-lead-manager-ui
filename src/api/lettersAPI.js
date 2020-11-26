@@ -26,6 +26,20 @@ const lettersAPI = {
 
         return response.data
 
+    },
+
+    async sendWelcomeLetter(leadId){
+
+
+        const uri = `/api/contracts/${leadId}/letters/welcome`;
+
+        await csrf.getCSRFCookie();
+
+        const response = await api().post(uri);
+
+        return response.data
+
+
     }
 
 

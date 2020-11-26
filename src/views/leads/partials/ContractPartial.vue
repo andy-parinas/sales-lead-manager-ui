@@ -80,6 +80,16 @@
                     <span class="ml-2 caption font-weight-bold"> Roof Sheet Profile: </span> <span> {{contract.roofSheetProfile }} </span>
                   </v-col>
                 </v-row>
+              <v-row>
+                <v-col cols="12" sm="3">
+                  <v-btn small color="primary" width="100%"
+                        :disabled="contract.welcomeLetterSent !==null ? true : false"
+                        :loading="welcomeSending"
+                        @click="sendSummaryLetter" >
+                    Send Welcome Letter
+                  </v-btn>
+                </v-col>
+              </v-row>
                 <v-row>
                     <v-spacer></v-spacer>
                     <v-btn text small fab @click="showEditDialog = true"><v-icon>mdi-pencil</v-icon></v-btn>
@@ -125,6 +135,8 @@
     import ContractCreateDialog from "../../../components/contract/ContractCreateDialog";
     import VariationTable from "../../../components/contract/variations/VariationTable";
     import ContractEditDialog from "../../../components/contract/ContractEditDialog";
+    import lettersAPI from "@/api/lettersAPI";
+    import ErrorHandlerMixins from '../../../mixins/ErrorHandler';
 
     export default {
         name: "ContractPartial",
@@ -141,6 +153,7 @@
                 showEditDialog: false,
                 showVariations: false,
                 contract: null,
+                welcomeSending: false
             }
         },
         computed: {
@@ -148,6 +161,7 @@
                 return this.showVariations? 'Hide Variation' : 'Show Variations'
             }
         },
+        mixins: [ErrorHandlerMixins],
         methods: {
             getContract(){
                 this.loading = true;
@@ -176,6 +190,16 @@
                     console.log(error.response)
                 }).finally(() => {
                     this.updatingValues  = false
+                })
+            },
+            sendSummaryLetter(){
+                this.welcomeSending = true;
+                lettersAPI.sendWelcomeLetter(this.leadId).then(response => {
+                    this.$set(this.contract, 'welcomeLetterSent', response.data.welcome_letter_sent)
+                }).catch(error => {
+                    this.handleError(error)
+                }).finally(() => {
+                    this.welcomeSending = false;
                 })
             }
         },
