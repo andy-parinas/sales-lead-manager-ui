@@ -44,7 +44,7 @@ const lettersAPI = {
 
     async sendIntroCouncil(leadId){
 
-        const uri = `authorities/${leadId}/letters/council-intro`;
+        const uri = `/api/authorities/${leadId}/letters/council-intro`;
 
         await csrf.getCSRFCookie();
 
@@ -56,7 +56,7 @@ const lettersAPI = {
 
     async sendOutOfCouncil(leadId){
 
-        const uri = `authorities/${leadId}/letters/no-council`;
+        const uri = `/api/authorities/${leadId}/letters/out-of-council`;
 
         await csrf.getCSRFCookie();
 
@@ -68,7 +68,7 @@ const lettersAPI = {
 
     async sendNoCouncil(leadId){
 
-        const uri = `authorities/${leadId}/letters/out-of-council`;
+        const uri = `/api/authorities/${leadId}/letters/no-council`;
 
         await csrf.getCSRFCookie();
 

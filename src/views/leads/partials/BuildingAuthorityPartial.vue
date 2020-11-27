@@ -100,7 +100,10 @@
             <v-divider class="my-3"></v-divider>
             <v-row>
                  <v-col cols="12" sm="3">
-                    <v-btn small color="primary" width="100%">
+                    <v-btn small color="primary" width="100%"
+                        :loading="sendingIntroCouncil"
+                        :disabled="buildingAuthority.introCouncilLetterSent !== null ? true : false"
+                        @click="sendIntroCouncil">
                         Send Intro Council Letter
                         <v-icon class="ml-2">mdi-send</v-icon>
                     </v-btn>
@@ -108,7 +111,10 @@
             </v-row>
               <v-row>
                  <v-col cols="12" sm="3">
-                    <v-btn small color="primary" width="100%" >
+                    <v-btn small color="primary" width="100%" 
+                        :loading="sendingOutOfCouncil"
+                        :disabled="buildingAuthority.outOfCouncilLetterSent !== null ? true : false"
+                        @click="sendOutOfCouncil">
                         Send Out Of Council Letter
                         <v-icon class="ml-2">mdi-send</v-icon>
                     </v-btn>
@@ -116,7 +122,10 @@
             </v-row>
               <v-row>
                  <v-col cols="12" sm="3">
-                    <v-btn small color="primary" width="100%" >
+                    <v-btn small color="primary" width="100%" 
+                        :loading="sendingNoCouncil"
+                        :disabled="buildingAuthority.noCouncilLetterSent !== null ? true : false"
+                        @click="sendNoCouncil">
                         Send No Council Letter
                         <v-icon class="ml-2">mdi-send</v-icon>
                     </v-btn>
@@ -150,6 +159,9 @@ import BuildingAuthorityCreateDialog from "@/components/building-authority/Build
 import BuildingAuthorityAPI from "@/api/BuildingAuthorityAPI";
 import ErrorHandlerMixins from "@/mixins/ErrorHandler";
 import BuildingAuthorityEditDialog from "@/components/building-authority/BuildingAuthorityEditDialog";
+import lettersAPI from "../../../api/lettersAPI";
+
+
 export default {
     name: "BuildingAuthorityPartial",
     props: ['leadId'],
@@ -194,14 +206,39 @@ export default {
 
         },
         sendIntroCouncil(){
-            
+
+            this.sendingIntroCouncil = true;
+            lettersAPI.sendIntroCouncil(this.leadId).then(response => {
+                this.$set(this.buildingAuthority, 'introCouncilLetterSent', response.data.intro_council_letter_sent)
+            }).catch(error => {
+                console.log(error)
+
+            }).finally(() => {
+                this.sendingIntroCouncil = false;
+            })
 
         },
         sendOutOfCouncil(){
 
+             this.sendingOutOfCouncil = true;
+            lettersAPI.sendOutOfCouncil(this.leadId).then(response => {
+                this.$set(this.buildingAuthority, 'outOfCouncilLetterSent', response.data.out_of_council_letter_sent)
+            }).catch(error => {
+                this.handleError(error)
+            }).finally(() => {
+                this.sendingOutOfCouncil = false;
+            })
         },
         sendNoCouncil(){
 
+             this.sendingNoCouncil = true;
+            lettersAPI.sendNoCouncil(this.leadId).then(response => {
+                this.$set(this.buildingAuthority, 'noCouncilLetterSent', response.data.no_council_letter_sent)
+            }).catch(error => {
+                this.handleError(error)
+            }).finally(() => {
+                this.sendingNoCouncil = false;
+            })
         }
     },
     mounted() {
