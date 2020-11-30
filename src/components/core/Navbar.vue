@@ -2,12 +2,18 @@
     <nav>
         <v-app-bar clipped-left app color="blue darken-3" dark >
             <v-app-bar-nav-icon @click.stop="drawer = !drawer" />
-            <v-toolbar-title style="width: 300px" class="ml-0 pl-4">
-                <!-- <span class="hidden-sm-and-down">Ezi-Task CRM</span> -->
-                <span class="font-weight-light">Ezi-Task</span>
-                <span>CRM</span>
-                <span >
-                </span>
+            <v-toolbar-title style="width: 400px" class="ml-0 pl-4">
+                <div class="d-flex">
+                    <v-img
+                        contain
+                        :lazy-src="logo"
+                        max-height="30"
+                        max-width="150"
+                        :src="logo"
+                        ></v-img>
+                    <div class="font-weight-light">Ezi-Task</div>
+                    <div>CMC</div>
+                </div>
             </v-toolbar-title>
             <v-spacer />
             <v-btn text @click="logoutFromApp" >
@@ -99,6 +105,7 @@
 <script>
 
     import {mapActions, mapState} from 'vuex';
+import { frontEndUrl } from '../../api/api';
 
     export default {
         name: 'Navbar',
@@ -138,6 +145,9 @@
         },
         computed: {
             ...mapState('auth', ['currentUser', 'franchises']),
+            logo(){
+                return `${frontEndUrl}/spanline_logo.png`
+            },
             links(){
                 const user = this.$store.state.auth.currentUser;
                 let links = [];
