@@ -2,6 +2,14 @@
     <v-form v-model="valid" ref="contactForm">
         <v-container>
             <v-row class="mx-2">
+              <v-col cols="12" sm="6">
+                <v-text-field v-model="form.title"
+                              prepend-icon="mdi-subtitles-outline"
+                              label="Title"
+                              :rules="[rules.required]"
+                />
+              </v-col>
+              <v-col cols="12" sm="6"></v-col>
                 <v-col cols="12" sm="6">
                     <v-text-field v-model="form.firstName"
                                   prepend-icon="mdi-account"
@@ -145,6 +153,7 @@
                 errorMessage: '',
                 form: {
                     id: '',
+                    title: '',
                     firstName: '',
                     lastName: '',
                     email: '',
@@ -158,6 +167,7 @@
                 },
                 defaultForm: {
                     id: '',
+                    title: '',
                     firstName: '',
                     lastName: '',
                     email: '',

@@ -53,6 +53,7 @@ export default {
                 })
 
                 const staff = {
+                    id: d.id,
                     contactNumber: d.contactNumber,
                     firstName: d.firstName,
                     lastName: d.lastName,

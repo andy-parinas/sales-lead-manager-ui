@@ -1,6 +1,6 @@
 <template>
     <v-card>
-        <DialogHeader title="Delete Sales Contact">
+        <DialogHeader title="Delete Franchise">
             <template v-slot:action>
                 <v-btn small icon @click="$emit('close')">
                     <v-icon small>mdi-close</v-icon>

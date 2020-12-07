@@ -5,6 +5,7 @@ import Utils from "../helpers/Utils";
 
 const nomalizeData = (data) => {
     return {
+        title: data.title,
         first_name: data.firstName,
         last_name: data.lastName,
         email: data.email,
@@ -66,6 +67,7 @@ const SalesContactAPI = {
     async update(data){
         // Normalize the data for submission to backend
         const formData = {
+            title: data.title,
             first_name: data.firstName,
             last_name: data.lastName,
             email: data.email,
