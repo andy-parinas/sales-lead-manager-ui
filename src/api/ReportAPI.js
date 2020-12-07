@@ -16,6 +16,10 @@ const ReportAPI = {
             params = params + `&sales_staff_id=${formData.designAdvisorId}`
         }
 
+        if(formData.status && formData.status !== ""){
+            params = params + `&status=${formData.status}`
+        }
+
         if(formData.productId && formData.productId !== ""){
             params = params + `&product_id=${formData.productId}`
         }
@@ -27,7 +31,6 @@ const ReportAPI = {
         if((formData.sortBy && formData.sortBy !== "") && (formData.direction && formData.direction !== "")){
             params = params + `&sort_by=${formData.sortBy}&direction=${formData.direction}`
         }
-
 
         const uri = `/api/reports/sales-summary?${params}`;
 
@@ -50,6 +53,16 @@ const ReportAPI = {
             params = params + `&sales_staff_id=${formData.designAdvisorId}`
         }
 
+
+        if(formData.status && formData.status !== ""){
+            params = params + `&status=${formData.status}`
+        }
+
+
+        if(formData.status && formData.status !== ""){
+            params = params + `&status=${formData.status}`
+        }
+
         if(formData.franchiseType && formData.franchiseType !== ""){
             params = params + `&franchise_type=${formData.franchiseType}`
         }
@@ -57,6 +70,8 @@ const ReportAPI = {
         if((formData.sortBy && formData.sortBy !== "") && (formData.direction && formData.direction !== "")){
             params = params + `&sort_by=${formData.sortBy}&direction=${formData.direction}`
         }
+
+
 
         const uri = `/api/reports/sales-Staff-summary?${params}`;
 

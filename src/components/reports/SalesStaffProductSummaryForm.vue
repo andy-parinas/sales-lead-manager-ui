@@ -14,6 +14,15 @@
                         <div class="caption pl-5">All will be included if no selection is made</div>
                     </v-col>
                     <v-col cols="12">
+                      <v-select
+                          v-model="form.status"
+                          :items="['active', 'blocked']"
+                          label="Design Advisor Status"
+                          prepend-icon="mdi-cog-outline"
+                          clearable
+                      ></v-select>
+                    </v-col>
+                    <v-col cols="12">
                         <ProductSelect @onValueChanged="onProductSelectHandler" />
                         <div class="caption pl-5">All will be included if no selection is made</div>
                     </v-col>
@@ -93,6 +102,7 @@ name: "SalesStaffProductSummaryForm",
                 endDate: '',
                 franchiseId: '',
                 designAdvisorId: '',
+                status: '',
                 productId: '',
                 franchiseType: ''
             },

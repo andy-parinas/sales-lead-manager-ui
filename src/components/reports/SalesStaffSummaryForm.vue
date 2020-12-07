@@ -13,6 +13,15 @@
                         <DesignAdvisorSelect @onValueChanged="designAdvisorSelected" />
                         <div class="caption pl-5">All will be included if no selection is made</div>
                     </v-col>
+                    <v-col cols="12">
+                      <v-select
+                          v-model="form.status"
+                          :items="['active', 'blocked']"
+                          label="Design Advisor Status"
+                          prepend-icon="mdi-cog-outline"
+                          clearable
+                      ></v-select>
+                    </v-col>
                     <v-col cols="12" v-show="withDesignAdvisor">
                       <SalesStaffFranchiseSelect @onValueChanged="salesStaffFranchiseSelected" />
                       <div class="caption pl-5">All will be included if no selection is made.</div>
@@ -84,6 +93,7 @@ export default {
                 endDate: '',
                 franchiseId: '',
                 designAdvisorId: '',
+                status: '',
                 franchiseType: '',
                 sortBy: '',
                 direction: ''
