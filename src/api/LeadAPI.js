@@ -52,6 +52,7 @@ const LeadAPI = {
                 quoted_price: formData.appointment.quotedPrice,
                 outcome: formData.appointment.outcome,
                 comments: formData.appointment.comments,
+                customer_touch_point: formData.appointment.customerTouchPoint
             }
 
         }
@@ -111,6 +112,8 @@ const LeadAPI = {
     async updateAppointment(leadId, formData)
     {
 
+        console.log('Updating');
+
         // Normalized Data
         const data = {
             appointment_date: formData.date,
@@ -118,8 +121,11 @@ const LeadAPI = {
             appointment_notes: formData.notes,
             outcome: formData.outcome,
             quoted_price: formData.quotedPrice,
-            comments: formData.comments
+            comments: formData.comments,
+            customer_touch_point: formData.customerTouchPoint
         }
+
+        console.log(data);
 
         const uri = `/api/leads/${leadId}/appointments/${formData.id}`;
 

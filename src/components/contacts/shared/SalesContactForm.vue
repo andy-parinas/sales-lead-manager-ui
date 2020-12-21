@@ -103,7 +103,7 @@
             >Save</v-btn>
           <v-btn v-if="!edit" color="success" class="text--white" :loading="creating" :disabled="!canSave"
                  @click="$emit('onSaveAndCreateLead', form)"
-          >Save and Crate Lead</v-btn>
+          >Save and Create Lead</v-btn>
         </v-card-actions>
     </v-form>
 </template>

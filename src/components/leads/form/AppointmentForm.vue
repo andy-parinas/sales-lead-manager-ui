@@ -128,6 +128,17 @@
 <!--              End of Re-Appointment-->
 
               <v-col cols="12">
+                  <v-autocomplete
+                      v-model="form.customerTouchPoint"
+                      :items="touchPoints"
+                      :rules="rules.required"
+                      label="Customer Touch Point"
+                      prepend-icon="mdi-clipboard-check"
+                      required
+                  ></v-autocomplete>
+              </v-col>
+
+              <v-col cols="12">
                     <v-textarea
                             v-model="form.notes"
                             rows="2"
@@ -166,6 +177,7 @@
             </v-row>
             <OutcomeContractAlert v-if="form.outcome === 'success'" />
         </v-container>
+      <pre>{{ initialData }}</pre>
     </v-form>
 </template>
 
@@ -195,6 +207,7 @@
                     followUpDate: '',
                     followUpTime: '',
                     followUp: '',
+                    customerTouchPoint: '',
                     outcome: '',
                     quotedPrice: '0.0',
                     notes: '',
@@ -214,7 +227,18 @@
                     {value: 'success', text: 'Success'},
                     {value: 'deferred', text: 'Deffered'},
                     {value: 'cancelled', text: 'Cancelled'},
-                    {value: 'did not proceed', text: 'Did Not Proceed'}]
+                    {value: 'did not proceed', text: 'Did Not Proceed'}
+                ],
+                touchPoints: [
+                  { value: 'Phone call made', text: 'Phone call made'},
+                  { value: 'Email sent', text: 'Email sent'},
+                  { value: 'Appointment booked', text: 'Appointment booked'},
+                  { value: 'Quote in progress', text: 'Quote in progress'},
+                  { value: 'Sale lost', text: 'Sale lost'},
+                  { value: 'Contract signed', text: 'Contract signed'},
+                  { value: 'unknown', text: 'Unknown'},
+
+                ]
             }
         },
         computed: {

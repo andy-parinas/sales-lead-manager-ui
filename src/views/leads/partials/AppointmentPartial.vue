@@ -27,6 +27,13 @@
                   </v-col>
                 </v-row>
                 <v-row>
+                  <v-col cols="12" sm="12">
+                    <v-icon small>mdi-clipboard-text</v-icon>
+                    <span class="ml-2 caption font-weight-bold"> Customer Touch Point: </span>
+                    <span> {{data.customerTouchPoint }} </span>
+                  </v-col>
+                </v-row>
+                <v-row>
                     <v-col cols="12" sm="12">
                         <v-icon small>mdi-clipboard-text</v-icon>
                         <span class="ml-2 caption font-weight-bold"> Notes: </span>
