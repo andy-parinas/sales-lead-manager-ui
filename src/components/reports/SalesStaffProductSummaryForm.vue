@@ -16,7 +16,7 @@
                     <v-col cols="12">
                       <v-select
                           v-model="form.status"
-                          :items="['active', 'blocked']"
+                          :items="['active', 'blocked', 'all']"
                           label="Design Advisor Status"
                           prepend-icon="mdi-cog-outline"
                           clearable
