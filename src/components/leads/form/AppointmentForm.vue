@@ -177,7 +177,6 @@
             </v-row>
             <OutcomeContractAlert v-if="form.outcome === 'success'" />
         </v-container>
-      <pre>{{ initialData }}</pre>
     </v-form>
 </template>
 
