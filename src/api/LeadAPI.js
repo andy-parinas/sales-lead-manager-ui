@@ -143,7 +143,31 @@ const LeadAPI = {
 
         const response = await api().delete(uri);
 
-        console.log(response);
+        return response.data;
+    },
+
+    async sendEmailToDesignAdvisor($leadId, $salesStaffId){
+
+        const uri = `api/job-types/${$leadId}/email/${$salesStaffId}`;
+
+        await Csrf.getCSRFCookie();
+
+        const response = await api().post(uri);
+
+        return response.data;
+
+    },
+
+    async sendSmsToDesignAdvisor($leadId, $salesStaffId){
+
+        const uri = `api/job-types/${$leadId}/sms/${$salesStaffId}`;
+
+        await Csrf.getCSRFCookie();
+
+        const response = await api().post(uri);
+
+        return response.data;
+
     }
 }
 

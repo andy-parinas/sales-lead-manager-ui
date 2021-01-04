@@ -47,6 +47,22 @@
                    <v-spacer></v-spacer>
                    <v-btn v-if="!summary" text small fab @click="editDialog = true"><v-icon>mdi-pencil</v-icon></v-btn>
                </v-row>
+               <v-row v-if="!summary">
+                 <v-col cols="12" sm="3">
+                   <v-btn small color="primary" width="100%"
+                          :disabled="data.emailSentToDesignAdvisor  !== null ? true: false"
+                          @click="sendEmailToDesignAdvisor" :loading="emailSending" >
+                     Send Email to Design Advisor
+                   </v-btn>
+                 </v-col>
+                 <v-col cols="12" sm="3">
+                   <v-btn small color="primary" width="100%"
+                          :disabled="data.smsSentToDesignAdvisor  !== null ? true: false"
+                          @click="sendSmsToDesignAdvisor" :loading="smsSending">
+                     Send SMS to Design Advisor
+                   </v-btn>
+                 </v-col>
+               </v-row>
            </v-card-text>
        </v-card>
        <v-container>
@@ -63,6 +79,9 @@
 
 <script>
     import JobTypeEditDialog from "../../../components/leads/edit-dialog/JobTypeEditDialog";
+    import LeadAPI from "../../../api/LeadAPI";
+    import ErrorHandlerMixins from "../../../mixins/ErrorHandler";
+
     export default {
         name: "JobTypePartial",
         components: {JobTypeEditDialog},
@@ -73,7 +92,35 @@
         data(){
             return {
                 editDialog: false,
+                emailSending: false,
+                smsSending: false
             }
+        },
+        mixins: [ErrorHandlerMixins],
+        methods: {
+
+            sendEmailToDesignAdvisor(){
+                this.emailSending = true;
+                LeadAPI.sendEmailToDesignAdvisor(this.data.leadId, this.data.designAssessorId).then(response => {
+                    this.$set(this.data, 'emailSentToDesignAdvisor', response.data)
+                }).catch(error => {
+                    this.handleError(error)
+                }).finally(() => {
+                    this.emailSending = false;
+                })
+            },
+
+            sendSmsToDesignAdvisor(){
+                this.smsSending = true;
+                LeadAPI.sendSmsToDesignAdvisor(this.data.leadId, this.data.designAssessorId).then(response => {
+                    this.$set(this.data, 'smsSentToDesignAdvisor', response.data)
+                }).catch(error => {
+                    this.handleError(error)
+                }).finally(() => {
+                    this.smsSending = false;
+                })
+            }
+
         }
     }
 </script>
