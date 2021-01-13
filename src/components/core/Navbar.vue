@@ -129,6 +129,7 @@ import { frontEndUrl } from '../../api/api';
                 {icon: 'mdi-chart-areaspline', text: 'Product Sales', route: '/reports/product-sales-summary'},
                 {icon: 'mdi-chart-areaspline', text: 'Outcome Summary', route: '/reports/outcome-report'},
                 {icon: 'mdi-chart-areaspline', text: 'Lead Sources', route: '/reports/lead-sources-report'},
+                {icon: 'mdi-chart-areaspline', text: 'Customer Satisfaction', route: '/reports/customer-satisfaction-report'},
             ]
         }),
         methods: {
