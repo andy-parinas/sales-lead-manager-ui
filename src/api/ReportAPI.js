@@ -183,6 +183,22 @@ const ReportAPI = {
         const response = await api().get(uri);
 
         return response.data;
+    },
+
+    async getCustomerReview(formData){
+
+        let params = `start_date=${encodeURIComponent(formData.startDate)}&end_date=${encodeURIComponent(formData.endDate)}`
+
+        const uri = `/api/reports/customer-reviews?${params}`;
+
+        console.log(uri)
+
+        const response = await api().get(uri);
+
+        console.log(response);
+
+        return response.data;
+
     }
 
 
