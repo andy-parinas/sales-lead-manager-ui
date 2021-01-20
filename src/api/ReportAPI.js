@@ -187,7 +187,19 @@ const ReportAPI = {
 
     async getCustomerReview(formData){
 
+        console.log('formdata', formData)
+
         let params = `start_date=${encodeURIComponent(formData.startDate)}&end_date=${encodeURIComponent(formData.endDate)}`
+
+
+
+        if(formData.franchiseId && formData.franchiseId !== ""){
+            params = params + `&franchise_id=${formData.franchiseId}`
+        }
+
+        if(formData.franchiseType && formData.franchiseType !== ""){
+            params = params + `&franchise_type=${formData.franchiseType}`
+        }
 
         const uri = `/api/reports/customer-reviews?${params}`;
 
