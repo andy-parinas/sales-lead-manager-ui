@@ -201,6 +201,14 @@ const ReportAPI = {
             params = params + `&franchise_type=${formData.franchiseType}`
         }
 
+        if(formData.designAdvisorId && formData.designAdvisorId !== ""){
+            params = params + `&sales_staff_id=${formData.designAdvisorId}`
+        }
+
+        if((formData.sortBy && formData.sortBy !== "") && (formData.direction && formData.direction !== "")){
+            params = params + `&sort_by=${formData.sortBy}&direction=${formData.direction}`
+        }
+
         const uri = `/api/reports/customer-reviews?${params}`;
 
         console.log(uri)

@@ -21,6 +21,28 @@
             <DesignAdvisorSelect @onValueChanged="designAdvisorSelected" />
             <div class="caption pl-5">All will be included if no selection is made</div>
           </v-col>
+
+          <v-col cols="12">
+            <v-select
+                v-model="form.sortBy"
+                :items="sortItems"
+                label="Sort By"
+                prepend-icon="mdi-sort"
+                clearable
+            ></v-select>
+          </v-col>
+          <v-col cols="12">
+            <v-select
+                v-model="form.direction"
+                :items="[
+                                  {text: 'Ascending', value: 'asc'},
+                                  {text: 'Descending', value: 'desc'},
+                              ]"
+                label="Direction"
+                prepend-icon="mdi-sort"
+                clearable
+            ></v-select>
+          </v-col>
         </v-row>
       </v-card-text>
       <v-card-actions class="px-5">
@@ -52,8 +74,22 @@ export default {
                 startDate: '',
                 endDate: '',
                 franchiseId: '',
-                franchiseType: ''
+                franchiseType: '',
+                sortBy: '',
+                direction: ''
             },
+            sortItems: [
+              {text: 'Project Completion Date', value: 'date_project_completed'},
+              {text: 'Warranty Entered Date', value: 'date_warranty_received'},
+              {text: 'Lead Number', value: 'lead_number'},
+              {text: 'Franchise Number', value: 'franchise_number'},
+              {text: 'Design Advisor', value: 'first_name'},
+              {text: 'Product', value: 'product_name'},
+              {text: 'Service Rating', value: 'service_received_rating'},
+              {text: 'Workmanship Rating', value: 'workmanship_rating'},
+              {text: 'Product Rating', value: 'finished_product_rating'},
+              {text: 'Design Advisor Rating', value: 'design_consultant_rating'},
+            ]
         }
     },
     methods: {
