@@ -88,7 +88,7 @@
                 </v-col>
               <v-col cols="12" sm="6" md="6">
                 <v-icon small>mdi-calendar-month</v-icon>
-                <span class="ml-2 font-weight-medium caption"> Date Maintenance Letter Sent:</span>
+                <span class="ml-2 font-weight-medium caption"> Date SpanPak and Blue Clean Sent:</span>
                 <span> {{ verification.dateMaintenanceLetterSent | formatDate }} </span>
               </v-col>
             </v-row>

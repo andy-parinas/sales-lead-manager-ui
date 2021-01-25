@@ -15,15 +15,15 @@
                     </v-col>
                 </v-row>
                 <v-row>
-                  <v-col cols="12" sm="12">
+                  <v-col cols="12" sm="12"  >
                     <v-icon small>mdi-calendar-clock</v-icon>
                     <span class="ml-2 caption font-weight-bold"> Follow-Up Date: </span>
-                    <v-chip class="ma-2" color="blue darken-2" text-color="white">
-                      {{ data.followUp | formatDate }}
-                    </v-chip>
-                    <v-chip class="ma-2" color="blue darken-2" text-color="white">
-                      {{ data.followUp | formatTime }}
-                    </v-chip>
+                      <v-chip v-show="data.followUp !== null " class="ma-2" color="blue darken-2" text-color="white">
+                        {{ data.followUp | formatDate }}
+                      </v-chip>
+                      <v-chip v-show="data.followUp !== null "  v-if="data.followUp !== ''" class="ma-2" color="blue darken-2" text-color="white">
+                        {{ data.followUp | formatTime }}
+                      </v-chip>
                   </v-col>
                 </v-row>
                 <v-row>

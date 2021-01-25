@@ -78,7 +78,7 @@
                                          @onDateSelected="authorityDateHandler" />
                     </v-col>
                   <v-col cols="12" sm=6>
-                    <DateSelectField label="Maintenance Letter Sent"
+                    <DateSelectField label="SpanPak and Blue Clean Sent"
                                      :initial-date="initialData? initialData.dateMaintenanceLetterSent : ''"
                                      @onDateSelected="maintenanceLetterSentHandlerHandler" />
                   </v-col>

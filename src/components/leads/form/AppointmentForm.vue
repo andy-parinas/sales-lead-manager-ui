@@ -235,6 +235,10 @@
                   { value: 'Quote in progress', text: 'Quote in progress'},
                   { value: 'Sale lost', text: 'Sale lost'},
                   { value: 'Contract signed', text: 'Contract signed'},
+                  { value: 'Design Advisor Making Initial Contact', text: 'Design Advisor Making Initial Contact'},
+                  { value: 'Welcome Letter Sent', text: 'Welcome Letter Sent'},
+                  { value: 'Job in Council', text: 'Job in Council'},
+                  { value: 'Follow-Up Required', text: 'Follow-Up Required'},
                   { value: 'unknown', text: 'Unknown'},
 
                 ]
