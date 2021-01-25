@@ -29,6 +29,12 @@
                     <span class="ml-2 font-weight-medium caption"> Date Warranty Received:</span>
                     <span> {{ customerReview.dateWarrantyReceived | formatDate }} </span>
                 </v-col>
+              <v-col cols="12" sm="6" md="6">
+                <v-icon small>mdi-calendar-month</v-icon>
+                <span class="ml-2 font-weight-medium caption"> Date Maintenance Letter Sent:</span>
+                <span> {{ customerReview.dateMaintenanceLetterSent | formatDate }} </span>
+              </v-col>
+              <v-col cols="12" sm="6" md="6"></v-col>
 
                 <v-col cols="12" sm="6" md="12">
                     <v-icon small>mdi-home-outline</v-icon>
@@ -123,11 +129,13 @@ export default {
                 this.loading = false
             })
         },
-        successCreateHandler(customerReview){
-            this.customerReview = Object.assign({}, customerReview)
+        successCreateHandler(){
+            //this.customerReview = Object.assign({}, customerReview)
+            this.getCustomerReview(this.leadId)
         },
-        updateSuccessHandler(customerReview){
-            this.customerReview = Object.assign({}, customerReview)
+        updateSuccessHandler(){
+            //this.customerReview = Object.assign({}, customerReview)
+            this.getCustomerReview(this.leadId)
         }
     },
     mounted() {

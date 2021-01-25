@@ -11,6 +11,7 @@ const CustomerReviewAPI = {
         const data = {
             date_project_completed: formData.dateProjectCompleted,
             date_warranty_received: formData.dateWarrantyReceived,
+            maintenance_letter_sent: formData.dateMaintenanceLetterSent,
             home_addition_type: formData.homeAdditionType,
             home_addition_description: formData.homeAdditionDescription,
             service_received_rating: formData.serviceReceivedRating,
@@ -44,6 +45,7 @@ const CustomerReviewAPI = {
         const data = {
             date_project_completed: formData.dateProjectCompleted,
             date_warranty_received: formData.dateWarrantyReceived,
+            maintenance_letter_sent: formData.dateMaintenanceLetterSent,
             home_addition_type: formData.homeAdditionType,
             home_addition_description: formData.homeAdditionDescription,
             service_received_rating: formData.serviceReceivedRating,

@@ -15,6 +15,12 @@
                                          :required="true"
                                          @onDateSelected="dateWarrantyReceivedHandler" />
                     </v-col>
+                  <v-col cols="12" sm=6>
+                    <DateSelectField label="Date Maintenance Letter Sent"
+                                     :initial-date="initialData? initialData.dateMaintenanceLetterSent : ''"
+                                     @onDateSelected="dateMaitenanceLetterSentHandler" />
+                  </v-col>
+                  <v-col cols="12" sm=6></v-col>
                     <v-col cols="12" sm="6">
                         <v-text-field v-model="form.homeAdditionType"
                                       prepend-icon="mdi-home-outline"
@@ -98,6 +104,7 @@ export default {
             form: {
                 dateProjectCompleted: '',
                 dateWarrantyReceived: '',
+                dateMaintenanceLetterSent: '',
                 homeAdditionType: '',
                 homeAdditionDescription: '',
                 serviceReceivedRating: '',
@@ -121,6 +128,9 @@ export default {
         },
         dateWarrantyReceivedHandler(date){
             this.$set(this.form, 'dateWarrantyReceived', date)
+        },
+        dateMaitenanceLetterSentHandler(date){
+          this.$set(this.form, 'dateMaintenanceLetterSent', date)
         }
     },
     mounted() {
