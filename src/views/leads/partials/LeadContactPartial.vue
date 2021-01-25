@@ -62,6 +62,7 @@
                 <v-row>
                     <v-spacer></v-spacer>
                     <v-btn v-if="!summary" text small fab @click="editDialog = true"><v-icon>mdi-pencil</v-icon></v-btn>
+                    <LeadContentDownload v-if="!summary" />
                 </v-row>
                 <v-divider class="my-5"></v-divider>
                 <v-row>
@@ -122,9 +123,10 @@
     import LeadInfoEditDialog from "../../../components/leads/edit-dialog/LeadInfoEditDialog";
     import lettersAPI from "@/api/lettersAPI";
     import ErrorHandlerMixins from "@/mixins/ErrorHandler";
+    import LeadContentDownload from "../../../components/leads/LeadContentDownload";
     export default {
         name: "LeadContactPartial",
-        components: {LeadInfoEditDialog},
+        components: {LeadContentDownload, LeadInfoEditDialog},
         props: {
             data: {required: true, type: Object},
             summary: {required: false}
