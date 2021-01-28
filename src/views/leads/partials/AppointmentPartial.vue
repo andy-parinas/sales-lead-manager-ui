@@ -64,6 +64,7 @@
                 <v-row>
                     <v-spacer></v-spacer>
                     <v-btn v-if="!summary" text small fab @click="editDialog = true"><v-icon>mdi-pencil</v-icon></v-btn>
+                    <LeadContentDownload v-if="!summary" />
                 </v-row>
             </v-card-text>
         </v-card>
@@ -82,9 +83,10 @@
 <script>
     import ChipOutcome from "../../../components/leads/ChipOutcome";
     import AppointmentEditDialog from "../../../components/leads/edit-dialog/AppointmentEditDialog";
+    import LeadContentDownload from "../../../components/leads/LeadContentDownload";
     export default {
         name: "AppointmentPartial",
-        components: {AppointmentEditDialog, ChipOutcome},
+        components: {LeadContentDownload, AppointmentEditDialog, ChipOutcome},
         props: {
             data: { required: true, type: Object},
             summary: {required: false}

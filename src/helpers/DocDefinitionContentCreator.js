@@ -1,3 +1,4 @@
+import Utils from "./Utils";
 
 
 function currency(value) {
@@ -59,6 +60,84 @@ const DocDefinitionContentCreator = {
 
             resolve(body);
         })
+    },
+
+    createLeadPrintout(lead){
+
+        return new Promise((resolve, reject) => {
+
+            if (lead === null) reject("Lead cannot be null")
+            if (!lead.details ) reject('Lead must have a Details')
+            if (!lead.jobType ) reject('Lead must have a Job Type')
+            if (!lead.appointment ) reject('Lead must have an Appointment')
+
+
+            const content = [
+                {text: 'Lead Number: ' + lead.details.leadNumber, style: 'header'},
+                {text: 'Contact Details', style: 'subheader'},
+                {
+                    style: 'tableStyle',
+                    table: {
+                        body: [
+                            ['Name', `${lead.details.firstName} ${lead.details.lastName}` ],
+                            ['Contact Number', lead.details.contactNumber],
+                            ['Email', lead.details.email],
+                            ['Address', `${lead.details.street1} ${lead.details.street2}, 
+                                ${lead.details.postcode.locality}, ${lead.details.postcode.state} ${lead.details.postcode.pcode}`]
+                        ]
+                    }
+                },
+                {text: 'Lead Details', style: 'subheader'},
+                {
+                    style: 'tableStyle',
+                    table: {
+                        body: [
+                            ['Lead Number', lead.details.leadNumber ],
+                            ['Franchise Number', lead.details.franchiseNumber],
+                            ['Lead Date', Utils.formatDate(lead.details.leadDate)],
+                            ['Lead Type', lead.details.customerType],
+                            ['Lead Source', lead.details.leadSource],
+                            ['Lead Received Via', lead.details.receivedVia],
+                            ['Lead Status', lead.details.postcodeStatus]
+                        ]
+                    }
+                },
+                {text: 'Job Type Details', style: 'subheader'},
+                {
+                    style: 'tableStyle',
+                    table: {
+                        body: [
+                            ['Taken By', lead.jobType.takenBy ],
+                            ['Date Allocated', Utils.formatDate(lead.jobType.dateAllocated)],
+                            ['Product', lead.jobType.product],
+                            ['Description', lead.jobType.description],
+                            ['Design Advisor', lead.jobType.designAssessor],
+                            ['DA Contact Number', lead.jobType.designAssessorContactNumber],
+                            ['DA Email', lead.jobType.designAssessorEmail]
+                        ]
+                    }
+                },
+                {text: 'Appointment Details', style: 'subheader'},
+                {
+                    style: 'tableStyle',
+                    table: {
+                        body: [
+                            ['Appointment Date', `${Utils.formatDate(lead.appointment.appointmentDate)} ${Utils.convertToAMPM(lead.appointment.appointmentTime)}`],
+                            ['Follow-Up Date', `${Utils.formatDate(lead.appointment.appointmentDate)} 
+                                ${ lead.appointment.appointmentTime? Utils.convertToAMPM(lead.appointment.appointmentTime): '' }`],
+                            ['Customer Touch Point', lead.appointment.customerTouchPoint],
+                            ['Notes', lead.appointment.notes],
+                            ['Quoted Price', Utils.decimalFormat(lead.appointment.quotedPrice)],
+                            ['Outcome', lead.appointment.outcome],
+                            ['Comments', lead.appointment.comments]
+                        ]
+                    }
+                },
+            ]
+
+            resolve(content);
+        })
+
     }
 
 

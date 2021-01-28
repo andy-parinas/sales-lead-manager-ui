@@ -46,6 +46,7 @@
                <v-row>
                    <v-spacer></v-spacer>
                    <v-btn v-if="!summary" text small fab @click="editDialog = true"><v-icon>mdi-pencil</v-icon></v-btn>
+                    <LeadContentDownload v-if="!summary" />
                </v-row>
                <v-row v-if="!summary">
                  <v-col cols="12" sm="3">
@@ -81,10 +82,11 @@
     import JobTypeEditDialog from "../../../components/leads/edit-dialog/JobTypeEditDialog";
     import LeadAPI from "../../../api/LeadAPI";
     import ErrorHandlerMixins from "../../../mixins/ErrorHandler";
+    import LeadContentDownload from "../../../components/leads/LeadContentDownload";
 
     export default {
         name: "JobTypePartial",
-        components: {JobTypeEditDialog},
+        components: {LeadContentDownload, JobTypeEditDialog},
         props: {
             data: {required: true, type: Object},
             summary: {required: false}
