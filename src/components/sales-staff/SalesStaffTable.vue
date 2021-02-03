@@ -9,12 +9,12 @@
             </v-card-title>
             <v-data-table
                     :items="salesStaffs"
+                    item-key="key"
                     :headers="headers"
                     :options.sync="pageOptions"
                     :server-items-length="pagination.total"
                     :footer-props="footerProps"
                     :single-expand="true"
-                    :show-expand="true"
                     :loading="loading">
 
                 <template v-slot:item.status="{item}">
@@ -42,9 +42,9 @@
 
                 </template>
 
-                <template v-slot:expanded-item="{ headers, item }">
-                    <SalesStaffDetails :length="headers.length" :item="item" />
-                </template>
+<!--                <template v-slot:expanded-item="{ headers, item }">-->
+<!--                    <SalesStaffDetails :length="headers.length" :item="item" />-->
+<!--                </template>-->
 
             </v-data-table>
         </v-card>
@@ -63,13 +63,13 @@
 <script>
     import SearchForm from "../shared/SearchForm";
     import {mapActions, mapState} from "vuex";
-    import SalesStaffDetails from "./SalesStaffDetails";
+    // import SalesStaffDetails from "./SalesStaffDetails";
     import SalesStaffEditDialog from "./SalesStaffEditDialog";
     import SalesStaffDeleteDialog from "./SalesStaffDeleteDialog";
     import ErrorHandlerMixins from "@/mixins/ErrorHandler";
     export default {
         name: "SalesStaffTable",
-        components: {SalesStaffDeleteDialog, SalesStaffEditDialog, SalesStaffDetails, SearchForm},
+        components: {SalesStaffDeleteDialog, SalesStaffEditDialog, SearchForm},
         data(){
             return {
                 loading: false,
@@ -85,7 +85,8 @@
                     { text: 'First Name',value: 'firstName'},
                     { text: 'Last Name', value: 'lastName' },
                     { text: 'E-Mail', value: 'email' },
-                    { text: 'Franchises', value: 'franchises', sortable: false },
+                    { text: 'Contact Number', value: 'contactNumber' },
+                    { text: 'Franchises', value: 'franchises'},
                     { text: 'Status', value: 'status' },
                     { text: 'Actions', value: 'actions', sortable: false },
                     { text: '', value: 'data-table-expand' },

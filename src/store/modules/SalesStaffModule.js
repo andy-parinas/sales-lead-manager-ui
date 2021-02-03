@@ -44,28 +44,7 @@ export default {
             const response = await SalesStaffAPI.getAllSalesStaff(pageOptions, searchOptions)
 
 
-            const salesStaffs = response.data.map(d => {
-
-                let franchises = ""
-
-                d.franchises.map(f => {
-                   franchises = franchises + f.franchise_number + ', '
-                })
-
-                const staff = {
-                    id: d.id,
-                    contactNumber: d.contactNumber,
-                    firstName: d.firstName,
-                    lastName: d.lastName,
-                    email: d.email,
-                    status: d.status,
-                    franchises: franchises
-                }
-
-                return staff;
-            })
-
-            console.log(salesStaffs);
+            const salesStaffs = response.data
 
             // commit('setSalesStaffs', response.data);
             commit('setSalesStaffs', salesStaffs);
