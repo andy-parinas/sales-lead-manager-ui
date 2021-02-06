@@ -106,10 +106,6 @@ export default {
 
           pdfMake.createPdf(docDefinition).open();
 
-
-          console.log(content)
-          console.log(variations)
-
         }catch (e) {
           console.log(e)
 

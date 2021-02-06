@@ -35,19 +35,19 @@
                 <ContractPartial :lead-id="lead.details.id" :lead-number="lead.details.leadNumber" />
             </v-tab-item>
             <v-tab-item v-if="!summary">
-                <FinancePartial :lead-id="lead.details.id" />
+                <FinancePartial :lead-id="lead.details.id" :lead-number="lead.details.leadNumber" />
             </v-tab-item>
             <v-tab-item v-if="!summary">
-                <BuildingAuthorityPartial :lead-id="lead.details.id" />
+                <BuildingAuthorityPartial :lead-id="lead.details.id" :lead-number="lead.details.leadNumber" />
             </v-tab-item>
             <v-tab-item v-if="!summary">
-                <ConstructionPartial :lead-id="lead.details.id" />
+                <ConstructionPartial :lead-id="lead.details.id" :lead-number="lead.details.leadNumber" />
             </v-tab-item>
             <v-tab-item v-if="!summary">
-                <VerificationPartial :lead-id="lead.details.id" />
+                <VerificationPartial :lead-id="lead.details.id" :lead-number="lead.details.leadNumber" />
             </v-tab-item>
             <v-tab-item v-if="!summary">
-                <CustomerReviewPartial :lead-id="lead.details.id" />
+                <CustomerReviewPartial :lead-id="lead.details.id" :lead-number="lead.details.leadNumber" />
             </v-tab-item>
         </v-tabs>
     </v-card>

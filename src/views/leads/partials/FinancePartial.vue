@@ -76,6 +76,7 @@
                     <v-spacer></v-spacer>
                     <v-btn :loading="refreshing"
                             text small fab @click="getFinance"><v-icon>mdi-refresh</v-icon></v-btn>
+                    <FinanceDownload :finance="finance" :lead-number="leadNumber" />
                 </v-row>
                 <v-divider class="mt-10 mb-3"></v-divider>
                 <v-btn text small @click="showPaymentMade = !showPaymentMade">
@@ -107,12 +108,14 @@
     import PaymentsMadeTable from "../../../components/finance/payments-made/PaymentsMadeTable";
     import EventBus from "../../../helpers/EventBus";
     import PaymentsScheduleTable from "../../../components/finance/payments-schedule/PaymentsScheduleTable";
+    import FinanceDownload from "../../../components/finance/FinanceDownload";
 
     export default {
         name: "FinancePartial",
-        components: {PaymentsScheduleTable, PaymentsMadeTable},
+        components: {FinanceDownload, PaymentsScheduleTable, PaymentsMadeTable},
         props: {
-            leadId: {required: true}
+            leadId: {required: true},
+            leadNumber: {required: true}
         },
         data(){
             return {
