@@ -55,6 +55,11 @@ const Utils = {
     decimalFormat(value){
         const amt = Number(value)
         return amt && amt.toLocaleString(undefined, {maximumFractionDigits:2}) || '0'
+    },
+
+    convertToCurrency(value) {
+        const amt = Number(value)
+        return amt && amt.toLocaleString(undefined, {maximumFractionDigits:2}) || '0'
     }
 }
 

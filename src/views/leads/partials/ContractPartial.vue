@@ -95,6 +95,7 @@
                 <v-row>
                     <v-spacer></v-spacer>
                     <v-btn text small fab @click="showEditDialog = true"><v-icon>mdi-pencil</v-icon></v-btn>
+                    <ContractDownload :contract="contract" :lead-number="leadNumber" />
                 </v-row>
                 <v-divider class="my-3"></v-divider>
                 <v-btn text small @click="showVariations = !showVariations">
@@ -139,12 +140,14 @@
     import ContractEditDialog from "../../../components/contract/ContractEditDialog";
     import lettersAPI from "@/api/lettersAPI";
     import ErrorHandlerMixins from '../../../mixins/ErrorHandler';
+    import ContractDownload from "../../../components/contract/ContractDownload";
 
     export default {
         name: "ContractPartial",
-        components: {ContractEditDialog, VariationTable, ContractCreateDialog},
+        components: {ContractDownload, ContractEditDialog, VariationTable, ContractCreateDialog},
         props: {
-            leadId: {required: true}
+            leadId: {required: true},
+            leadNumber: {required: true}
         },
         data(){
             return {

@@ -232,6 +232,7 @@
                   { value: 'Phone call made', text: 'Phone call made'},
                   { value: 'Email sent', text: 'Email sent'},
                   { value: 'Appointment booked', text: 'Appointment booked'},
+                  { value: 'Appointment Date and Time Pending', text: 'Appointment Date and Time Pending'},
                   { value: 'Quote in progress', text: 'Quote in progress'},
                   { value: 'Sale lost', text: 'Sale lost'},
                   { value: 'Contract signed', text: 'Contract signed'},

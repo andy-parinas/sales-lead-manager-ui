@@ -32,7 +32,7 @@
                 <DocumentPartial :lead-id="lead.details.id" />
             </v-tab-item>
             <v-tab-item v-if="!summary">
-                <ContractPartial :lead-id="lead.details.id" />
+                <ContractPartial :lead-id="lead.details.id" :lead-number="lead.details.leadNumber" />
             </v-tab-item>
             <v-tab-item v-if="!summary">
                 <FinancePartial :lead-id="lead.details.id" />
