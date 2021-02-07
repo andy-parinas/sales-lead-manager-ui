@@ -116,6 +116,7 @@
                 <v-row>
                     <v-spacer></v-spacer>
                     <v-btn text small fab @click="showEditDialog = true"><v-icon>mdi-pencil</v-icon></v-btn>
+					<ConstructionDownload :construction="construction" :lead-number="leadNumber" />
                 </v-row>
             </v-card-text>
         </v-card>
@@ -142,11 +143,12 @@
     import EventBus from "../../../helpers/EventBus";
     import {mapState} from 'vuex';
     import ConstructionEditDialog from "@/components/constructions/ConstructionEditDialog";
+	import ConstructionDownload from "../../../components/constructions/ConstructionDownload";
 
     export default {
         name: "ConstructionPartial",
-        components: {ConstructionEditDialog, ConstructionCreateDialog},
-        props: ['leadId', 'leadDetails'],
+        components: {ConstructionDownload, ConstructionEditDialog, ConstructionCreateDialog},
+        props: ['leadId', 'leadDetails', 'leadNumber'],
         data(){
             return {
                 construction: null,

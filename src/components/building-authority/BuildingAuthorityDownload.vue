@@ -1,6 +1,6 @@
 <template>
     <v-btn text small fab @click="download" :loading="printing" >
-      <v-icon >mdi-printer</v-icon>
+        <v-icon >mdi-printer</v-icon>
     </v-btn>
 </template>
 
@@ -58,13 +58,13 @@ export default {
                   ]
                 }
               },
-              {text: 'Payments Made', style: 'subheader'},
+              {text: 'Building Insurance', style: 'subheader'},
               {
                 style: 'tableStyle',
                 table: {
                   widths: ['*', 130],
                   body: [
-                    ['Building Insurance Name', {text: Utils.convertToCurrency(this.buildingAuthority.buildingInsuranceName), alignment: 'right'}],
+                    ['Building Insurance Name', {text: this.buildingAuthority.buildingInsuranceName, alignment: 'right'}],
                     ['Date Building Insurance Request Sent', {text: Utils.formatDate(this.buildingAuthority.dateInsuranceRequestSent), alignment: 'right'} ],
                     ['Building Insurance Number', {text: this.buildingAuthority.buildingInsuranceNumber, alignment: 'right'}],
                   ]
