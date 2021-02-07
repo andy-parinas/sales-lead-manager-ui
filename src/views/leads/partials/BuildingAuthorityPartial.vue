@@ -135,6 +135,7 @@
             <v-row class="py-5">
                 <v-spacer></v-spacer>
                 <v-btn text small fab @click="showEditDialog = true"><v-icon>mdi-pencil</v-icon></v-btn>
+                <BuildingAuthorityDownload :building-authority="buildingAuthority" :lead-number="leadNumber" />
             </v-row>
         </v-card>
         <v-dialog v-model="showCreateDialog" persistent max-width="800px">
@@ -160,12 +161,13 @@ import BuildingAuthorityAPI from "@/api/BuildingAuthorityAPI";
 import ErrorHandlerMixins from "@/mixins/ErrorHandler";
 import BuildingAuthorityEditDialog from "@/components/building-authority/BuildingAuthorityEditDialog";
 import lettersAPI from "../../../api/lettersAPI";
+import BuildingAuthorityDownload from "../../../components/building-authority/BuildingAuthorityDownload";
 
 
 export default {
     name: "BuildingAuthorityPartial",
-    props: ['leadId'],
-    components: {BuildingAuthorityEditDialog, BuildingAuthorityCreateDialog},
+    props: ['leadId', 'leadNumber'],
+    components: {BuildingAuthorityDownload, BuildingAuthorityEditDialog, BuildingAuthorityCreateDialog},
     data(){
         return {
             buildingAuthority: null,
