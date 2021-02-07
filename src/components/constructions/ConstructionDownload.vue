@@ -19,6 +19,7 @@ export default {
 	},
 	methods: {
 		download(){
+
 			const content = [
 				{text: 'Construction For Lead Number: ' + this.leadNumber, style: 'header'},
 				{text: 'Site Address', style: 'subheader'},

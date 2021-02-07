@@ -95,6 +95,7 @@
             <v-row class="py-5">
                 <v-spacer></v-spacer>
                 <v-btn text small fab @click="showEditDialog = true"><v-icon>mdi-pencil</v-icon></v-btn>
+				<VerificationDownload :verification="verification" :lead-number="leadNumber" />
             </v-row>
         </v-card>
         <v-dialog v-model="showCreateDialog" persistent max-width="800px">
@@ -118,11 +119,12 @@ import VerificationAPI from "@/api/VerificationAPI";
 import VerificationCreateDialog from "@/components/verification/VerificationCreateDialog";
 import ErrorHandlerMixins from "@/mixins/ErrorHandler";
 import VerificationEditDialog from "@/components/verification/VerificationEditDialog";
+import VerificationDownload from "../../../components/verification/VerificationDownload";
 
 export default {
     name: "VerificationPartial",
-    components: {VerificationEditDialog, VerificationCreateDialog},
-    props: ['leadId'],
+    components: {VerificationDownload, VerificationEditDialog, VerificationCreateDialog},
+    props: ['leadId', 'leadNumber'],
     data(){
         return {
             verification: null,
