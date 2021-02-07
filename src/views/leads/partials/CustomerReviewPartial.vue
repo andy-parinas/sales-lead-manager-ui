@@ -79,6 +79,7 @@
             <v-row class="py-5">
                 <v-spacer></v-spacer>
                 <v-btn text small fab @click="showEditDialog = true"><v-icon>mdi-pencil</v-icon></v-btn>
+				<CustomerReviewDownload :customer-review="customerReview" :franchise-number="franchiseNumber" />
             </v-row>
         </v-card>
         <v-dialog v-model="showCreateDialog" persistent max-width="800px">
@@ -102,11 +103,12 @@ import ErrorHandlerMixins from "@/mixins/ErrorHandler";
 import CustomerReviewCreateDialog from "@/components/customer-review/CustomerReviewCreateDialog";
 import CustomerReviewAPI from "@/api/CustomerReviewAPI";
 import CustomerReviewEditDialog from "@/components/customer-review/CustomerReviewEditDialog";
+import CustomerReviewDownload from "../../../components/customer-review/CustomerReviewDownload";
 
 export default {
     name: "CustomerReviewPartial",
-    components: {CustomerReviewEditDialog, CustomerReviewCreateDialog},
-    props: ['leadId'],
+    components: {CustomerReviewDownload, CustomerReviewEditDialog, CustomerReviewCreateDialog},
+    props: ['leadId', 'franchiseNumber'],
     data(){
         return {
             customerReview: null,
